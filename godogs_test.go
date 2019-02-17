@@ -1,7 +1,7 @@
 package main
 
 import (
-  "./raytracer"
+  "github.com/tiegz/raytracer-go/raytracer"
   "fmt"
   "github.com/DATA-DOG/godog"
 )
