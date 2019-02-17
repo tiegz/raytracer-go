@@ -1,14 +1,11 @@
 package main
 
-import "fmt"
-
-type Tuple struct {
-  x float64
-  y float64
-  z float64
-  w float64 // 0: point, 1: vector
-}
+import (
+  "./raytracer"
+  "fmt"
+)
 
 func main() {
-	fmt.Println("Hello, world.")
+  t := raytracer.Tuple{}
+  fmt.Printf("Here's a tuple: %s", t.Type())
 }
