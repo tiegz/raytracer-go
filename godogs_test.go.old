@@ -8,7 +8,8 @@ import (
 )
 
 type TestSubject struct {
-	ATuple raytracer.Tuple
+	ATuple       raytracer.Tuple
+  TestTuples   map[string]raytracer.Tuple
 }
 
 func (subject *TestSubject) aTuple(arg1, arg2, arg3, arg4 float64) error {
@@ -111,6 +112,23 @@ func (subject *TestSubject) vTuple(arg1, arg2, arg3, arg4 float64) error {
 	}
 }
 
+
+func (subject *TestSubject) aNamedTuple(varName string, arg1 float64, arg2 float64, arg3 float64, arg4 float64) {
+  subject.TestTuples[varName] = raytracer.Tuple{arg1, arg2, arg3, arg4}
+}
+
+func (subject *TestSubject) addingNamedTuplesEqualsTuple(varName1 string, varName2 string, arg1 float64, arg2 float64, arg3 float64, arg4 float64) error {
+  tuple1 := subject.TestTuples[varName1]
+  tuple2 := subject.TestTuples[varName2]
+  expectedTuple := raytracer.Tuple{arg1, arg2, arg3, arg4}
+  actualTuple := tuple1.Add(tuple2)
+  if (!actualTuple.IsEqualTo(expectedTuple)) {
+    return fmt.Errorf("expected %v + %v to equal %v, but was %v.", tuple1, tuple2, expectedTuple, actualTuple)
+  } else {
+    return nil
+  }
+}
+
 func FeatureContext(s *godog.Suite) {
 	testSubject := TestSubject{}
 
@@ -127,4 +145,6 @@ func FeatureContext(s *godog.Suite) {
 	s.Step(`^p = tuple\(([-0-9.]+), ([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\)$`, testSubject.pTuple)
 	s.Step(`^v vector\(([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\)$`, testSubject.vVector)
 	s.Step(`^v = tuple\(([-0-9.]+), ([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\)$`, testSubject.vTuple)
+  s.Step(`^(\w*) tuple\(([-0-9.]+), ([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\)$`, testSubject.aNamedTuple)
+  s.Step(`^(\w*) \+ (a\d+) = tuple\(([-0-9.]+), ([-0-9.]+), ([-0-9.]+), ([-0-9.]+)\)$`, testSubject.addingNamedTuplesEqualsTuple)
 }

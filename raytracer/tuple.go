@@ -36,3 +36,7 @@ func (t *Tuple) IsEqualTo(t2 Tuple) bool {
 
   return equals(t.X, t2.X) && equals(t.Y, t2.Y) && equals(t.Z, t2.Z) && equals(t.W, t2.W)
 }
+
+func (t *Tuple) Add(t2 Tuple) Tuple {
+  return t2
+}
