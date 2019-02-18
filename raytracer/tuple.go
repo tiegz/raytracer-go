@@ -38,5 +38,5 @@ func (t *Tuple) IsEqualTo(t2 Tuple) bool {
 }
 
 func (t *Tuple) Add(t2 Tuple) Tuple {
-  return t2
+  return Tuple{t.X + t2.X, t.Y + t2.Y, t.Z + t2.Z, t.W + t2.W}
 }

@@ -37,15 +37,29 @@ func TestTupleIsVector(t *testing.T) {
 //     And a is a vector
 //     And a is not a point
 
-//   Scenario: point() creates tuples with w=1
-//     Given p point(4, -4, 3)
-//     Then p = tuple(4, -4, 3, 1)
+func assertEqualTuple(t *testing.T, expected, actual Tuple) {
+  if (!expected.IsEqualTo(actual)) {
+    t.Errorf("Expected %v to be equal to %v, but was not", expected, actual)
+  }
+}
 
-//   Scenario: vector() creates tuples with w=0
-//     Given v vector(4, -4, 3)
-//     Then v = tuple(4, -4, 3, 0)
+func TestNewPointFunctionCreatesTuples(t *testing.T) {
+  tuple := NewPoint(4, -4, 3)
 
-//   Scenario: Adding two tuples
-//     Given a1 tuple(3, -2, 5, 1)
-//     And a2 tuple(-2, 3, 1, 0)
-//     Then a1 + a2 = tuple(1, 1, 6, 1)
+  assertEqualTuple(t, tuple, Tuple{4, -4, 3, 1})
+}
+
+func TestNewVectorFunctionCreatesTuples(t *testing.T) {
+  tuple := NewVector(4, -4, 3)
+
+  assertEqualTuple(t, tuple, Tuple{4, -4, 3, 0})
+}
+
+func TestAddingTwoTuples(t *testing.T) {
+  t1 := Tuple{3, -2, 5, 1}
+  t2 := Tuple{-2, 3, 1, 0}
+  expected := Tuple{1, 1, 6, 1}
+  actual := t1.Add(t2)
+
+  assertEqualTuple(t, expected, actual)
+}
