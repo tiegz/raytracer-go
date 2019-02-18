@@ -13,12 +13,6 @@ func TestTuple(t *testing.T) {
 	assertEqualFloat64(t, tuple.W, 1.0)
 }
 
-func assertEqualFloat64(t *testing.T, expected float64, actual float64) {
-	if expected != actual {
-		t.Errorf("Expected value to be %f, but was: %f\n", expected, actual)
-	}
-}
-
 func TestTupleIsVector(t *testing.T) {
 	tuple := Tuple{4.3, -4.2, 3.1, 1.0}
 
@@ -26,21 +20,6 @@ func TestTupleIsVector(t *testing.T) {
 	assertEqualFloat64(t, tuple.Y, -4.2)
 	assertEqualFloat64(t, tuple.Z, 3.1)
 	assertEqualFloat64(t, tuple.W, 0.0)
-}
-
-//   Scenario: A tuple with w=0 is a vector
-//     Given a tuple (4.3, -4.2, 3.1, 0.0)
-//     Then a.x = 4.3
-//     And a.y = -4.2
-//     And a.z = 3.1
-//     And a.w = 0.0
-//     And a is a vector
-//     And a is not a point
-
-func assertEqualTuple(t *testing.T, expected, actual Tuple) {
-  if (!expected.IsEqualTo(actual)) {
-    t.Errorf("Expected %v to be equal to %v, but was not", expected, actual)
-  }
 }
 
 func TestNewPointFunctionCreatesTuples(t *testing.T) {
@@ -63,3 +42,27 @@ func TestAddingTwoTuples(t *testing.T) {
 
   assertEqualTuple(t, expected, actual)
 }
+
+func TestSubtractingTwoTuples(t *testing.T) {
+  t1 := NewPoint(3, 2, 1)
+  t2 := NewPoint(5, 6, 7)
+  expected := NewVector(-2, -4, -6)
+  actual := t1.Subtract(t2)
+
+  assertEqualTuple(t, expected, actual)
+}
+
+// Helpers
+
+func assertEqualTuple(t *testing.T, expected, actual Tuple) {
+  if (!expected.IsEqualTo(actual)) {
+    t.Errorf("Expected %v to be equal to %v, but was not", expected, actual)
+  }
+}
+
+func assertEqualFloat64(t *testing.T, expected float64, actual float64) {
+  if expected != actual {
+    t.Errorf("Expected value to be %f, but was: %f\n", expected, actual)
+  }
+}
+
