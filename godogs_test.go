@@ -90,7 +90,7 @@ func (subject *TestSubject) pPoint(arg1, arg2, arg3 float64) error {
 
 func (subject *TestSubject) pTuple(arg1, arg2, arg3, arg4 float64) error {
 	t := raytracer.Tuple{arg1, arg2, arg3, arg4}
-	if subject.ATuple != t {
+	if !subject.ATuple.IsEqualTo(t) {
 		return fmt.Errorf("expected p to equal %v, but did not equal it", t)
 	} else {
 		return nil
@@ -104,7 +104,7 @@ func (subject *TestSubject) vVector(arg1, arg2, arg3 float64) error {
 
 func (subject *TestSubject) vTuple(arg1, arg2, arg3, arg4 float64) error {
 	t := raytracer.Tuple{arg1, arg2, arg3, arg4}
-	if subject.ATuple != t {
+	if !subject.ATuple.IsEqualTo(t) {
 		return fmt.Errorf("expected p to equal %v, but did not equal it", t)
 	} else {
 		return nil

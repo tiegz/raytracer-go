@@ -1,5 +1,9 @@
 package raytracer
 
+import (
+  "math"
+)
+
 type Tuple struct {
 	X float64
 	Y float64
@@ -21,4 +25,14 @@ func NewPoint(x, y, z float64) Tuple {
 
 func NewVector(x, y, z float64) Tuple {
 	return Tuple{x, y, z, 0.0}
+}
+
+func (t *Tuple) IsEqualTo(t2 Tuple) bool {
+  const tolerance = 0.00001
+  equals := func(x, y float64) bool {
+    diff := math.Abs(x - y)
+    return diff < tolerance
+  }
+
+  return equals(t.X, t2.X) && equals(t.Y, t2.Y) && equals(t.Z, t2.Z) && equals(t.W, t2.W)
 }
