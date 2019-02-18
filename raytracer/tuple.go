@@ -1,7 +1,7 @@
 package raytracer
 
 import (
-  "math"
+	"math"
 )
 
 type Tuple struct {
@@ -28,15 +28,19 @@ func NewVector(x, y, z float64) Tuple {
 }
 
 func (t *Tuple) IsEqualTo(t2 Tuple) bool {
-  const tolerance = 0.00001
-  equals := func(x, y float64) bool {
-    diff := math.Abs(x - y)
-    return diff < tolerance
-  }
+	const tolerance = 0.00001
+	equals := func(x, y float64) bool {
+		diff := math.Abs(x - y)
+		return diff < tolerance
+	}
 
-  return equals(t.X, t2.X) && equals(t.Y, t2.Y) && equals(t.Z, t2.Z) && equals(t.W, t2.W)
+	return equals(t.X, t2.X) && equals(t.Y, t2.Y) && equals(t.Z, t2.Z) && equals(t.W, t2.W)
 }
 
 func (t *Tuple) Add(t2 Tuple) Tuple {
-  return Tuple{t.X + t2.X, t.Y + t2.Y, t.Z + t2.Z, t.W + t2.W}
+	return Tuple{t.X + t2.X, t.Y + t2.Y, t.Z + t2.Z, t.W + t2.W}
+}
+
+func (t *Tuple) Subtract(t2 Tuple) Tuple {
+	return Tuple{t.X - t2.X, t.Y - t2.Y, t.Z - t2.Z, t.W - t2.W}
 }
