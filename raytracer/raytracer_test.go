@@ -1,26 +1,32 @@
 package raytracer
 
 import (
-  "testing"
+	"testing"
 )
 
 func TestTuple(t *testing.T) {
-  tuple := Tuple{4.3, -4.2, 3.1, 1.0}
+	tuple := Tuple{4.3, -4.2, 3.1, 1.0}
 
-  assertEqualFloat64(t, tuple.X, 4.3)
-  assertEqualFloat64(t, tuple.Y, -4.2)
-  assertEqualFloat64(t, tuple.Z, 3.1)
-  assertEqualFloat64(t, tuple.W, 1.0)
+	assertEqualFloat64(t, tuple.X, 4.3)
+	assertEqualFloat64(t, tuple.Y, -4.2)
+	assertEqualFloat64(t, tuple.Z, 3.1)
+	assertEqualFloat64(t, tuple.W, 1.0)
 }
-
-
 
 func assertEqualFloat64(t *testing.T, expected float64, actual float64) {
-  if (expected != actual) {
-    t.Errorf("Expected value to be %f, but was: %f\n", expected, actual)
-  }
+	if expected != actual {
+		t.Errorf("Expected value to be %f, but was: %f\n", expected, actual)
+	}
 }
 
+func TestTupleIsVector(t *testing.T) {
+	tuple := Tuple{4.3, -4.2, 3.1, 1.0}
+
+	assertEqualFloat64(t, tuple.X, 4.3)
+	assertEqualFloat64(t, tuple.Y, -4.2)
+	assertEqualFloat64(t, tuple.Z, 3.1)
+	assertEqualFloat64(t, tuple.W, 0.0)
+}
 
 //   Scenario: A tuple with w=0 is a vector
 //     Given a tuple (4.3, -4.2, 3.1, 0.0)
