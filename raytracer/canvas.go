@@ -1,24 +1,32 @@
 package raytracer
 
-import (
-	"math"
-)
-
 type Canvas struct {
-	Width  float64
-	Height float64
+	Width  int
+	Height int
+	Pixels []Color
 }
 
-func NewCanvas(w, h float64) Canvas {
-  return Canvas{w, h}
+func NewCanvas(w, h int) Canvas {
+	return Canvas{w, h, make([]Color, h*w)}
 }
 
 func (c *Canvas) IsEqualTo(c2 Canvas) bool {
 	const tolerance = 0.00001
-	equals := func(x, y float64) bool {
-		diff := math.Abs(x - y)
-    return diff < tolerance
-	}
+	// equals := func(x, y float64) bool {
+	// 	diff := math.Abs(x - y)
+	// 	return diff < tolerance
+	// }
 
-	return equals(c.Width, c2.Width) && equals(c.Height, c2.Height)
+	return true
+	// equals(c.Width, c2.Width) && equals(c.Height, c2.Height)
+}
+
+func (c *Canvas) WritePixel(x, y int, color Color) {
+	index := c.Height*y + x
+	c.Pixels[index] = color
+}
+
+func (c *Canvas) PixelAt(x, y int) Color {
+	index := c.Height*y + x
+	return c.Pixels[index]
 }
