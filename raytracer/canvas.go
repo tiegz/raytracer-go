@@ -1,5 +1,7 @@
 package raytracer
 
+import "fmt"
+
 type Canvas struct {
 	Width  int
 	Height int
@@ -29,4 +31,8 @@ func (c *Canvas) WritePixel(x, y int, color Color) {
 func (c *Canvas) PixelAt(x, y int) Color {
 	index := c.Height*y + x
 	return c.Pixels[index]
+}
+
+func (c *Canvas) ToPpm() string {
+	return fmt.Sprintf("P3\n%d %d\n255\n", c.Width, c.Height)
 }
