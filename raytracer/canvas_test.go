@@ -36,19 +36,17 @@ func TestCanvasToPpm(t *testing.T) {
 }
 
 func TestCanvasToPpmWithData(t *testing.T) {
-  c1 := NewCanvas(5, 3)
-  c1.WritePixel(0, 0, Color{1.5, 0, 0})
-  c1.WritePixel(2, 1, Color{0, 0.5, 0})
-  c1.WritePixel(4, 2, Color{-0.5, 0, 1})
-  lines := strings.Split(c1.ToPpm(), "\n")
+	c1 := NewCanvas(5, 3)
+	c1.WritePixel(0, 0, Color{1.5, 0, 0})
+	c1.WritePixel(2, 1, Color{0, 0.5, 0})
+	c1.WritePixel(4, 2, Color{-0.5, 0, 1})
+	lines := strings.Split(c1.ToPpm(), "\n")
 
-  actual := strings.Join(lines[3:len(lines) - 1], "\n")
-  expected := `
-255 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	actual := strings.Join(lines[3:len(lines)-1], "\n")
+	expected := `255 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 128 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 255
-`
-  assertEqualString(t, expected, actual)
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 255`
+	assertEqualString(t, expected, actual)
 }
 
 // Scenario: Constructing the PPM pixel data
