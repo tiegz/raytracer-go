@@ -52,12 +52,27 @@ func TestSubtractingTwoTuples(t *testing.T) {
 	assertEqualTuple(t, expected, actual)
 }
 
+func TestIsEqualTo(t *testing.T) {
+  assertEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.0000001, 1.0000001, 1.0000001, 1.0000001})
+  assertEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.000001, 1.000001, 1.000001, 1.000001})
+
+  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.00001, 1.00001, 1.00001, 1.00001})
+  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.0001, 1.0001, 1.0001, 1.0001})
+  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.001, 1.001, 1.001, 1.001})
+}
+
 // Helpers
 
 func assertEqualTuple(t *testing.T, expected, actual Tuple) {
 	if !expected.IsEqualTo(actual) {
 		t.Errorf("Expected %v to be equal to %v, but was not", expected, actual)
 	}
+}
+
+func assertNotEqualTuple(t *testing.T, expected, actual Tuple) {
+  if expected.IsEqualTo(actual) {
+    t.Errorf("Expected %v to not be equal to %v, but was equal", expected, actual)
+  }
 }
 
 func assertEqualFloat64(t *testing.T, expected float64, actual float64) {
