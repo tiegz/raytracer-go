@@ -46,3 +46,7 @@ func (t *Tuple) Add(t2 Tuple) Tuple {
 func (t *Tuple) Subtract(t2 Tuple) Tuple {
 	return Tuple{t.X - t2.X, t.Y - t2.Y, t.Z - t2.Z, t.W - t2.W}
 }
+
+func (t *Tuple) Negate() Tuple {
+  return Tuple{-t.X, -t.Y, -t.Z, -t.W}
+}

@@ -43,13 +43,48 @@ func TestAddingTwoTuples(t *testing.T) {
 	assertEqualTuple(t, expected, actual)
 }
 
-func TestSubtractingTwoTuples(t *testing.T) {
+func TestSubtractingTwoPoints(t *testing.T) {
 	t1 := NewPoint(3, 2, 1)
 	t2 := NewPoint(5, 6, 7)
 	expected := NewVector(-2, -4, -6)
 	actual := t1.Subtract(t2)
 
 	assertEqualTuple(t, expected, actual)
+}
+
+func TestSubtractingVectorFromPoint(t *testing.T) {
+  t1 := NewPoint(3, 2, 1)
+  t2 := NewVector(5, 6, 7)
+  expected := NewPoint(-2, -4, -6)
+  actual := t1.Subtract(t2)
+
+  assertEqualTuple(t, expected, actual)
+}
+
+func TestSubtractingTwoVectors(t *testing.T) {
+  t1 := NewVector(3, 2, 1)
+  t2 := NewVector(5, 6, 7)
+  expected := NewVector(-2, -4, -6)
+  actual := t1.Subtract(t2)
+
+  assertEqualTuple(t, expected, actual)
+}
+
+func TestSubtractingVectorFromZeroVector(t *testing.T) {
+  t1 := NewVector(0, 0, 0)
+  t2 := NewVector(1, -2, 3)
+  expected := NewVector(-1, 2, -3)
+  actual := t1.Subtract(t2)
+
+  assertEqualTuple(t, expected, actual)
+}
+
+func TestNegatingTuple(t *testing.T) {
+  t1 := Tuple{1, -2, 3, -4}
+  expected := Tuple{-1, 2, -3, 4}
+  actual := t1.Negate()
+
+  assertEqualTuple(t, expected, actual)
 }
 
 func TestIsEqualTo(t *testing.T) {
