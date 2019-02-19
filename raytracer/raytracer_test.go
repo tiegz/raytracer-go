@@ -35,3 +35,10 @@ func assertEqualInt(t *testing.T, expected int, actual int) {
 		t.Errorf("Expected %v to be equal to %v, but was not", expected, actual)
 	}
 }
+
+func assertEqualString(t *testing.T, expected string, actual string) {
+  if expected != actual {
+    t.Errorf("Expected %v to be equal to %v, but was not", expected, actual)
+  }
+}
+
