@@ -13,14 +13,22 @@ func NewCanvas(w, h int) Canvas {
 }
 
 func (c *Canvas) IsEqualTo(c2 Canvas) bool {
-	const tolerance = 0.00001
-	// equals := func(x, y float64) bool {
-	// 	diff := math.Abs(x - y)
-	// 	return diff < tolerance
-	// }
+  if (c.Width != c2.Width) {
+    return false
+  }
+  if (c.Height != c2.Height) {
+    return false
+  }
+
+  for x := 0; x < c.Width; x = x + 1 {
+    for y := 0; y < c.Height; y = y + 1 {
+      if c.PixelAt(x, y) != c2.PixelAt(x, y){
+        return false
+      }
+    }
+  }
 
 	return true
-	// equals(c.Width, c2.Width) && equals(c.Height, c2.Height)
 }
 
 func (c *Canvas) WritePixel(x, y int, color Color) {
