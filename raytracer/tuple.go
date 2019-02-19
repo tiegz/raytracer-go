@@ -8,7 +8,7 @@ type Tuple struct {
 	X float64
 	Y float64
 	Z float64
-	W float64 // 0: point, 1: vector
+	W float64 // 1: point, 0: vector
 }
 
 func (t *Tuple) Type() string {
@@ -57,6 +57,30 @@ func (t *Tuple) Divide(scalar float64) Tuple {
   return Tuple{t.X / scalar, t.Y / scalar, t.Z / scalar, t.W / scalar}
 }
 
+// Returns the magnitude of a vector.
 func (t *Tuple) Magnitude() float64 {
   return math.Sqrt(math.Pow(t.X, 2) + math.Pow(t.Y, 2) + math.Pow(t.Z, 2) + math.Pow(t.W, 2))
+}
+
+// Returns a normalized vector.
+func (t *Tuple) Normalized() Tuple {
+  mag := t.Magnitude()
+
+  return Tuple{t.X / mag, t.Y / mag, t.Z / mag, t.W / mag}
+}
+
+// Returns the dot product (aka scalar product or inner product) of two vectors.
+// "... the smaller the dot product, the larger the angle between them ..."
+func (t *Tuple) Dot(t2 Tuple) float64 {
+  return (t.X * t2.X) + (t.Y * t2.Y) + (t.Z * t2.Z) + (t.W * t2.W)
+}
+
+// Returns the cross product of two vectors.
+// "... gives you a new vector that is perpendicular to both of the original vectors ..."
+func (t *Tuple) Cross(t2 Tuple) Tuple {
+  return NewVector(
+    (t.Y * t2.Z) - (t.Z * t2.Y),
+    (t.Z * t2.X) - (t.X * t2.Z),
+    (t.X * t2.Y) - (t.Y * t2.X),
+  )
 }

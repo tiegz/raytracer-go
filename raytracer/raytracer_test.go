@@ -35,6 +35,15 @@ func TestNewVectorFunctionCreatesTuples(t *testing.T) {
 	assertEqualTuple(t, tuple, Tuple{4, -4, 3, 0})
 }
 
+func TestIsEqualTo(t *testing.T) {
+  assertEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.0000001, 1.0000001, 1.0000001, 1.0000001})
+  assertEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.000001, 1.000001, 1.000001, 1.000001})
+
+  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.00001, 1.00001, 1.00001, 1.00001})
+  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.0001, 1.0001, 1.0001, 1.0001})
+  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.001, 1.001, 1.001, 1.001})
+}
+
 func TestAddingTwoTuples(t *testing.T) {
 	t1 := Tuple{3, -2, 5, 1}
 	t2 := Tuple{-2, 3, 1, 0}
@@ -129,14 +138,46 @@ func TestComputingMagnitudeOfVectors(t *testing.T) {
   }
 }
 
-func TestIsEqualTo(t *testing.T) {
-  assertEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.0000001, 1.0000001, 1.0000001, 1.0000001})
-  assertEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.000001, 1.000001, 1.000001, 1.000001})
-
-  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.00001, 1.00001, 1.00001, 1.00001})
-  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.0001, 1.0001, 1.0001, 1.0001})
-  assertNotEqualTuple(t, Tuple{1, 1, 1, 1}, Tuple{1.001, 1.001, 1.001, 1.001})
+var normalizingTests = []struct {
+  tuple           Tuple
+  normalizedTuple Tuple
+}{
+  {NewVector(4, 0, 0), NewVector(1, 0, 0)},
+  {NewVector(1, 2, 3), NewVector(0.26726, 0.53452, 0.80178)},
 }
+
+func TestNormalizingVectors(t *testing.T) {
+  for _, tc := range normalizingTests {
+    assertEqualTuple(t, tc.normalizedTuple, tc.tuple.Normalized())
+  }
+}
+
+func TestMagnitudeOfNormalizedVector(t *testing.T) {
+  t1 := NewVector(1, 2, 3)
+  normalizedT1 := t1.Normalized()
+
+  assertEqualFloat64(t, 1, normalizedT1.Magnitude())
+}
+
+func TestDotProductOfTwoVectors(t *testing.T) {
+  t1 := NewVector(1, 2, 3)
+  t2 := NewVector(2, 3, 4)
+
+  assertEqualFloat64(t, 20, t1.Dot(t2))
+}
+
+func TestCrossProductOfTwoVectors(t *testing.T) {
+  t1 := NewVector(1, 2, 3)
+  t2 := NewVector(2, 3, 4)
+
+  assertEqualTuple(t, NewVector(-1, 2, -1), t1.Cross(t2))
+  assertEqualTuple(t, NewVector(1, -2, 1), t2.Cross(t1))
+}
+
+// Scenario: The cross product of two vectors Given a ← vector(1, 2, 3)
+// And b ← vector(2, 3, 4)
+// Then cross(a, b) = vector(-1, 2, -1)
+// And cross(b, a) = vector(1, -2, 1)
 
 // Helpers
 
