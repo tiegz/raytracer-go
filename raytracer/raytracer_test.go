@@ -2,6 +2,7 @@ package raytracer
 
 import (
 	"testing"
+  "math"
 )
 
 func TestTuple(t *testing.T) {
@@ -85,6 +86,47 @@ func TestNegatingTuple(t *testing.T) {
   actual := t1.Negate()
 
   assertEqualTuple(t, expected, actual)
+}
+
+func TestMultiplyingTupleByScalar(t *testing.T) {
+  t1 := Tuple{1, -2, 3, -4}
+  expected := Tuple{3.5, -7, 10.5, -14}
+  actual := t1.Multiply(3.5)
+
+  assertEqualTuple(t, expected, actual)
+}
+
+func TestMultiplyingTupleByFraction(t *testing.T) {
+  t1 := Tuple{1, -2, 3, -4}
+  expected := Tuple{0.5, -1, 1.5, -2}
+  actual := t1.Multiply(0.5)
+
+  assertEqualTuple(t, expected, actual)
+}
+
+func TestDividingTupleByScalar(t *testing.T) {
+  t1 := Tuple{1, -2, 3, -4}
+  expected := Tuple{0.5, -1, 1.5, -2}
+  actual := t1.Divide(2)
+
+  assertEqualTuple(t, expected, actual)
+}
+
+var magnitudeTests = []struct {
+  tuple  Tuple
+  magnitude float64
+}{
+  {NewVector(0, 0, 0),    0},
+  {NewVector(1, 0, 0),    1},
+  {NewVector(0, 1, 0),    1},
+  {NewVector(1, 2, 3),    math.Sqrt(14)},
+  {NewVector(-1, -2, -3), math.Sqrt(14)},
+}
+
+func TestComputingMagnitudeOfVectors(t *testing.T) {
+  for _, tc := range magnitudeTests {
+    assertEqualFloat64(t, tc.magnitude, tc.tuple.Magnitude())
+  }
 }
 
 func TestIsEqualTo(t *testing.T) {

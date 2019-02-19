@@ -2,7 +2,6 @@ package raytracer
 
 import (
 	"math"
-  "fmt"
 )
 
 type Tuple struct {
@@ -32,7 +31,6 @@ func (t *Tuple) IsEqualTo(t2 Tuple) bool {
 	const tolerance = 0.00001
 	equals := func(x, y float64) bool {
 		diff := math.Abs(x - y)
-		fmt.Printf("For values %f %f, %f vs %f\n", x, y, diff, tolerance)
     return diff < tolerance
 	}
 
@@ -49,4 +47,16 @@ func (t *Tuple) Subtract(t2 Tuple) Tuple {
 
 func (t *Tuple) Negate() Tuple {
   return Tuple{-t.X, -t.Y, -t.Z, -t.W}
+}
+
+func (t *Tuple) Multiply(scalar float64) Tuple {
+  return Tuple{t.X * scalar, t.Y * scalar, t.Z * scalar, t.W * scalar}
+}
+
+func (t *Tuple) Divide(scalar float64) Tuple {
+  return Tuple{t.X / scalar, t.Y / scalar, t.Z / scalar, t.W / scalar}
+}
+
+func (t *Tuple) Magnitude() float64 {
+  return math.Sqrt(math.Pow(t.X, 2) + math.Pow(t.Y, 2) + math.Pow(t.Z, 2) + math.Pow(t.W, 2))
 }
