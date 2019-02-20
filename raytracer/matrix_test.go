@@ -21,6 +21,20 @@ func TestNewMatrix(t *testing.T) {
 	assertEqualFloat64(t, 15.5, m.At(3, 2))
 }
 
+func TestMatrixSet(t *testing.T) {
+	actual := NewMatrix(2, 2, make([]float64, 4, 4))
+	actual.Set(0, 0, 1)
+	actual.Set(0, 1, 2)
+	actual.Set(1, 0, 3)
+	actual.Set(1, 1, 4)
+	expected := NewMatrix(2, 2, []float64{
+		1, 2,
+		3, 4,
+	})
+
+	assertEqualMatrix(t, actual, expected)
+}
+
 func TestNewTwoByTwoMatrix(t *testing.T) {
 	m := NewMatrix(2, 2, []float64{
 		-3, 5,
@@ -41,4 +55,75 @@ func TestNewThreeByThreeMatrix(t *testing.T) {
 	assertEqualFloat64(t, -3, m.At(0, 0))
 	assertEqualFloat64(t, -2, m.At(1, 1))
 	assertEqualFloat64(t, 1, m.At(2, 2))
+}
+
+func TestMatrixEquality(t *testing.T) {
+	m1 := NewMatrix(4, 4, []float64{
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 8, 7, 6,
+		5, 4, 3, 2,
+	})
+	m2 := NewMatrix(4, 4, []float64{
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 8, 7, 6,
+		5, 4, 3, 2,
+	})
+
+	assertEqualMatrix(t, m1, m2)
+}
+func TestMatrixInequality(t *testing.T) {
+	m1 := NewMatrix(4, 4, []float64{
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 8, 7, 6,
+		5, 4, 3, 2,
+	})
+	m2 := NewMatrix(4, 4, []float64{
+		2, 3, 4, 5,
+		6, 7, 8, 9,
+		8, 7, 6, 5,
+		4, 3, 2, 1,
+	})
+
+	assertNotEqualMatrix(t, m1, m2)
+}
+
+func TestMultiplyingTwoMatrices(t *testing.T) {
+	m1 := NewMatrix(4, 4, []float64{
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 8, 7, 6,
+		5, 4, 3, 2,
+	})
+	m2 := NewMatrix(4, 4, []float64{
+		-2, 1, 2, 3,
+		3, 2, 1, -1,
+		4, 3, 6, 5,
+		1, 2, 7, 8,
+	})
+	expected := NewMatrix(4, 4, []float64{
+		20, 22, 50, 48,
+		44, 54, 114, 108,
+		40, 58, 110, 102,
+		16, 26, 46, 42,
+	})
+	actual := m1.Multiply(m2)
+
+	assertEqualMatrix(t, expected, actual)
+}
+
+func TestMultiplyingMatrixByTuple(t *testing.T) {
+	m1 := NewMatrix(4, 4, []float64{
+		1, 2, 3, 4,
+		2, 4, 4, 2,
+		8, 6, 4, 1,
+		0, 0, 0, 1,
+	})
+	t1 := Tuple{1, 2, 3, 1}
+	actual := m1.MutiplyByTuple(t1)
+	expected := Tuple{18, 24, 33, 1}
+
+	assertEqualTuple(t, expected, actual)
 }

@@ -31,7 +31,7 @@ func RunProjectileDrawnExample() {
 	ppm := c.ToPpm()
 	filename := "projectile.ppm"
 	ppmBytes := []byte(ppm)
-	fmt.Println("Saving projectile to %s...", filename)
+	fmt.Printf("Saving projectile to %s...\n", filename)
 	if err := ioutil.WriteFile(filename, ppmBytes, 0644); err != nil {
 		panic(err)
 	}

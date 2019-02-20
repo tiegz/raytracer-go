@@ -28,10 +28,7 @@ func NewCanvas(w, h int, defaultColor ...Color) Canvas {
 }
 
 func (c *Canvas) IsEqualTo(c2 Canvas) bool {
-	if c.Width != c2.Width {
-		return false
-	}
-	if c.Height != c2.Height {
+	if c.Width != c2.Width || c.Height != c2.Height {
 		return false
 	}
 

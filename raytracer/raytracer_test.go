@@ -6,6 +6,18 @@ import (
 
 // Helpers
 
+func assertEqualMatrix(t *testing.T, expected, actual Matrix) {
+	if !expected.IsEqualTo(actual) {
+		t.Errorf("\nExpected\n---------\n%v\nTo equal\n-------\n%v\n", expected, actual)
+	}
+}
+
+func assertNotEqualMatrix(t *testing.T, expected, actual Matrix) {
+	if expected.IsEqualTo(actual) {
+		t.Errorf("\nExpected\n---------\n%v\nTo not equal\n-------\n%v\n", expected, actual)
+	}
+}
+
 func assertEqualTuple(t *testing.T, expected, actual Tuple) {
 	if !expected.IsEqualTo(actual) {
 		t.Errorf("Expected %v to be equal to %v, but was not", actual, expected)
@@ -37,8 +49,7 @@ func assertEqualInt(t *testing.T, expected int, actual int) {
 }
 
 func assertEqualString(t *testing.T, expected string, actual string) {
-  if expected != actual {
-    t.Errorf("\nExpected:\n---------\n%v\nActual:\n-------\n%v\n", expected, actual)
-  }
+	if expected != actual {
+		t.Errorf("\nExpected:\n---------\n%v\nActual:\n-------\n%v\n", expected, actual)
+	}
 }
-
