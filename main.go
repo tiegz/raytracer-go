@@ -1,9 +1,10 @@
 package main
 
 import (
-  "github.com/tiegz/raytracer-go/examples"
+	"github.com/tiegz/raytracer-go/examples"
 )
 
 func main() {
-  examples.RunProjectileExample()
+	examples.RunProjectileExample()
+	examples.RunProjectileDrawnExample()
 }

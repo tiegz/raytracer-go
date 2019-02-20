@@ -61,12 +61,15 @@ func TestCanvasToPpmWithDataExceeding70Characters(t *testing.T) {
 	assertEqualString(t, expected, actual)
 }
 
-// Scenario: Splitting long lines in PPM files
-// Given c ← canvas(10, 2)
-// When every pixel of c is set to color(1, 0.8, 0.6)
-// And ppm ← canvas_to_ppm(c) Prepared exclusively for Tieg Zaharia
-// report erratum • discuss
-// Saving a Canvas • 21
+// Scenario: PPM files are terminated by a newline Given c ← canvas(5, 3)
+// When ppm ← canvas_to_ppm(c)
+// Then the last character of ppm is a newline
 
-// Then lines 4-7 of ppm are """
-// """
+func TestCanvasToPpmWithTrailingNewline(t *testing.T) {
+	c1 := NewCanvas(5, 3)
+	ppm := c1.ToPpm()
+	actual := ppm[len(ppm)-1:]
+	expected := "\n"
+
+	assertEqualString(t, expected, actual)
+}
