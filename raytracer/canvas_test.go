@@ -44,7 +44,8 @@ func TestCanvasToPpmWithData(t *testing.T) {
 	actual := strings.Join(lines[3:len(lines)-1], "\n")
 	expected := `255 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 128 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 255`
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 255
+`
 
 	assertEqualString(t, expected, actual)
 }
@@ -60,10 +61,6 @@ func TestCanvasToPpmWithDataExceeding70Characters(t *testing.T) {
 
 	assertEqualString(t, expected, actual)
 }
-
-// Scenario: PPM files are terminated by a newline Given c ← canvas(5, 3)
-// When ppm ← canvas_to_ppm(c)
-// Then the last character of ppm is a newline
 
 func TestCanvasToPpmWithTrailingNewline(t *testing.T) {
 	c1 := NewCanvas(5, 3)
