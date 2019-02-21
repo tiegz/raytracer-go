@@ -34,6 +34,16 @@ func (m *Matrix) IsEqualTo(m2 Matrix) bool {
 	return true
 }
 
+func (m *Matrix) Identity() Matrix {
+	// Only implementing a 4x4 identity matrix.
+	return NewMatrix(m.Rows, m.Cols, []float64{
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1,
+	})
+}
+
 func (m *Matrix) Multiply(m2 Matrix) Matrix {
 	m3 := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols, m.Rows*m.Cols))
 

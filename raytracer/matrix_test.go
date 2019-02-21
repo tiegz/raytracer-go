@@ -127,3 +127,16 @@ func TestMultiplyingMatrixByTuple(t *testing.T) {
 
 	assertEqualTuple(t, expected, actual)
 }
+
+func TestMultiplyingMatrixByIdentityMatrix(t *testing.T) {
+	m1 := NewMatrix(4, 4, []float64{
+		0, 1, 2, 4,
+		1, 2, 4, 8,
+		2, 4, 8, 16,
+		4, 8, 16, 32,
+	})
+	actual := m1.Multiply(m1.Identity())
+	expected := m1
+
+	assertEqualMatrix(t, expected, actual)
+}
