@@ -1,6 +1,8 @@
 package raytracer
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Matrix struct {
 	Rows int
@@ -27,7 +29,7 @@ func (m *Matrix) IsEqualTo(m2 Matrix) bool {
 
 	for col := 0; col < m.Cols; col = col + 1 {
 		for row := 0; row < m.Rows; row = row + 1 {
-			if m.At(row, col) != m2.At(row, col) {
+			if !equalFloat64s(m.At(row, col), m2.At(row, col)) {
 				return false
 			}
 		}
@@ -102,6 +104,23 @@ func (m *Matrix) MutiplyByTuple(t Tuple) Tuple {
 	return Tuple{x, y, z, w}
 }
 
+func (m *Matrix) Inverse() Matrix {
+	if !m.IsInvertible() {
+		panic("Matrix is not invertible!")
+	}
+
+	im := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols))
+	for row := 0; row < m.Rows; row += 1 {
+		for col := 0; col < m.Cols; col += 1 {
+			c := m.Cofactor(row, col)
+			// ... note that "col, row" here, instead of "row, col", # accomplishes the transpose operation!...
+			im.Set(col, row, c/m.Determinant())
+		}
+	}
+
+	return im
+}
+
 // .. If the determinant is zero, then the corresponding system of equations has no solution...
 func (m *Matrix) Determinant() float64 {
 	if m.Rows == 2 {
@@ -114,6 +133,10 @@ func (m *Matrix) Determinant() float64 {
 		}
 		return sum
 	}
+}
+
+func (m *Matrix) IsInvertible() bool {
+	return m.Determinant() != 0
 }
 
 // Returns the determinant of a submatrix.

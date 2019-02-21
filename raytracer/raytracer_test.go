@@ -6,6 +6,12 @@ import (
 
 // Helpers
 
+func assert(t *testing.T, result bool) {
+	if !result {
+		t.Errorf("\nExpected %v to be true, but was false.", result)
+	}
+}
+
 func assertEqualMatrix(t *testing.T, expected, actual Matrix) {
 	if !expected.IsEqualTo(actual) {
 		t.Errorf("\nExpected\n---------\n%v\nTo equal\n-------\n%v\n", expected, actual)
@@ -37,7 +43,7 @@ func assertNotEqualTuple(t *testing.T, expected, actual Tuple) {
 }
 
 func assertEqualFloat64(t *testing.T, expected float64, actual float64) {
-	if expected != actual {
+	if !equalFloat64s(expected, actual) {
 		t.Errorf("Expected value to be %f, but was: %f\n", expected, actual)
 	}
 }
