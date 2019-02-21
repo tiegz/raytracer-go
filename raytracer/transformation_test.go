@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"math"
 	"testing"
 )
 
@@ -82,8 +83,7 @@ func TestScalingVectorByInvertedScaleMatrix(t *testing.T) {
 	actual := scale_inverted.MultiplyByTuple(vector)
 
 	assertEqualTuple(t, expected, actual)
-}gst
-
+}
 
 func TestReflectingPointByNegativeScaleMatrix(t *testing.T) {
 	scale := NewScale(-1, 1, 1) // reflect on X-axis
@@ -92,6 +92,82 @@ func TestReflectingPointByNegativeScaleMatrix(t *testing.T) {
 	actual := scale.MultiplyByTuple(point)
 
 	assertEqualTuple(t, expected, actual)
+}
+
+func TestRotatingPointAroundXAxis(t *testing.T) {
+	point := NewPoint(0, 1, 0)
+	half_quarter_rotation := NewRotateX(math.Pi / 4)
+	full_quarter_rotation := NewRotateX(math.Pi / 2)
+
+	assertEqualTuple(t, NewPoint(0, math.Sqrt(2)/2, math.Sqrt(2)/2), half_quarter_rotation.MultiplyByTuple(point))
+	assertEqualTuple(t, NewPoint(0, 0, 1), full_quarter_rotation.MultiplyByTuple(point))
+}
+
+func TestRotatingPointAroundXAxisInOppositeDirection(t *testing.T) {
+	point := NewPoint(0, 1, 0)
+	half_quarter_rotation := NewRotateX(math.Pi / 4)
+	half_quarter_rotation_inverted := half_quarter_rotation.Inverse()
+
+	assertEqualTuple(t, NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2), half_quarter_rotation_inverted.MultiplyByTuple(point))
+}
+
+func TestRotatingPointAroundYAxis(t *testing.T) {
+	point := NewPoint(0, 0, 1)
+	half_quarter_rotation := NewRotateY(math.Pi / 4)
+	full_quarter_rotation := NewRotateY(math.Pi / 2)
+
+	assertEqualTuple(t, NewPoint(math.Sqrt(2)/2, 0, math.Sqrt(2)/2), half_quarter_rotation.MultiplyByTuple(point))
+	assertEqualTuple(t, NewPoint(1, 0, 0), full_quarter_rotation.MultiplyByTuple(point))
+}
+
+func TestRotatingPointAroundZAxis(t *testing.T) {
+	point := NewPoint(0, 1, 0)
+	half_quarter_rotation := NewRotateZ(math.Pi / 4)
+	full_quarter_rotation := NewRotateZ(math.Pi / 2)
+
+	assertEqualTuple(t, NewPoint(-math.Sqrt(2)/2, math.Sqrt(2)/2, 0), half_quarter_rotation.MultiplyByTuple(point))
+	assertEqualTuple(t, NewPoint(-1, 0, 0), full_quarter_rotation.MultiplyByTuple(point))
+}
+
+func TestShearingPointXByProportionToY(t *testing.T) {
+	point := NewPoint(2, 3, 4)
+	shearing := NewShear(1, 0, 0, 0, 0, 0)
+
+	assertEqualTuple(t, NewPoint(5, 3, 4), shearing.MultiplyByTuple(point))
+}
+
+func TestShearingPointXByProportionToZ(t *testing.T) {
+	point := NewPoint(2, 3, 4)
+	shearing := NewShear(0, 1, 0, 0, 0, 0)
+
+	assertEqualTuple(t, NewPoint(6, 3, 4), shearing.MultiplyByTuple(point))
+}
+
+func TestShearingPointYByProportionToX(t *testing.T) {
+	point := NewPoint(2, 3, 4)
+	shearing := NewShear(0, 0, 1, 0, 0, 0)
+
+	assertEqualTuple(t, NewPoint(2, 5, 4), shearing.MultiplyByTuple(point))
+}
+func TestShearingPointYByProportionToZ(t *testing.T) {
+	point := NewPoint(2, 3, 4)
+	shearing := NewShear(0, 0, 0, 1, 0, 0)
+
+	assertEqualTuple(t, NewPoint(2, 7, 4), shearing.MultiplyByTuple(point))
+}
+
+func TestShearingPointZByProportionToX(t *testing.T) {
+	point := NewPoint(2, 3, 4)
+	shearing := NewShear(0, 0, 0, 0, 1, 0)
+
+	assertEqualTuple(t, NewPoint(2, 3, 6), shearing.MultiplyByTuple(point))
+}
+
+func TestShearingPointZByProportionToY(t *testing.T) {
+	point := NewPoint(2, 3, 4)
+	shearing := NewShear(0, 0, 0, 0, 0, 1)
+
+	assertEqualTuple(t, NewPoint(2, 3, 7), shearing.MultiplyByTuple(point))
 }
 
 // func Test(t *testing.T) {
