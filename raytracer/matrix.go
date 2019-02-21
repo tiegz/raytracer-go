@@ -44,6 +44,18 @@ func (m *Matrix) Identity() Matrix {
 	})
 }
 
+func (m *Matrix) Transpose() Matrix {
+	m2 := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols, m.Rows*m.Cols))
+
+	for r := 0; r < m.Rows; r += 1 {
+		for c := 0; c < m.Cols; c += 1 {
+			m2.Set(r, c, m.At(c, r))
+		}
+	}
+
+	return m2
+}
+
 func (m *Matrix) Multiply(m2 Matrix) Matrix {
 	m3 := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols, m.Rows*m.Cols))
 

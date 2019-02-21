@@ -140,3 +140,29 @@ func TestMultiplyingMatrixByIdentityMatrix(t *testing.T) {
 
 	assertEqualMatrix(t, expected, actual)
 }
+
+// Scenario: Transposing a matrix Given the following matrix A:
+// |0|9|3|0| |9|8|0|8| |1|8|5|3| |0|0|5|8|
+// Then transpose(A) is the following matrix: |0|9|1|0|
+// |9|8|8|0|
+// |3|0|5|5|
+// |0|8|3|8|
+
+func TestMatrixTransposition(t *testing.T) {
+	m1 := NewMatrix(4, 4, []float64{
+		0, 9, 3, 0,
+		9, 8, 0, 8,
+		1, 8, 5, 3,
+		0, 0, 5, 8,
+	})
+
+	actual := m1.Transpose()
+	expected := NewMatrix(4, 4, []float64{
+		0, 9, 1, 0,
+		9, 8, 8, 0,
+		3, 0, 5, 5,
+		0, 8, 3, 8,
+	})
+
+	assertEqualMatrix(t, expected, actual)
+}
