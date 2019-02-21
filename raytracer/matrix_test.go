@@ -206,3 +206,56 @@ func TestSubmatrixOfFourByFourMatrix(t *testing.T) {
 
 	assertEqualMatrix(t, expected, actual)
 }
+
+func TestCalculatingMinorOfThreeByThreeMatrix(t *testing.T) {
+	m1 := NewMatrix(3, 3, []float64{
+		3, 5, 0,
+		2, -1, -7,
+		6, -1, 5,
+	})
+	sm1 := m1.Submatrix(1, 0)
+
+	assertEqualFloat64(t, 25, sm1.Determinant())
+	assertEqualFloat64(t, 25, m1.Minor(1, 0))
+}
+
+func TestCalculatingCofactorOfThreeByThreeMatrix(t *testing.T) {
+	m1 := NewMatrix(3, 3, []float64{
+		3, 5, 0,
+		2, -1, -7,
+		6, -1, 5,
+	})
+
+	assertEqualFloat64(t, -12, m1.Minor(0, 0))
+	assertEqualFloat64(t, -12, m1.Cofactor(0, 0))
+	assertEqualFloat64(t, 25, m1.Minor(1, 0))
+	assertEqualFloat64(t, -25, m1.Cofactor(1, 0))
+}
+
+func TestCalculatingDeterminantOfThreeByThreeMatrix(t *testing.T) {
+	m := NewMatrix(3, 3, []float64{
+		1, 2, 6,
+		-5, 8, -4,
+		2, 6, 4,
+	})
+
+	assertEqualFloat64(t, 56, m.Cofactor(0, 0))
+	assertEqualFloat64(t, 12, m.Cofactor(0, 1))
+	assertEqualFloat64(t, -46, m.Cofactor(0, 2))
+	assertEqualFloat64(t, -196, m.Determinant())
+}
+
+func TestCalculatingDeterminantOfFourByFourMatrix(t *testing.T) {
+	m := NewMatrix(4, 4, []float64{
+		-2, -8, 3, 5,
+		-3, 1, 7, 3,
+		1, 2, -9, 6,
+		-6, 7, 7, -9,
+	})
+
+	assertEqualFloat64(t, 690, m.Cofactor(0, 0))
+	assertEqualFloat64(t, 447, m.Cofactor(0, 1))
+	assertEqualFloat64(t, 210, m.Cofactor(0, 2))
+	assertEqualFloat64(t, 51, m.Cofactor(0, 3))
+	assertEqualFloat64(t, -4071, m.Determinant())
+}

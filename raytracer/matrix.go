@@ -102,8 +102,34 @@ func (m *Matrix) MutiplyByTuple(t Tuple) Tuple {
 	return Tuple{x, y, z, w}
 }
 
+// .. If the determinant is zero, then the corresponding system of equations has no solution...
 func (m *Matrix) Determinant() float64 {
-	return (m.At(0, 0) * m.At(1, 1)) - (m.At(1, 0) * m.At(0, 1))
+	if m.Rows == 2 {
+		return (m.At(0, 0) * m.At(1, 1)) - (m.At(1, 0) * m.At(0, 1))
+	} else {
+		// The magical thing is that it doesn’t matter which row or column you choose. It just works.
+		row, sum := 0, 0.0
+		for col := 0; col < m.Cols; col += 1 {
+			sum += m.At(row, col) * m.Cofactor(row, col)
+		}
+		return sum
+	}
+}
+
+// Returns the determinant of a submatrix.
+func (m *Matrix) Minor(rowToRemove, colToRemove int) float64 {
+	sub := m.Submatrix(rowToRemove, colToRemove)
+	return sub.Determinant()
+}
+
+// ...Cofactors are minors that have (possibly) had their sign changed...
+func (m *Matrix) Cofactor(rowToRemove, colToRemove int) float64 {
+	minor := m.Minor(rowToRemove, colToRemove)
+	if (rowToRemove+colToRemove)%2 == 0 {
+		return minor
+	} else {
+		return -minor
+	}
 }
 
 func (m *Matrix) Submatrix(rowToRemove, colToRemove int) Matrix {
