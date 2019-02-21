@@ -1,5 +1,7 @@
 package raytracer
 
+import "fmt"
+
 type Matrix struct {
 	Rows int
 	Cols int
@@ -34,9 +36,9 @@ func (m *Matrix) IsEqualTo(m2 Matrix) bool {
 	return true
 }
 
-func (m *Matrix) Identity() Matrix {
-	// Only implementing a 4x4 identity matrix.
-	return NewMatrix(m.Rows, m.Cols, []float64{
+func IdentityMatrix() Matrix {
+	// Only implementing a 4x4 identity matrix for now.
+	return NewMatrix(4, 4, []float64{
 		1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
@@ -98,4 +100,28 @@ func (m *Matrix) MutiplyByTuple(t Tuple) Tuple {
 		m.At(3, 3)*t.W
 
 	return Tuple{x, y, z, w}
+}
+
+func (m *Matrix) Determinant() float64 {
+	return (m.At(0, 0) * m.At(1, 1)) - (m.At(1, 0) * m.At(0, 1))
+}
+
+func (m *Matrix) Submatrix(rowToRemove, colToRemove int) Matrix {
+	r, c := m.Rows-1, m.Cols-1
+	m2 := NewMatrix(r, c, make([]float64, r*c))
+
+	fmt.Printf("Submatrix \n")
+	for rowOrig, rowNew := 0, 0; rowOrig < m.Rows; rowOrig += 1 {
+		if rowOrig != rowToRemove {
+			for colOrig, colNew := 0, 0; colOrig < m.Cols; colOrig += 1 {
+				if colOrig != colToRemove {
+					m2.Set(rowNew, colNew, m.At(rowOrig, colOrig))
+					colNew += 1
+				}
+			}
+			rowNew += 1
+		}
+	}
+
+	return m2
 }

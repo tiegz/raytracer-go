@@ -135,20 +135,12 @@ func TestMultiplyingMatrixByIdentityMatrix(t *testing.T) {
 		2, 4, 8, 16,
 		4, 8, 16, 32,
 	})
-	actual := m1.Multiply(m1.Identity())
+	actual := m1.Multiply(IdentityMatrix())
 	expected := m1
 
 	assertEqualMatrix(t, expected, actual)
 }
-
-// Scenario: Transposing a matrix Given the following matrix A:
-// |0|9|3|0| |9|8|0|8| |1|8|5|3| |0|0|5|8|
-// Then transpose(A) is the following matrix: |0|9|1|0|
-// |9|8|8|0|
-// |3|0|5|5|
-// |0|8|3|8|
-
-func TestMatrixTransposition(t *testing.T) {
+func TestTransposingMatrix(t *testing.T) {
 	m1 := NewMatrix(4, 4, []float64{
 		0, 9, 3, 0,
 		9, 8, 0, 8,
@@ -163,6 +155,54 @@ func TestMatrixTransposition(t *testing.T) {
 		3, 0, 5, 5,
 		0, 8, 3, 8,
 	})
+
+	assertEqualMatrix(t, expected, actual)
+}
+
+func TestMatrixTransposingIdentityMatrix(t *testing.T) {
+	m1 := IdentityMatrix()
+
+	assertEqualMatrix(t, m1, m1.Transpose())
+}
+
+func TestMatrixDeterminant(t *testing.T) {
+	m1 := NewMatrix(2, 2, []float64{
+		1, 5,
+		-3, 2,
+	})
+
+	assertEqualFloat64(t, 17, m1.Determinant())
+}
+
+func TestSubmatrixOfThreeByThreeMatrix(t *testing.T) {
+	m1 := NewMatrix(3, 3, []float64{
+		1, 5, 0,
+		-3, 2, 7,
+		0, 6, -3,
+	})
+
+	expected := NewMatrix(2, 2, []float64{
+		-3, 2,
+		0, 6,
+	})
+	actual := m1.Submatrix(0, 2)
+
+	assertEqualMatrix(t, expected, actual)
+}
+
+func TestSubmatrixOfFourByFourMatrix(t *testing.T) {
+	m1 := NewMatrix(4, 4, []float64{
+		-6, 1, 1, 6,
+		-8, 5, 8, 6,
+		-1, 0, 8, 2,
+		-7, 1, -1, 1,
+	})
+	expected := NewMatrix(3, 3, []float64{
+		-6, 1, 6,
+		-8, 8, 6,
+		-7, -1, 1,
+	})
+	actual := m1.Submatrix(2, 1)
 
 	assertEqualMatrix(t, expected, actual)
 }
