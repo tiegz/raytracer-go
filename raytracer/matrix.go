@@ -75,7 +75,7 @@ func (m *Matrix) Multiply(m2 Matrix) Matrix {
 	return m3
 }
 
-func (m *Matrix) MutiplyByTuple(t Tuple) Tuple {
+func (m *Matrix) MultiplyByTuple(t Tuple) Tuple {
 	// Similar to mulitplying matrices, except there's only one col in a Tuple.
 	x := m.At(0, 0)*t.X +
 		m.At(0, 1)*t.Y +

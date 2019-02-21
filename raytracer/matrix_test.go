@@ -122,7 +122,7 @@ func TestMultiplyingMatrixByTuple(t *testing.T) {
 		0, 0, 0, 1,
 	})
 	t1 := Tuple{1, 2, 3, 1}
-	actual := m1.MutiplyByTuple(t1)
+	actual := m1.MultiplyByTuple(t1)
 	expected := Tuple{18, 24, 33, 1}
 
 	assertEqualTuple(t, expected, actual)
