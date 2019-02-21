@@ -7,4 +7,5 @@ import (
 func main() {
 	examples.RunProjectileExample()
 	examples.RunProjectileDrawnExample()
+	examples.RunMatrixExample()
 }

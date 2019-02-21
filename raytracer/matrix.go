@@ -1,9 +1,5 @@
 package raytracer
 
-import (
-	"fmt"
-)
-
 type Matrix struct {
 	Rows int
 	Cols int
@@ -159,7 +155,6 @@ func (m *Matrix) Submatrix(rowToRemove, colToRemove int) Matrix {
 	r, c := m.Rows-1, m.Cols-1
 	m2 := NewMatrix(r, c, make([]float64, r*c))
 
-	fmt.Printf("Submatrix \n")
 	for rowOrig, rowNew := 0, 0; rowOrig < m.Rows; rowOrig += 1 {
 		if rowOrig != rowToRemove {
 			for colOrig, colNew := 0, 0; colOrig < m.Cols; colOrig += 1 {
