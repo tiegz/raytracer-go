@@ -44,8 +44,12 @@ func (c *Canvas) IsEqualTo(c2 Canvas) bool {
 }
 
 func (c *Canvas) WritePixel(x, y int, color Color) {
-	index := (c.Width * y) + x
-	c.Pixels[index] = color
+	if x > 0 && x < c.Width && y > 0 && y < c.Height {
+		index := (c.Width * y) + x
+		c.Pixels[index] = color
+	} else {
+		fmt.Println("Warning: skipping WritePixel(%d, %d) because it's outside of canvas (%d, %d)\n", x, y, c.Width, c.Height)
+	}
 }
 
 func (c *Canvas) PixelAt(x, y int) Color {

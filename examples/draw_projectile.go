@@ -7,7 +7,7 @@ import (
 	"github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunProjectileDrawnExample() {
+func RunDrawProjectileExample() {
 	initialPos := raytracer.NewPoint(0, 1, 0)
 	initialVel := raytracer.NewVector(1, 1.8, 0)
 	initialVel = initialVel.Normalized()

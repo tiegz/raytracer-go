@@ -5,7 +5,8 @@ import (
 )
 
 func main() {
-	examples.RunProjectileExample()
-	examples.RunProjectileDrawnExample()
-	examples.RunMatrixExample()
+	// examples.RunProjectileExample()
+	// examples.RunDrawProjectileExample()
+	// examples.RunMatrixExample()
+	examples.RunDrawAnalogClockExample()
 }

@@ -129,6 +129,7 @@ func TestRotatingPointAroundZAxis(t *testing.T) {
 	assertEqualTuple(t, NewPoint(-1, 0, 0), full_quarter_rotation.MultiplyByTuple(point))
 }
 
+// TODO table-based tests for these 6 shearing examples
 func TestShearingPointXByProportionToY(t *testing.T) {
 	point := NewPoint(2, 3, 4)
 	shearing := NewShear(1, 0, 0, 0, 0, 0)
@@ -168,6 +169,18 @@ func TestShearingPointZByProportionToY(t *testing.T) {
 	shearing := NewShear(0, 0, 0, 0, 0, 1)
 
 	assertEqualTuple(t, NewPoint(2, 3, 7), shearing.MultiplyByTuple(point))
+}
+
+// TODO try to write "fluent api" for method chaining (pg 55)
+func TestChainedTransformationAreAppliedInSequence(t *testing.T) {
+	point := NewPoint(1, 0, 1)
+	rotation := NewRotateX(math.Pi / 2) // 90 deg rotation
+	scale := NewScale(5, 5, 5)
+	translation := NewTranslation(10, 5, 7)
+
+	chained_transformations := translation.Multiply(scale)
+	chained_transformations = chained_transformations.Multiply(rotation)
+	assertEqualTuple(t, NewPoint(15, 0, 7), chained_transformations.MultiplyByTuple(point))
 }
 
 // func Test(t *testing.T) {
