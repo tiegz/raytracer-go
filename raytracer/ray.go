@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -13,16 +14,24 @@ func NewRay(o, d Tuple) Ray {
 	return Ray{o, d}
 }
 
+func (r Ray) String() string {
+	return fmt.Sprintf("Ray( %v, %v)", r.Origin, r.Direction)
+}
+
 func (r *Ray) Position(time float64) Tuple {
 	return r.Origin.Add(r.Direction.Multiply(time))
 }
 
 func (r *Ray) Intersect(s Sphere) Intersections {
+	// Instead of applying object's transformation to object, we can just apply
+	// the inverse of the transformation to the ray.
+	r2 := r.Transform(s.Transform.Inverse())
+
 	i := make(Intersections, 0, 2)
 
-	sphereToRay := r.Origin.Subtract(s.Origin)
-	a := r.Direction.Dot(r.Direction)
-	b := 2 * r.Direction.Dot(sphereToRay)
+	sphereToRay := r2.Origin.Subtract(s.Origin)
+	a := r2.Direction.Dot(r2.Direction)
+	b := 2 * r2.Direction.Dot(sphereToRay)
 	c := sphereToRay.Dot(sphereToRay) - 1
 	discriminant := math.Pow(b, 2) - 4*a*c
 
@@ -37,4 +46,13 @@ func (r *Ray) Intersect(s Sphere) Intersections {
 	i = append(i, i2)
 
 	return i
+}
+
+func (r *Ray) Transform(t Matrix) Ray {
+	r2 := Ray{}
+
+	r2.Origin = t.MultiplyByTuple(r.Origin)
+	r2.Direction = t.MultiplyByTuple(r.Direction)
+
+	return r2
 }

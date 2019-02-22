@@ -67,3 +67,21 @@ func TestRayIsBehindAndIntersectsSphere(t *testing.T) {
 	assertEqualIntersection(t, NewIntersection(-6.0, sphere), intersections[0])
 	assertEqualIntersection(t, NewIntersection(-4.0, sphere), intersections[1])
 }
+
+func TestTranslatingRay(t *testing.T) {
+	r := NewRay(NewPoint(1, 2, 3), NewVector(0, 1, 0))
+	translation := NewTranslation(3, 4, 5)
+	r2 := r.Transform(translation)
+
+	assertEqualTuple(t, NewPoint(4, 6, 8), r2.Origin)
+	assertEqualTuple(t, NewVector(0, 1, 0), r2.Direction)
+}
+
+func TestScalingRay(t *testing.T) {
+	r := NewRay(NewPoint(1, 2, 3), NewVector(0, 1, 0))
+	translation := NewScale(2, 3, 4)
+	r2 := r.Transform(translation)
+
+	assertEqualTuple(t, NewPoint(2, 6, 12), r2.Origin)
+	assertEqualTuple(t, NewVector(0, 3, 0), r2.Direction)
+}

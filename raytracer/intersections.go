@@ -18,7 +18,16 @@ func NewIntersection(t float64, obj Sphere) Intersection {
 	return Intersection{t, obj}
 }
 
-func (i Intersection) String() string {
+func (i Intersection) IsEqualTo(i2 Intersection) bool {
+	if i.Time != i2.Time {
+		return false
+	} else if !i.Object.IsEqualTo(i2.Object) {
+		return false
+	}
+	return true
+}
+
+func (i *Intersection) String() string {
 	return fmt.Sprintf("Intersection( %.3f, %v )", i.Time, i.Object)
 }
 
@@ -35,7 +44,7 @@ func (is *Intersections) Hit() (Intersection, error) {
 	}
 
 	// TODO should this function just return a pointer instead, so we can return nil?
-	if minIntersection == (Intersection{}) {
+	if !minIntersection.IsEqualTo(Intersection{}) {
 		return minIntersection, fmt.Errorf("Couldn't find intersection.")
 	} else {
 		return minIntersection, nil

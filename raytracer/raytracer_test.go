@@ -61,13 +61,13 @@ func assertEqualString(t *testing.T, expected string, actual string) {
 }
 
 func assertEqualObject(t *testing.T, expected Sphere, actual Sphere) {
-	if expected != actual {
+	if !expected.IsEqualTo(actual) {
 		t.Errorf("\nExpected:\n---------\n%v\nActual:\n-------\n%v\n", expected, actual)
 	}
 }
 
 func assertEqualIntersection(t *testing.T, expected Intersection, actual Intersection) {
-	if expected != actual {
+	if !expected.IsEqualTo(actual) {
 		t.Errorf("\nExpected:\n---------\n%v\nActual:\n-------\n%v\n", expected, actual)
 	}
 }
