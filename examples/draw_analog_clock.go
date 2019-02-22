@@ -11,8 +11,8 @@ import (
 func RunDrawAnalogClockExample() {
 	canvas_width := 200
 	canvas_halfwidth := float64(canvas_width / 2)
-	point_scale := 0.4
-	canvas_scale := float64(canvas_width) * point_scale
+	clock_radius_scale := 0.4 // as a ratio to canvas width
+	clock_radius := float64(canvas_width) * clock_radius_scale
 	canvas := raytracer.NewCanvas(canvas_width+1, canvas_width+1)
 	translate_center := raytracer.NewTranslation(canvas_halfwidth, canvas_halfwidth, 0)
 
@@ -25,7 +25,7 @@ func RunDrawAnalogClockExample() {
 	for i := 0.0; i < 12.0; i += 1.0 {
 		transformation := raytracer.NewTranslation(canvas_halfwidth, canvas_halfwidth, 0)           // center the point
 		transformation = transformation.Multiply(raytracer.NewRotateZ((math.Pi * float64(i) / 6)))  // rotate to the hour's position
-		transformation = transformation.Multiply(raytracer.NewScale(canvas_scale, canvas_scale, 0)) // scale the point relative to canvas size
+		transformation = transformation.Multiply(raytracer.NewScale(clock_radius, clock_radius, 0)) // scale the point relative to canvas size
 
 		point := transformation.MultiplyByTuple(c)
 		x := int(math.Round(point.X))
