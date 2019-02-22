@@ -6,7 +6,7 @@ func TestNewIntersection(t *testing.T) {
 	sphere := NewSphere()
 	i := NewIntersection(1.23, sphere)
 
-	assertEqualFloat64(t, 1.23, i.T)
+	assertEqualFloat64(t, 1.23, i.Time)
 	assertEqualObject(t, sphere, i.Object)
 }
 
@@ -17,6 +17,48 @@ func TestAggregatingIntersections(t *testing.T) {
 	intersections := Intersections{i1, i2}
 
 	assertEqualInt(t, 2, len(intersections))
-	assertEqualFloat64(t, 1, intersections[0].T)
-	assertEqualFloat64(t, 2, intersections[1].T)
+	assertEqualFloat64(t, 1, intersections[0].Time)
+	assertEqualFloat64(t, 2, intersections[1].Time)
+}
+
+func TestHitWithAllIntersectionsHavingPositiveT(t *testing.T) {
+	sphere := NewSphere()
+	i1 := NewIntersection(1, sphere)
+	i2 := NewIntersection(2, sphere)
+	intersections := Intersections{i1, i2}
+
+	hit, _ := intersections.Hit()
+	assertEqualIntersection(t, i1, hit)
+}
+
+func TestHitWithSomeIntersectionsHavingNegativeT(t *testing.T) {
+	sphere := NewSphere()
+	i1 := NewIntersection(-1, sphere)
+	i2 := NewIntersection(1, sphere)
+	intersections := Intersections{i1, i2}
+
+	hit, _ := intersections.Hit()
+	assertEqualIntersection(t, i2, hit)
+}
+
+func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
+	sphere := NewSphere()
+	i1 := NewIntersection(-2, sphere)
+	i2 := NewIntersection(-1, sphere)
+	intersections := Intersections{i1, i2}
+
+	_, err := intersections.Hit()
+	assertEqualString(t, "Couldn't find intersection.", err.Error())
+}
+
+func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
+	sphere := NewSphere()
+	i1 := NewIntersection(5, sphere)
+	i2 := NewIntersection(7, sphere)
+	i3 := NewIntersection(-3, sphere)
+	i4 := NewIntersection(2, sphere)
+	intersections := Intersections{i1, i2, i3, i4}
+
+	hit, _ := intersections.Hit()
+	assertEqualIntersection(t, i4, hit)
 }
