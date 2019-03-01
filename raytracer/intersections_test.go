@@ -27,7 +27,7 @@ func TestHitWithAllIntersectionsHavingPositiveT(t *testing.T) {
 	i2 := NewIntersection(2, sphere)
 	intersections := Intersections{i1, i2}
 
-	hit, _ := intersections.Hit()
+	hit := intersections.Hit()
 	assertEqualIntersection(t, i1, hit)
 }
 
@@ -37,7 +37,7 @@ func TestHitWithSomeIntersectionsHavingNegativeT(t *testing.T) {
 	i2 := NewIntersection(1, sphere)
 	intersections := Intersections{i1, i2}
 
-	hit, _ := intersections.Hit()
+	hit := intersections.Hit()
 	assertEqualIntersection(t, i2, hit)
 }
 
@@ -47,8 +47,8 @@ func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
 	i2 := NewIntersection(-1, sphere)
 	intersections := Intersections{i1, i2}
 
-	_, err := intersections.Hit()
-	assertEqualString(t, "Couldn't find intersection.", err.Error())
+	hit := intersections.Hit()
+	assertEqualIntersection(t, NullIntersection(), hit)
 }
 
 func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
@@ -59,6 +59,6 @@ func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
 	i4 := NewIntersection(2, sphere)
 	intersections := Intersections{i1, i2, i3, i4}
 
-	hit, _ := intersections.Hit()
+	hit := intersections.Hit()
 	assertEqualIntersection(t, i4, hit)
 }

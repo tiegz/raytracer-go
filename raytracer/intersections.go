@@ -2,12 +2,18 @@ package raytracer
 
 import (
 	"fmt"
+	"math"
 )
 
 type Intersection struct {
 	Time   float64
 	Object Sphere
 }
+
+func NullIntersection() Intersection {
+	return NewIntersection(math.MaxFloat64, NewSphere())
+}
+
 type Intersections []Intersection
 
 // func (is Intersections) Len() int           { return len(is) }
@@ -31,22 +37,15 @@ func (i *Intersection) String() string {
 	return fmt.Sprintf("Intersection( %.3f, %v )", i.Time, i.Object)
 }
 
-func (is *Intersections) Hit() (Intersection, error) {
-	var minIntersection Intersection // initial value is zero value of Intersection
-	hasFoundAPositiveIntersection := false
+func (is *Intersections) Hit() Intersection {
+	minIntersection := NullIntersection()
 	for _, intersection := range *is {
 		if intersection.Time > 0 {
-			if !hasFoundAPositiveIntersection || intersection.Time < minIntersection.Time {
-				hasFoundAPositiveIntersection = true
+			if minIntersection.IsEqualTo(intersection) || intersection.Time < minIntersection.Time {
 				minIntersection = intersection
 			}
 		}
 	}
 
-	// TODO should this function just return a pointer instead, so we can return nil?
-	if !minIntersection.IsEqualTo(Intersection{}) {
-		return minIntersection, fmt.Errorf("Couldn't find intersection.")
-	} else {
-		return minIntersection, nil
-	}
+	return minIntersection
 }

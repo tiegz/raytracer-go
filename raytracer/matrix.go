@@ -1,5 +1,7 @@
 package raytracer
 
+import "fmt"
+
 type Matrix struct {
 	Rows int
 	Cols int
@@ -32,6 +34,16 @@ func (m *Matrix) IsEqualTo(m2 Matrix) bool {
 	}
 
 	return true
+}
+
+func (m Matrix) String() string {
+	s := "Matrix ( "
+	for row := 0; row < m.Rows; row++ {
+		start := row * m.Cols
+		s += fmt.Sprintf("\n  %v", m.Data[start:start+4])
+	}
+	s += "\n)"
+	return s
 }
 
 func IdentityMatrix() Matrix {

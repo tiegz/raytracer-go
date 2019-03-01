@@ -13,7 +13,7 @@ func NewSphere() Sphere { // o Tuple, r float64
 	return Sphere{NewPoint(0, 0, 0), 1, IdentityMatrix()}
 }
 func (s Sphere) String() string {
-	return fmt.Sprintf("Sphere( %v, %.3f )", s.Origin, s.Radius)
+	return fmt.Sprintf("Sphere( %v, %.1f )", s.Origin, s.Radius)
 }
 
 func (s *Sphere) IsEqualTo(s2 Sphere) bool {

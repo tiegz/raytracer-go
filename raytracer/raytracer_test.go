@@ -71,3 +71,9 @@ func assertEqualIntersection(t *testing.T, expected Intersection, actual Interse
 		t.Errorf("\nExpected:\n---------\n%v\nActual:\n-------\n%v\n", expected, actual)
 	}
 }
+
+func assertNil(t *testing.T, object interface{}) {
+	if object != nil {
+		t.Errorf("\nExpected object to be nil, but wasn't:\n%v\n", object)
+	}
+}
