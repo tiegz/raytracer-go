@@ -33,7 +33,7 @@ func (r *Ray) Intersect(s Sphere) Intersections {
 	a := r2.Direction.Dot(r2.Direction)
 	b := 2 * r2.Direction.Dot(sphereToRay)
 	c := sphereToRay.Dot(sphereToRay) - 1.0
-	discriminant := math.Pow(b, 2) - 4*a*c
+	discriminant := (b * b) - 4*a*c
 
 	if discriminant < 0 {
 		return i

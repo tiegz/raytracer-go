@@ -68,7 +68,7 @@ func (t *Tuple) Divide(scalar float64) Tuple {
 
 // Returns the magnitude of a vector.
 func (t *Tuple) Magnitude() float64 {
-	return math.Sqrt(math.Pow(t.X, 2) + math.Pow(t.Y, 2) + math.Pow(t.Z, 2) + math.Pow(t.W, 2))
+	return math.Sqrt((t.X * t.X) + (t.Y * t.Y) + (t.Z * t.Z) + (t.W * t.W))
 }
 
 // Returns a normalized vector.
