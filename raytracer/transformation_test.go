@@ -182,7 +182,3 @@ func TestChainedTransformationAreAppliedInSequence(t *testing.T) {
 	chained_transformations = chained_transformations.Multiply(rotation)
 	assertEqualTuple(t, NewPoint(15, 0, 7), chained_transformations.MultiplyByTuple(point))
 }
-
-// func Test(t *testing.T) {
-// // TEMPLATE
-// }

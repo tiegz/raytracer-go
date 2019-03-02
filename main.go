@@ -7,5 +7,5 @@ func main() {
 	// examples.RunDrawProjectileExample()
 	// examples.RunMatrixExample()
 	// examples.RunDrawAnalogClockExample()
-	examples.RunDrawSphereSilhouette()
+	examples.RunDrawSphereSilhouette(false, true, true, true)
 }
