@@ -1,6 +1,9 @@
 package raytracer
 
-import "testing"
+import (
+	"math"
+	"testing"
+)
 
 func TestNewSphere(t *testing.T) {
 	sphere := NewSphere()
@@ -36,4 +39,65 @@ func TestIntersectingTranslatedSphereWithRay(t *testing.T) {
 	intersections := r1.Intersect(s1)
 
 	assertEqualInt(t, 0, len(intersections))
+}
+
+func TestNormalAtOnXAxis(t *testing.T) {
+	s1 := NewSphere()
+	actual := s1.NormalAt(NewPoint(1, 0, 0))
+	expected := NewVector(1, 0, 0)
+
+	assertEqualTuple(t, expected, actual)
+}
+
+func TestNormalAtOnYAxis(t *testing.T) {
+	s1 := NewSphere()
+	actual := s1.NormalAt(NewPoint(0, 1, 0))
+	expected := NewVector(0, 1, 0)
+
+	assertEqualTuple(t, expected, actual)
+}
+
+func TestNormalAtOnZAxis(t *testing.T) {
+	s1 := NewSphere()
+	actual := s1.NormalAt(NewPoint(0, 0, 1))
+	expected := NewVector(0, 0, 1)
+
+	assertEqualTuple(t, expected, actual)
+}
+
+func TestNormalAtOnNonAxialPoint(t *testing.T) {
+	s1 := NewSphere()
+	actual := s1.NormalAt(NewPoint(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
+	expected := NewVector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3)
+
+	assertEqualTuple(t, expected, actual)
+}
+
+func TestNormalAtIsNormalized(t *testing.T) {
+	s1 := NewSphere()
+	actual := s1.NormalAt(NewPoint(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
+	expected := actual.Normalized()
+
+	assertEqualTuple(t, expected, actual)
+}
+
+func TestNormalAtOnTranslatedSphere(t *testing.T) {
+	s1 := NewSphere()
+	s1.Transform = NewTranslation(0, 1, 0)
+	actual := s1.NormalAt(NewPoint(0, 1.70711, -0.70711))
+	expected := NewVector(0, 0.70711, -0.70711)
+
+	assertEqualTuple(t, expected, actual)
+}
+
+func TestNormalAtOnTransformedSphere(t *testing.T) {
+	s1 := NewSphere()
+	scale := NewScale(1, 0.5, 1)
+	rotation := NewRotateZ(math.Pi / 5)
+	transform := scale.Multiply(rotation)
+	s1.Transform = s1.Transform.Multiply(transform)
+	actual := s1.NormalAt(NewPoint(0, math.Sqrt(2)/2, -(math.Sqrt(2) / 2)))
+	expected := NewVector(0, 0.97014, -0.24254)
+
+	assertEqualTuple(t, expected, actual)
 }
