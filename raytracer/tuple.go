@@ -66,6 +66,14 @@ func (t *Tuple) Divide(scalar float64) Tuple {
 	return Tuple{t.X / scalar, t.Y / scalar, t.Z / scalar, t.W / scalar}
 }
 
+// Return the reflection of this vector, off a given normal.
+func (t *Tuple) Reflect(normal Tuple) Tuple {
+	reflection := normal.Multiply(2)
+	reflection = reflection.Multiply(t.Dot(normal))
+	reflection = t.Subtract(reflection)
+	return reflection
+}
+
 // Returns the magnitude of a vector.
 func (t *Tuple) Magnitude() float64 {
 	return math.Sqrt((t.X * t.X) + (t.Y * t.Y) + (t.Z * t.Z) + (t.W * t.W))
