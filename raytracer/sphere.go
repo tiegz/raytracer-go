@@ -6,11 +6,12 @@ type Sphere struct {
 	Origin    Tuple
 	Radius    float64
 	Transform Matrix
+	Material  Material
 }
 
 func NewSphere() Sphere { // o Tuple, r float64
 	// hardcoding spheres for now
-	return Sphere{NewPoint(0, 0, 0), 1, IdentityMatrix()}
+	return Sphere{NewPoint(0, 0, 0), 1, IdentityMatrix(), DefaultMaterial()}
 }
 func (s Sphere) String() string {
 	return fmt.Sprintf("Sphere( %v, %.1f )", s.Origin, s.Radius)

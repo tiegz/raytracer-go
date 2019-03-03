@@ -101,3 +101,18 @@ func TestNormalAtOnTransformedSphere(t *testing.T) {
 
 	assertEqualTuple(t, expected, actual)
 }
+
+func TestSphereHasDefaultMaterial(t *testing.T) {
+	s := NewSphere()
+	m := DefaultMaterial()
+	assertEqualMaterial(t, m, s.Material)
+}
+
+func TestSphereMayBeAssignedMaterial(t *testing.T) {
+	s := NewSphere()
+	m := DefaultMaterial()
+	m.Ambient = 1.0
+	s.Material = m
+
+	assertEqualMaterial(t, m, s.Material)
+}
