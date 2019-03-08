@@ -10,15 +10,20 @@ type Intersection struct {
 	Object Sphere
 }
 
+type Computation struct {
+	Time    float64
+	Object  Sphere
+	Point   Tuple
+	EyeV    Tuple
+	NormalV Tuple
+	Inside  bool
+}
+
 func NullIntersection() Intersection {
 	return NewIntersection(math.MaxFloat64, NewSphere())
 }
 
 type Intersections []Intersection
-
-// func (is Intersections) Len() int           { return len(is) }
-// func (is Intersections) Less(i, j int) bool { is[i], is[j] = is[j], is[i] }
-// func (is Intersections) Swap(i, j int) int  { return is[i].Time < is[j].Time }
 
 func NewIntersection(t float64, obj Sphere) Intersection {
 	return Intersection{t, obj}
@@ -48,4 +53,21 @@ func (is *Intersections) Hit() Intersection {
 	}
 
 	return minIntersection
+}
+
+func (i *Intersection) PrepareComputations(r Ray) Computation {
+	c := Computation{}
+	c.Time = i.Time
+	c.Object = i.Object
+	c.Point = r.Position(c.Time)
+	c.EyeV = r.Direction.Negate()
+	c.NormalV = c.Object.NormalAt(c.Point)
+	if c.NormalV.Dot(c.EyeV) < 0 {
+		c.Inside = true
+		c.NormalV = c.NormalV.Negate()
+	} else {
+		c.Inside = false
+	}
+
+	return c
 }

@@ -62,3 +62,38 @@ func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
 	hit := intersections.Hit()
 	assertEqualIntersection(t, i4, hit)
 }
+
+func TestPrecomputingStateOfIntersection(t *testing.T) {
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	s := NewSphere()
+	i := NewIntersection(4, s)
+	c := i.PrepareComputations(r)
+
+	assertEqualFloat64(t, i.Time, c.Time)
+	assertEqualObject(t, s, c.Object)
+	assertEqualTuple(t, NewPoint(0, 0, -1), c.Point)
+	assertEqualTuple(t, NewVector(0, 0, -1), c.EyeV)
+	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)
+}
+
+func TestHitWhenIntersectionOccursOnOutside(t *testing.T) {
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	s := NewSphere()
+	i := NewIntersection(4, s)
+	c := i.PrepareComputations(r)
+
+	assert(t, !c.Inside)
+}
+
+func TestHitWhenIntersectionOccursOnInside(t *testing.T) {
+	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 0, 1))
+	s := NewSphere()
+	i := NewIntersection(1, s)
+	c := i.PrepareComputations(r)
+
+	assertEqualObject(t, s, c.Object)
+	assertEqualTuple(t, NewPoint(0, 0, 1), c.Point)
+	assertEqualTuple(t, NewVector(0, 0, -1), c.EyeV)
+	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)
+	assert(t, c.Inside)
+}

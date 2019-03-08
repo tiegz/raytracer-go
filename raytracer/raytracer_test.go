@@ -72,6 +72,12 @@ func assertEqualIntersection(t *testing.T, expected Intersection, actual Interse
 	}
 }
 
+func assertEqualPointLight(t *testing.T, expected PointLight, actual PointLight) {
+	if !expected.IsEqualTo(actual) {
+		t.Errorf("\nExpected:\n---------\n%v\nActual:\n-------\n%v\n", expected, actual)
+	}
+}
+
 func assertEqualMaterial(t *testing.T, expected Material, actual Material) {
 	if !expected.IsEqualTo(actual) {
 		t.Errorf("\nExpected:\n---------\n%v\nActual:\n-------\n%v\n", expected, actual)
