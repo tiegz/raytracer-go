@@ -6,6 +6,6 @@ This is an implementation of ["The Ray Tracer Challenge" by Jamis Buck](https://
 
 # Testing
 
-### Run all cucumber specs
+### Run all tests
 
-`godog`
+`go test ./...`
