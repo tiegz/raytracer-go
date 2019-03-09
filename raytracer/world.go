@@ -63,11 +63,31 @@ func (w *World) Intersect(r Ray) Intersections {
 }
 
 func (w *World) ShadeHit(c Computation) Color {
-	fmt.Printf("Lights are %v\n", w.Lights)
 	color := NewColor(0, 0, 0)
 
 	for _, light := range w.Lights {
 		color = color.Add(c.Object.Material.Lighting(light, c.Point, c.EyeV, c.NormalV))
+	}
+
+	return color
+}
+
+func (w *World) ColorAt(r Ray) Color {
+	var color Color
+
+	// 	Call intersect_world to find the intersections of the given ray with the given world.
+	is := w.Intersect(r)
+
+	// 2. Find the hit from the resulting intersections.
+	if hit := is.Hit(); hit.IsEqualTo(NullIntersection()) {
+		// 3. Return the color black if there is no such intersection.
+		color = Colors["Black"]
+	} else {
+		// 4. Otherwise, precompute the necessary values with prepare_computations.
+		c := hit.PrepareComputations(r)
+
+		// 5. Finally, call shade_hit to find the color at the hit.
+		color = w.ShadeHit(c)
 	}
 
 	return color

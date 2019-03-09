@@ -64,3 +64,34 @@ func TestShadingAnIntersectionFromInside(t *testing.T) {
 	expected := NewColor(0.90498, 0.90498, 0.90498)
 	assertEqualColor(t, expected, actual)
 }
+
+func TestColorAtWhenRayMisses(t *testing.T) {
+	w := DefaultWorld()
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 1, 0))
+	actual := w.ColorAt(r)
+	expected := Colors["Black"]
+
+	assertEqualColor(t, expected, actual)
+}
+
+// Ray hits the outer sphere
+func TestColorAtWhenRayHitsOuterSphere(t *testing.T) {
+	w := DefaultWorld()
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	actual := w.ColorAt(r)
+	expected := NewColor(0.38066, 0.47583, 0.2855)
+
+	assertEqualColor(t, expected, actual)
+}
+
+// Ray is inside outer sphere, pointed at inner sphere.
+func TestColorAtWithAnIntersectionBehindRay(t *testing.T) {
+	w := DefaultWorld()
+	w.Objects[0].Material.Ambient = 1 // outer
+	w.Objects[1].Material.Ambient = 1 // inner
+	r := NewRay(NewPoint(0, 0, 0.75), NewVector(0, 0, -1))
+	actual := w.ColorAt(r)
+	expected := w.Objects[1].Material.Color
+
+	assertEqualColor(t, expected, actual)
+}
