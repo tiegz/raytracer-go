@@ -61,7 +61,11 @@ func (w *World) Intersect(r Ray) Intersections {
 
 func (w *World) ShadeHit(c Computation) Color {
 	fmt.Printf("Lights are %v\n", w.Lights)
-	color := c.Object.Material.Lighting(w.Lights[0], c.Point, c.EyeV, c.NormalV)
+	color := NewColor(0, 0, 0)
+
+	for _, light := range w.Lights {
+		color = color.Add(c.Object.Material.Lighting(light, c.Point, c.EyeV, c.NormalV))
+	}
 
 	return color
 }
