@@ -15,11 +15,14 @@ func NewWorld() World {
 	return World{}
 }
 
-// DefaultWorld returns a new world with some default settings.
+// DefaultWorld returns a new world with some default settings:
+//   * 1 unit sphere with color
+//   * 1 smaller sphere inside ^
+//   * a single white light
 func DefaultWorld() World {
 	w := NewWorld()
 
-	defaultPointLight := NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1))
+	defaultPointLight := NewPointLight(NewPoint(-10, 10, -10), Colors["White"])
 	defaultObj1 := NewSphere()
 	defaultObj1.Material.Color = NewColor(0.8, 1.0, 0.6)
 	defaultObj1.Material.Diffuse = 0.7

@@ -11,7 +11,13 @@ type Material struct {
 }
 
 func DefaultMaterial() Material {
-	return Material{Colors["White"], 0.1, 0.9, 0.9, 200}
+	return Material{
+		Color:     Colors["White"],
+		Ambient:   0.1,
+		Diffuse:   0.9,
+		Specular:  0.9,
+		Shininess: 200,
+	}
 }
 
 func (m *Material) IsEqualTo(m2 Material) bool {
