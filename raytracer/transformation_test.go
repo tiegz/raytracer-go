@@ -182,3 +182,53 @@ func TestChainedTransformationAreAppliedInSequence(t *testing.T) {
 	chained_transformations = chained_transformations.Multiply(rotation)
 	assertEqualTuple(t, NewPoint(15, 0, 7), chained_transformations.MultiplyByTuple(point))
 }
+
+func TestTransformationMatrixForDefaultOrientation(t *testing.T) {
+	from := NewPoint(0, 0, 0)
+	to := NewPoint(0, 0, -1)
+	up := NewVector(0, 1, 0)
+
+	actual := NewViewTransform(from, to, up)
+	expected := IdentityMatrix()
+
+	assertEqualMatrix(t, expected, actual)
+}
+
+// Aka Z-axis reflection
+func TestViewTransformationMatrixLookingInPositiveZDirection(t *testing.T) {
+	from := NewPoint(0, 0, 0)
+	to := NewPoint(0, 0, 1) // world is behind us (?)
+	up := NewVector(0, 1, 0)
+
+	actual := NewViewTransform(from, to, up)
+	expected := NewScale(-1, 1, -1)
+
+	assertEqualMatrix(t, expected, actual)
+}
+
+func TestViewTransformationMovesTheWorld(t *testing.T) {
+	from := NewPoint(0, 0, 8)
+	to := NewPoint(0, 0, 0)
+	up := NewVector(0, 1, 0)
+
+	actual := NewViewTransform(from, to, up)
+	expected := NewTranslation(0, 0, -8)
+
+	assertEqualMatrix(t, expected, actual)
+}
+
+func TestArbitraryViewTransformation(t *testing.T) {
+	from := NewPoint(1, 3, 2)
+	to := NewPoint(4, -2, 8)
+	up := NewVector(1, 1, 0)
+
+	actual := NewViewTransform(from, to, up)
+	expected := NewMatrix(4, 4, []float64{
+		-0.50709, 0.50709, 0.67612, -2.36643,
+		0.76772, 0.60609, 0.12122, -2.82843,
+		-0.35857, 0.59761, -0.71714, 0.00000,
+		0.00000, 0.00000, 0.00000, 1.00000,
+	})
+
+	assertEqualMatrix(t, expected, actual)
+}

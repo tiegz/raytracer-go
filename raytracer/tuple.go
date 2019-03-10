@@ -5,6 +5,7 @@ import (
 	"math"
 )
 
+// TODO could Tuple be an interface and Point/Vector types that implement it?
 type Tuple struct {
 	X float64
 	Y float64

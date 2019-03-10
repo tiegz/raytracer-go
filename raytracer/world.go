@@ -62,6 +62,7 @@ func (w *World) Intersect(r Ray) Intersections {
 	return xs
 }
 
+// ShadeHit returns the color for the given computation's intersection.
 func (w *World) ShadeHit(c Computation) Color {
 	color := NewColor(0, 0, 0)
 
@@ -72,6 +73,7 @@ func (w *World) ShadeHit(c Computation) Color {
 	return color
 }
 
+// ColorAt gets a ray's intersection in the world and returns that intersection's color.
 func (w *World) ColorAt(r Ray) Color {
 	var color Color
 
