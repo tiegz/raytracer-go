@@ -8,5 +8,6 @@ func main() {
 	// examples.RunMatrixExample()
 	// examples.RunDrawAnalogClockExample()
 	// examples.RunDrawSphereSilhouette(false, true, true, true)
-	examples.RunDrawSphereShaded(false, true, true, true)
+	// examples.RunDrawSphereShaded(false, true, true, true)
+	examples.RunDrawWorld()
 }
