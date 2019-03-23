@@ -9,10 +9,10 @@ import (
 )
 
 func RunDrawWorld() {
-	camera := raytracer.NewCamera(320, 200, π/3) // VGA
-	// camera := raytracer.NewCamera(640, 480, π/3) // VGA
-	// camera := raytracer.NewCamera(400, 200, π/3)
-	// camera := raytracer.NewCamera(1000, 500, π/3)
+	camera := raytracer.NewCamera(320, 200, math.Pi/3) // VGA
+	// camera := raytracer.NewCamera(640, 480, math.Pi/3) // VGA
+	// camera := raytracer.NewCamera(400, 200, math.Pi/3)
+	// camera := raytracer.NewCamera(1000, 500, math.Pi/3)
 
 	camera.Transform = raytracer.NewViewTransform(
 		raytracer.NewPoint(0, 1.5, -5),
@@ -27,15 +27,15 @@ func RunDrawWorld() {
 
 	leftWall := raytracer.NewSphere()
 	leftWall.Transform = raytracer.NewTranslation(0, 0, 5)
-	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewRotateY(-π / 4))
-	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewRotateX(π / 2))
+	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewRotateY(-math.Pi / 4))
+	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewRotateX(math.Pi / 2))
 	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewScale(10, 0.01, 10))
 	leftWall.Material = floor.Material
 
 	rightWall := raytracer.NewSphere()
 	rightWall.Transform = raytracer.NewTranslation(0, 0, 5)
-	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewRotateY(π / 4))
-	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewRotateX(π / 2))
+	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewRotateY(math.Pi / 4))
+	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewRotateX(math.Pi / 2))
 	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewScale(10, 0.01, 10))
 	rightWall.Material = floor.Material
 
