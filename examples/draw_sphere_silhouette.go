@@ -28,7 +28,7 @@ func RunDrawSphereSilhouette(scaleX, scaleY, rotateZ, skew bool) {
 		transform = scale.Multiply(transform)
 	}
 	if rotateZ {
-		rotate := raytracer.NewRotateZ(math.Pi / 4)
+		rotate := raytracer.NewRotateZ(π / 4)
 		transform = rotate.Multiply(transform)
 	}
 	if skew {

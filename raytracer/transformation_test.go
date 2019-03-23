@@ -96,8 +96,8 @@ func TestReflectingPointByNegativeScaleMatrix(t *testing.T) {
 
 func TestRotatingPointAroundXAxis(t *testing.T) {
 	point := NewPoint(0, 1, 0)
-	half_quarter_rotation := NewRotateX(math.Pi / 4)
-	full_quarter_rotation := NewRotateX(math.Pi / 2)
+	half_quarter_rotation := NewRotateX(π / 4)
+	full_quarter_rotation := NewRotateX(π / 2)
 
 	assertEqualTuple(t, NewPoint(0, math.Sqrt(2)/2, math.Sqrt(2)/2), half_quarter_rotation.MultiplyByTuple(point))
 	assertEqualTuple(t, NewPoint(0, 0, 1), full_quarter_rotation.MultiplyByTuple(point))
@@ -105,7 +105,7 @@ func TestRotatingPointAroundXAxis(t *testing.T) {
 
 func TestRotatingPointAroundXAxisInOppositeDirection(t *testing.T) {
 	point := NewPoint(0, 1, 0)
-	half_quarter_rotation := NewRotateX(math.Pi / 4)
+	half_quarter_rotation := NewRotateX(π / 4)
 	half_quarter_rotation_inverted := half_quarter_rotation.Inverse()
 
 	assertEqualTuple(t, NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2), half_quarter_rotation_inverted.MultiplyByTuple(point))
@@ -113,8 +113,8 @@ func TestRotatingPointAroundXAxisInOppositeDirection(t *testing.T) {
 
 func TestRotatingPointAroundYAxis(t *testing.T) {
 	point := NewPoint(0, 0, 1)
-	half_quarter_rotation := NewRotateY(math.Pi / 4)
-	full_quarter_rotation := NewRotateY(math.Pi / 2)
+	half_quarter_rotation := NewRotateY(π / 4)
+	full_quarter_rotation := NewRotateY(π / 2)
 
 	assertEqualTuple(t, NewPoint(math.Sqrt(2)/2, 0, math.Sqrt(2)/2), half_quarter_rotation.MultiplyByTuple(point))
 	assertEqualTuple(t, NewPoint(1, 0, 0), full_quarter_rotation.MultiplyByTuple(point))
@@ -122,8 +122,8 @@ func TestRotatingPointAroundYAxis(t *testing.T) {
 
 func TestRotatingPointAroundZAxis(t *testing.T) {
 	point := NewPoint(0, 1, 0)
-	half_quarter_rotation := NewRotateZ(math.Pi / 4)
-	full_quarter_rotation := NewRotateZ(math.Pi / 2)
+	half_quarter_rotation := NewRotateZ(π / 4)
+	full_quarter_rotation := NewRotateZ(π / 2)
 
 	assertEqualTuple(t, NewPoint(-math.Sqrt(2)/2, math.Sqrt(2)/2, 0), half_quarter_rotation.MultiplyByTuple(point))
 	assertEqualTuple(t, NewPoint(-1, 0, 0), full_quarter_rotation.MultiplyByTuple(point))
@@ -174,7 +174,7 @@ func TestShearingPointZByProportionToY(t *testing.T) {
 // TODO try to write "fluent api" for method chaining (pg 55)
 func TestChainedTransformationAreAppliedInSequence(t *testing.T) {
 	point := NewPoint(1, 0, 1)
-	rotation := NewRotateX(math.Pi / 2) // 90 deg rotation
+	rotation := NewRotateX(π / 2) // 90 deg rotation
 	scale := NewScale(5, 5, 5)
 	translation := NewTranslation(10, 5, 7)
 

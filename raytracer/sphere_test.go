@@ -93,7 +93,7 @@ func TestNormalAtOnTranslatedSphere(t *testing.T) {
 func TestNormalAtOnTransformedSphere(t *testing.T) {
 	s1 := NewSphere()
 	scale := NewScale(1, 0.5, 1)
-	rotation := NewRotateZ(math.Pi / 5)
+	rotation := NewRotateZ(π / 5)
 	transform := scale.Multiply(rotation)
 	s1.Transform = s1.Transform.Multiply(transform)
 	actual := s1.NormalAt(NewPoint(0, math.Sqrt(2)/2, -(math.Sqrt(2) / 2)))
