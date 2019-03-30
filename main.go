@@ -1,6 +1,8 @@
 package main
 
-import "github.com/tiegz/raytracer-go/examples"
+import (
+	"github.com/tiegz/raytracer-go/examples"
+)
 
 func main() {
 	// examples.RunProjectileExample()
@@ -10,4 +12,7 @@ func main() {
 	// examples.RunDrawSphereSilhouette(false, true, true, true)
 	// examples.RunDrawSphereShaded(false, true, true, true)
 	examples.RunDrawWorld()
+
+	// // my own experiments
+	// examples.RunAnimation()
 }
