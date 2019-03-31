@@ -11,12 +11,13 @@ type Intersection struct {
 }
 
 type Computation struct {
-	Time    float64
-	Object  Sphere
-	Point   Tuple
-	EyeV    Tuple
-	NormalV Tuple
-	Inside  bool
+	Time      float64
+	Object    Sphere
+	Point     Tuple
+	OverPoint Tuple
+	EyeV      Tuple
+	NormalV   Tuple
+	Inside    bool
 }
 
 func NullIntersection() Intersection {
@@ -62,6 +63,7 @@ func (i *Intersection) PrepareComputations(r Ray) Computation {
 	c.Point = r.Position(c.Time)
 	c.EyeV = r.Direction.Negate()
 	c.NormalV = c.Object.NormalAt(c.Point)
+	c.OverPoint = c.Point.Add(c.NormalV.Multiply(EPSILON)) // to avoid "raytracer acne" with shadows
 	if c.NormalV.Dot(c.EyeV) < 0 {
 		c.Inside = true
 		c.NormalV = c.NormalV.Negate()

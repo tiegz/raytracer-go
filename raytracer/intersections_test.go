@@ -97,3 +97,15 @@ func TestHitWhenIntersectionOccursOnInside(t *testing.T) {
 	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)
 	assert(t, c.Inside)
 }
+
+// NB to avoid "raytracer acne" from shadows
+func TestHitShouldOffsetPoint(t *testing.T) {
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	s := NewSphere()
+	s.Transform = NewTranslation(0, 0, 1)
+	i := NewIntersection(5, s)
+	c := i.PrepareComputations(r)
+
+	assert(t, c.OverPoint.Z < -EPSILON/2)
+	assert(t, c.Point.Z > c.OverPoint.Z)
+}

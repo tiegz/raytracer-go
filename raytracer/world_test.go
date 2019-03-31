@@ -53,7 +53,9 @@ func TestShadingAnIntersection(t *testing.T) {
 
 func TestShadingAnIntersectionFromInside(t *testing.T) {
 	w := DefaultWorld()
-	w.Lights = []PointLight{NewPointLight(NewPoint(0, 0.25, 0), Colors["White"])}
+	w.Lights = []PointLight{
+		NewPointLight(NewPoint(0, 0.25, 0), Colors["White"]),
+	}
 
 	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 0, 1))
 	s2 := w.Objects[1]
@@ -62,6 +64,30 @@ func TestShadingAnIntersectionFromInside(t *testing.T) {
 
 	actual := w.ShadeHit(c)
 	expected := NewColor(0.90498, 0.90498, 0.90498)
+	assertEqualColor(t, expected, actual)
+}
+
+func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
+	w := NewWorld()
+	s1 := NewSphere()
+	s2 := NewSphere()
+	s2.Transform = NewTranslation(0, 0, 10)
+
+	w.Lights = []PointLight{
+		NewPointLight(NewPoint(0, 0, -10), Colors["White"]),
+	}
+	w.Objects = []Sphere{
+		s1,
+		s2,
+	}
+
+	r := NewRay(NewPoint(0, 0, 5), NewVector(0, 0, 1))
+	i := NewIntersection(4, s2)
+
+	c := i.PrepareComputations(r)
+	actual := w.ShadeHit(c)
+	expected := NewColor(0.1, 0.1, 0.1)
+
 	assertEqualColor(t, expected, actual)
 }
 
@@ -94,4 +120,60 @@ func TestColorAtWithAnIntersectionBehindRay(t *testing.T) {
 	expected := w.Objects[1].Material.Color
 
 	assertEqualColor(t, expected, actual)
+}
+
+// 	 				 	   |
+// 💡				   👉X
+//  			 			 |
+//  				 		 |
+//--------------⚪️ ----
+//  				 		 |
+func TestThereIsNoShadowWhenNothingIsCollinearWithPointAndLight(t *testing.T) {
+	w := DefaultWorld()
+	p := NewPoint(0, 10, 0)
+
+	assert(t, !w.IsShadowed(p))
+}
+
+// 	 	     |
+// 💡	     |
+//  	     |
+//--------⚪️ ----
+//    		 |
+//  	  	 |   👉X
+//  			 |
+
+func TestTheShadowWhenObjectIsBetweenPointAndLight(t *testing.T) {
+	w := DefaultWorld()
+	p := NewPoint(10, -10, 10)
+
+	assert(t, w.IsShadowed(p))
+}
+
+// 	 				   |
+// 👉X		     |
+//  				 	 |
+//   	  💡	 	 |
+//  					 |
+//-------------⚪️--
+//  				 	 |
+func TestTheShadowWhenObjectIsBehindLight(t *testing.T) {
+	w := DefaultWorld()
+	p := NewPoint(-20, 20, -20)
+
+	assert(t, !w.IsShadowed(p))
+}
+
+// 	 				   |
+// 💡				   |
+//  			 		 |
+//  		👉X	 	 |
+//  			 		 |
+//------------⚪️---
+//  				 	 |
+func TestThereIsNoShadowWhenObjectIsBehindThePoint(t *testing.T) {
+	w := DefaultWorld()
+	p := NewPoint(-2, 2, -2)
+
+	assert(t, !w.IsShadowed(p))
 }

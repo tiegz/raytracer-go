@@ -30,7 +30,7 @@ func TestLightingWithEyeBetweenLightAndSurface(t *testing.T) {
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV)
+	actual := mat.Lighting(light, pos, eyeV, normalV, false)
 	expected := NewColor(1.9, 1.9, 1.9)
 
 	assertEqualColor(t, expected, actual)
@@ -52,7 +52,7 @@ func TestLightingWithEyeBetweenLightAndSurfaceAndEyeOffset45Degrees(t *testing.T
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV)
+	actual := mat.Lighting(light, pos, eyeV, normalV, false)
 	expected := NewColor(1, 1, 1)
 
 	assertEqualColor(t, expected, actual)
@@ -74,7 +74,7 @@ func TestLightingWithEyeOppositeSurfaceAndLightOffset45Degrees(t *testing.T) {
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 10, -10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV)
+	actual := mat.Lighting(light, pos, eyeV, normalV, false)
 	expected := NewColor(0.7364, 0.7364, 0.7364)
 
 	assertEqualColor(t, expected, actual)
@@ -95,7 +95,7 @@ func TestLightingWithEyeInPathOfReflectionVector(t *testing.T) {
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 10, -10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV)
+	actual := mat.Lighting(light, pos, eyeV, normalV, false)
 	expected := NewColor(1.6364, 1.6364, 1.6364)
 
 	assertEqualColor(t, expected, actual)
@@ -116,7 +116,29 @@ func TestLightingWithLightBehindSurface(t *testing.T) {
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 0, 10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV)
+	actual := mat.Lighting(light, pos, eyeV, normalV, false)
+	expected := NewColor(0.1, 0.1, 0.1)
+
+	assertEqualColor(t, expected, actual)
+}
+
+//  			 			 |
+//  				 		 |
+// 	 				 	   |
+// 💡-----👁 <---|
+//  			 			 |
+//  				 		 |
+// 	 				 	   |
+func TestLightingWithTheSurfaceInShadow(t *testing.T) {
+	mat := DefaultMaterial()
+	pos := NewPoint(0, 0, 0)
+
+	eyeV := NewVector(0, 0, -1)
+	normalV := NewVector(0, 0, -1)
+	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
+	inShadow := true
+
+	actual := mat.Lighting(light, pos, eyeV, normalV, inShadow)
 	expected := NewColor(0.1, 0.1, 0.1)
 
 	assertEqualColor(t, expected, actual)

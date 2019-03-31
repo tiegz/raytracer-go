@@ -1,6 +1,8 @@
 package raytracer
 
-import "math"
+import (
+	"math"
+)
 
 type Material struct {
 	Color     Color
@@ -41,7 +43,7 @@ func (m *Material) IsEqualTo(m2 Material) bool {
 //   * Diffuse reflection:  reflection from matte surface; depends on angle btwn light and surface.
 //   * Specular reflection: reflection of the light source; depends on angle btwn the reflection
 //      										and eye vectors. Intensity is controlled by "shininess".
-func (m *Material) Lighting(light PointLight, point Tuple, eyeVector, normalVector Tuple) Color {
+func (m *Material) Lighting(light PointLight, point Tuple, eyeVector, normalVector Tuple, inShadow bool) Color {
 	var ambient, specular, diffuse Color
 
 	// combine the surface color with the light's color/intensity
@@ -53,6 +55,11 @@ func (m *Material) Lighting(light PointLight, point Tuple, eyeVector, normalVect
 
 	// compute the ambient contribution
 	ambient = effectiveColor.Multiply(m.Ambient)
+
+	if inShadow {
+		// when in a shadow, you only need ambient, not duffse & specular.
+		return ambient
+	}
 
 	// light_dot_normal represents the cosine of the angle between the
 	// light vector and the normal vector. A negative number means the
