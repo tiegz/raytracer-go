@@ -50,7 +50,7 @@ func RunDrawSphereSilhouette(scaleX, scaleY, rotateZ, skew bool) {
 			targetPoint := raytracer.NewPoint(worldX, worldY, wallZ)
 			rayDirection := targetPoint.Subtract(rayOrigin)
 			r := raytracer.NewRay(rayOrigin, rayDirection)
-			intersections := r.Intersect(sphere)
+			intersections := sphere.Intersect(r)
 
 			if hit := intersections.Hit(); !hit.IsEqualTo(raytracer.NullIntersection()) {
 				canvas.WritePixel(int(x), int(y), raytracer.Colors["Purple"])

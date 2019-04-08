@@ -7,12 +7,12 @@ import (
 
 type Intersection struct {
 	Time   float64
-	Object Sphere
+	Object Shape
 }
 
 type Computation struct {
 	Time      float64
-	Object    Sphere
+	Object    Shape
 	Point     Tuple
 	OverPoint Tuple
 	EyeV      Tuple
@@ -26,7 +26,7 @@ func NullIntersection() Intersection {
 
 type Intersections []Intersection
 
-func NewIntersection(t float64, obj Sphere) Intersection {
+func NewIntersection(t float64, obj Shape) Intersection {
 	return Intersection{t, obj}
 }
 

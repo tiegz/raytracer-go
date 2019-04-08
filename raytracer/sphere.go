@@ -1,47 +1,77 @@
 package raytracer
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Sphere struct {
-	Origin    Tuple
-	Radius    float64
-	Transform Matrix
-	Material  Material
+	// Shape  // Shape
+	Origin Tuple
+	Radius float64
+	// Transform Matrix
+	// Material  Material
 }
 
-func NewSphere() Sphere {
+func NewSphere() Shape {
 	// hardcoding spheres for now
-	return Sphere{NewPoint(0, 0, 0), 1, IdentityMatrix(), DefaultMaterial()}
+	return NewShape(&Sphere{NewPoint(0, 0, 0), 1})
 }
 
 func (s Sphere) String() string {
 	return fmt.Sprintf("Sphere( %v, %.1f )", s.Origin, s.Radius)
 }
 
-func (s *Sphere) IsEqualTo(s2 Sphere) bool {
-	if !s.Origin.IsEqualTo(s2.Origin) {
+func (s Sphere) localString() string {
+	return s.String()
+}
+
+/////////////////////////
+// ShapeInterface methods
+/////////////////////////
+
+// TODO can we remove Shape arg somehow? It's only there because ShapeInterface
+// has no knowledge of its parent, but we need to put its aprent in the Intersection :(
+func (s Sphere) localIntersect(localRay Ray, shape *Shape) Intersections {
+	i := make(Intersections, 0, 2)
+
+	sphereToRay := localRay.Origin.Subtract(s.Origin)
+	a := localRay.Direction.Dot(localRay.Direction)
+	b := 2 * localRay.Direction.Dot(sphereToRay)
+	c := sphereToRay.Dot(sphereToRay) - 1.0
+	discriminant := (b * b) - 4*a*c
+
+	if discriminant < 0 {
+		return i
+	}
+
+	i1 := NewIntersection((-b-math.Sqrt(discriminant))/(2*a), *shape)
+	i2 := NewIntersection((-b+math.Sqrt(discriminant))/(2*a), *shape)
+
+	i = append(i, i1, i2)
+
+	return i
+}
+
+func (s Sphere) localNormalAt(localPoint Tuple) Tuple {
+	return localPoint.Subtract(s.Origin)
+}
+
+func (s Sphere) localIsEqualTo(s2 ShapeInterface) bool {
+	// NB I still don't know why we need to do a type assertiong to *Sphere
+	// instead of Sphere, but it fixes this panic when comparing two
+	// spheres: 'panic: interface conversion: raytracer.ShapeInterface is *raytracer.Sphere, not raytracer.Sphere [recovered]
+	s2Sphere := s2.(*Sphere)
+	if !s.Origin.IsEqualTo(s2Sphere.Origin) {
 		return false
-	} else if s.Radius != s2.Radius {
-		return false
-	} else if !s.Transform.IsEqualTo(s2.Transform) {
+	} else if s.Radius != s2Sphere.Radius {
 		return false
 	}
 	return true
 }
 
-// Given a point, return the vector from origin of the sphere (the "normal").
-func (s *Sphere) NormalAt(worldPoint Tuple) Tuple {
-	// convert the "world-space" point to "object-space"
-	inverseTransform := s.Transform.Inverse()
-	objectPoint := inverseTransform.MultiplyByTuple(worldPoint)
-	objectNormal := objectPoint.Subtract(s.Origin)
-
-	// convert the "object-space" normal (vector) to "world-space"
-	inverseTransformTransposed := inverseTransform.Transpose()
-	worldNormal := inverseTransformTransposed.MultiplyByTuple(objectNormal)
-
-	// HACK " ... should be finding submatrix(transform, 3, 3) first, and multiplying by the inverse and trans- pose of that."
-	worldNormal.W = 0
-
-	return worldNormal.Normalized()
+// Not returning reflect.TypeOf here because I suspect it
+// does the same thing under the hood and stores a string?
+func (s Sphere) localType() string {
+	return "Sphere"
 }

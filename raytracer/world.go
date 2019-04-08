@@ -6,7 +6,7 @@ import (
 )
 
 type World struct {
-	Objects []Sphere
+	Objects []Shape
 	Lights  []PointLight
 }
 
@@ -41,7 +41,7 @@ func (w *World) String() string {
 }
 
 // Contains returns true if the world contains obj.
-func (w *World) Contains(obj Sphere) bool {
+func (w *World) Contains(obj Shape) bool {
 	for _, o := range w.Objects {
 		if o.IsEqualTo(obj) {
 			return true
@@ -54,9 +54,9 @@ func (w *World) Intersect(r Ray) Intersections {
 	var xs Intersections
 
 	for _, obj := range w.Objects {
-		xs = append(xs, r.Intersect(obj)...)
+		xs = append(xs, obj.Intersect(r)...)
 	}
-	// Sort the intersections by time, so we can get the first hit. (p 97)
+	// Sort the  intersections by time, so we can get the first hit. (p 97)
 	sort.Slice(xs, func(i, j int) bool { return xs[i].Time < xs[j].Time })
 
 	return xs

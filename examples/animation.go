@@ -63,7 +63,7 @@ func RunAnimation() {
 	leftSphere.Material.Specular = 0.3
 
 	world := raytracer.NewWorld()
-	world.Objects = []raytracer.Sphere{
+	world.Objects = []raytracer.Shape{
 		floor,
 		leftWall,
 		rightWall,
