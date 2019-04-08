@@ -83,7 +83,7 @@ func (w *World) ColorAt(r Ray) Color {
 	is := w.Intersect(r)
 
 	// 2. Find the hit from the resulting intersections.
-	if hit := is.Hit(); hit.IsEqualTo(NullIntersection()) {
+	if hit := is.Hit(); hit.IsNull() {
 		// 3. Return the color black if there is no such intersection.
 		color = Colors["Black"]
 	} else {
@@ -105,7 +105,7 @@ func (w *World) IsShadowed(p Tuple) bool {
 	r := NewRay(p, direction)
 	is := w.Intersect(r)
 
-	if hit := is.Hit(); hit.IsEqualTo(NullIntersection()) {
+	if hit := is.Hit(); hit.IsNull() {
 		return false
 	} else {
 		if hit.Time < distance {

@@ -2,7 +2,6 @@ package raytracer
 
 import (
 	"fmt"
-	"math"
 )
 
 type Ray struct {

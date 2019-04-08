@@ -1,6 +1,8 @@
 package raytracer
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNewIntersection(t *testing.T) {
 	sphere := NewSphere()
@@ -48,7 +50,7 @@ func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
 	intersections := Intersections{i1, i2}
 
 	hit := intersections.Hit()
-	assertEqualIntersection(t, NullIntersection(), hit)
+	assert(t, hit.IsNull())
 }
 
 func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {

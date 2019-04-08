@@ -21,7 +21,11 @@ type Computation struct {
 }
 
 func NullIntersection() Intersection {
-	return NewIntersection(math.MaxFloat64, NewSphere())
+	return Intersection{math.MaxFloat64, NewNullShape()}
+}
+
+func (i Intersection) IsNull() bool {
+	return i.Time == math.MaxFloat64
 }
 
 type Intersections []Intersection
@@ -39,7 +43,7 @@ func (i Intersection) IsEqualTo(i2 Intersection) bool {
 	return true
 }
 
-func (i *Intersection) String() string {
+func (i Intersection) String() string {
 	return fmt.Sprintf("Intersection( %.3f, %v )", i.Time, i.Object)
 }
 
