@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -34,6 +35,10 @@ func (c *Color) IsEqualTo(c2 Color) bool {
 	}
 
 	return equals(c.Red, c2.Red) && equals(c.Green, c2.Green) && equals(c.Blue, c2.Blue)
+}
+
+func (c Color) String() string {
+	return fmt.Sprintf("Color( %v %v %v )", c.Red, c.Green, c.Blue)
 }
 
 func (c *Color) Add(c2 Color) Color {
