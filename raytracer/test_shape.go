@@ -15,12 +15,12 @@ func NewTestShape() Shape {
 // ShapeInterface methods
 /////////////////////////
 
-func (ts TestShape) localIntersect(r Ray, shape *Shape) Intersections {
+func (ts TestShape) LocalIntersect(r Ray, shape *Shape) Intersections {
 	shape.SavedRay = r // the book has this on the TestShape object, but for Go I've put it on Shape :shruggie:
 	return Intersections{}
 }
 
-func (ts TestShape) localNormalAt(worldPoint Tuple) Tuple {
+func (ts TestShape) LocalNormalAt(worldPoint Tuple) Tuple {
 	return NewVector(worldPoint.X, worldPoint.Y, worldPoint.Z)
 }
 

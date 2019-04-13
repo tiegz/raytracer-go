@@ -14,7 +14,6 @@ type Sphere struct {
 }
 
 func NewSphere() Shape {
-	// hardcoding spheres for now
 	return NewShape(&Sphere{NewPoint(0, 0, 0), 1})
 }
 
@@ -32,7 +31,7 @@ func (s Sphere) localString() string {
 
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
-func (s Sphere) localIntersect(localRay Ray, shape *Shape) Intersections {
+func (s Sphere) LocalIntersect(localRay Ray, shape *Shape) Intersections {
 	i := make(Intersections, 0, 2)
 
 	sphereToRay := localRay.Origin.Subtract(s.Origin)
@@ -53,7 +52,7 @@ func (s Sphere) localIntersect(localRay Ray, shape *Shape) Intersections {
 	return i
 }
 
-func (s Sphere) localNormalAt(localPoint Tuple) Tuple {
+func (s Sphere) LocalNormalAt(localPoint Tuple) Tuple {
 	return localPoint.Subtract(s.Origin)
 }
 

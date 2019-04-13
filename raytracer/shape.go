@@ -5,14 +5,15 @@ import (
 )
 
 type ShapeInterface interface {
-	localNormalAt(Tuple) Tuple
-	localIntersect(Ray, *Shape) Intersections
+	LocalNormalAt(Tuple) Tuple
+	LocalIntersect(Ray, *Shape) Intersections
 	localIsEqualTo(ShapeInterface) bool
 	localType() string
 	localString() string
 }
 
 // Shape is a general shape (Transform+Material), with the specific type of shape stored as a ShapeInterface in LocalShape.
+// LocaleShape-specific functions are prefixed with "local", e.g. localFoo().
 type Shape struct {
 	LocalShape ShapeInterface // not using anonymous embedded field mostly bc of IsEqualTo()... we have to pass the LocalShape, not the Shape
 	Transform  Matrix
@@ -28,14 +29,14 @@ func (s *Shape) Intersect(r Ray) Intersections {
 	// Instead of applying object's transformation to object, we can just apply
 	// the inverse of the transformation to the ray.
 	localRay := r.Transform(s.Transform.Inverse())
-	return s.LocalShape.localIntersect(localRay, s)
+	return s.LocalShape.LocalIntersect(localRay, s)
 }
 
 func (s *Shape) NormalAt(p Tuple) Tuple {
 	// convert the "world-space" point to "object-space"
 	inverseTransform := s.Transform.Inverse()
 	localPoint := inverseTransform.MultiplyByTuple(p)
-	localNormal := s.LocalShape.localNormalAt(localPoint)
+	localNormal := s.LocalShape.LocalNormalAt(localPoint)
 
 	// convert the "object-space" normal (vector) to "world-space"
 	inverseTransformTransposed := inverseTransform.Transpose()

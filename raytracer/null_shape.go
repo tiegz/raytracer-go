@@ -15,11 +15,11 @@ func NewNullShape() Shape {
 
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
-func (ns NullShape) localIntersect(r Ray, shape *Shape) Intersections {
+func (ns NullShape) LocalIntersect(r Ray, shape *Shape) Intersections {
 	return Intersections{}
 }
 
-func (ns NullShape) localNormalAt(worldPoint Tuple) Tuple {
+func (ns NullShape) LocalNormalAt(worldPoint Tuple) Tuple {
 	return NewVector(worldPoint.X, worldPoint.Y, worldPoint.Z)
 }
 
