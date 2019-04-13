@@ -24,3 +24,5 @@ Would be nice to enable method chaining here. If we try that now, we get:
 
 - https://golang.org/doc/faq#methods_on_values_or_pointers
 - Using value receivers is better for concurrency
+
+### Use sync.Pool to reuse some types?
