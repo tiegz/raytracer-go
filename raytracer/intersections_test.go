@@ -9,7 +9,7 @@ func TestNewIntersection(t *testing.T) {
 	i := NewIntersection(1.23, sphere)
 
 	assertEqualFloat64(t, 1.23, i.Time)
-	assertEqualObject(t, sphere, i.Object)
+	assertEqualShape(t, sphere, i.Object)
 }
 
 func TestAggregatingIntersections(t *testing.T) {
@@ -72,7 +72,7 @@ func TestPrecomputingStateOfIntersection(t *testing.T) {
 	c := i.PrepareComputations(r)
 
 	assertEqualFloat64(t, i.Time, c.Time)
-	assertEqualObject(t, s, c.Object)
+	assertEqualShape(t, s, c.Object)
 	assertEqualTuple(t, NewPoint(0, 0, -1), c.Point)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.EyeV)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)
@@ -93,7 +93,7 @@ func TestHitWhenIntersectionOccursOnInside(t *testing.T) {
 	i := NewIntersection(1, s)
 	c := i.PrepareComputations(r)
 
-	assertEqualObject(t, s, c.Object)
+	assertEqualShape(t, s, c.Object)
 	assertEqualTuple(t, NewPoint(0, 0, 1), c.Point)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.EyeV)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)

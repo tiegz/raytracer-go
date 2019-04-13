@@ -60,7 +60,7 @@ func assertEqualString(t *testing.T, expected string, actual string) {
 	}
 }
 
-func assertEqualObject(t *testing.T, expected Shape, actual Shape) {
+func assertEqualShape(t *testing.T, expected Shape, actual Shape) {
 	if !expected.IsEqualTo(actual) {
 		t.Errorf("\nExpected:\n---------\n%v\nActual:\n-------\n%v\n", expected, actual)
 	}
