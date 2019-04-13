@@ -10,12 +10,12 @@ import (
 )
 
 func RunAnimation() {
-	// camera := raytracer.NewCamera(160, 100, math.Pi/3) // VGA
+	camera := raytracer.NewCamera(160, 100, math.Pi/3) // VGA
 	// camera := raytracer.NewCamera(320, 200, math.Pi/3) // VGA
 	// camera := raytracer.NewCamera(640, 480, math.Pi/3) // VGA
 	// camera := raytracer.NewCamera(400, 200, math.Pi/3)
 	// camera := raytracer.NewCamera(1000, 500, math.Pi/3)
-	camera := raytracer.NewCamera(1280, 960, math.Pi/3)
+	// camera := raytracer.NewCamera(1280, 960, math.Pi/3)
 
 	camera.Transform = raytracer.NewViewTransform(
 		raytracer.NewPoint(0, 1.5, -5),
@@ -91,7 +91,7 @@ func RunAnimation() {
 		ppm := canvas.ToPpm()
 		filename := fmt.Sprintf("tmp/sphere_silhouette_%03d.ppm", i)
 		ppmBytes := []byte(ppm)
-		fmt.Printf("Saving analog clock to %s...\n", filename)
+		fmt.Printf("Saving scene to %s...\n", filename)
 		if err := ioutil.WriteFile(filename, ppmBytes, 0644); err != nil {
 			panic(err)
 		}

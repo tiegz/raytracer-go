@@ -62,7 +62,7 @@ func RunDrawSphereSilhouette(scaleX, scaleY, rotateZ, skew bool) {
 	ppm := canvas.ToPpm()
 	filename := "tmp/sphere_silhouette.ppm"
 	ppmBytes := []byte(ppm)
-	fmt.Printf("Saving analog clock to %s...\n", filename)
+	fmt.Printf("Saving scene to %s...\n", filename)
 	if err := ioutil.WriteFile(filename, ppmBytes, 0644); err != nil {
 		panic(err)
 	}
