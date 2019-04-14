@@ -68,7 +68,7 @@ func (w *World) ShadeHit(c Computation) Color {
 
 	for _, light := range w.Lights {
 		isShadowed := w.IsShadowed(c.OverPoint)
-		result := c.Object.Material.Lighting(light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
+		result := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
 		color = color.Add(result)
 	}
 

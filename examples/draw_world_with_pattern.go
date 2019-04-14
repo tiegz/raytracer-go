@@ -8,9 +8,9 @@ import (
 	"github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithPlane() {
-	camera := raytracer.NewCamera(320, 200, math.Pi/3)
-	// camera := raytracer.NewCamera(640, 480, math.Pi/3)
+func RunDrawWorldWithPatterns() {
+	// camera := raytracer.NewCamera(320, 200, math.Pi/3)
+	camera := raytracer.NewCamera(640, 480, math.Pi/3)
 	// camera := raytracer.NewCamera(400, 200, math.Pi/3)
 	// camera := raytracer.NewCamera(1000, 500, math.Pi/3)
 	// camera := raytracer.NewCamera(1920, 1080, math.Pi/3)
@@ -24,12 +24,14 @@ func RunDrawWorldWithPlane() {
 	floor := raytracer.NewPlane()
 	floor.Material.Color = raytracer.NewColor(1, 0.9, 0.9)
 	floor.Material.Specular = 0
+	floor.Material.Pattern = raytracer.NewStripePattern(raytracer.Colors["White"], raytracer.Colors["Red"])
 
 	midSphere := raytracer.NewSphere()
 	midSphere.Transform = raytracer.NewTranslation(-0.5, 1, 0.5)
 	midSphere.Material.Color = raytracer.NewColor(0.1, 1, 0.5)
 	midSphere.Material.Diffuse = 0.7
 	midSphere.Material.Specular = 0.3
+	midSphere.Material.Pattern = raytracer.NewStripePattern(raytracer.Colors["Green"], raytracer.Colors["Purple"])
 
 	rightSphere := raytracer.NewSphere()
 	rightSphere.Transform = raytracer.NewTranslation(1.5, 0.5, -0.5)
@@ -37,6 +39,7 @@ func RunDrawWorldWithPlane() {
 	rightSphere.Material.Color = raytracer.NewColor(0.5, 1, 0.1)
 	rightSphere.Material.Diffuse = 0.7
 	rightSphere.Material.Specular = 0.3
+	midSphere.Material.Pattern = raytracer.NewStripePattern(raytracer.Colors["Red"], raytracer.Colors["Orange"])
 
 	leftSphere := raytracer.NewSphere()
 	leftSphere.Transform = raytracer.NewTranslation(-1.5, 0.33, -0.75)

@@ -12,6 +12,10 @@ func NewMatrix(rows, cols int, data []float64) Matrix {
 	return Matrix{rows, cols, data}
 }
 
+// func NullMatrix() Matrix {
+// 	return Matrix{}
+// }
+
 func (m *Matrix) At(row, col int) float64 {
 	return m.Data[row*m.Cols+col]
 }

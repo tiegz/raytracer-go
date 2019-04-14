@@ -23,6 +23,7 @@ func TestDefaultMaterial(t *testing.T) {
 //  				 		|
 // 	 				 	  |
 func TestLightingWithEyeBetweenLightAndSurface(t *testing.T) {
+	obj := NewSphere()
 	mat := DefaultMaterial()
 	pos := NewPoint(0, 0, 0)
 
@@ -30,7 +31,7 @@ func TestLightingWithEyeBetweenLightAndSurface(t *testing.T) {
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV, false)
+	actual := mat.Lighting(obj, light, pos, eyeV, normalV, false)
 	expected := NewColor(1.9, 1.9, 1.9)
 
 	assertEqualColor(t, expected, actual)
@@ -45,6 +46,7 @@ func TestLightingWithEyeBetweenLightAndSurface(t *testing.T) {
 // 	 				 	|
 
 func TestLightingWithEyeBetweenLightAndSurfaceAndEyeOffset45Degrees(t *testing.T) {
+	obj := NewSphere()
 	mat := DefaultMaterial()
 	pos := NewPoint(0, 0, 0)
 
@@ -52,7 +54,7 @@ func TestLightingWithEyeBetweenLightAndSurfaceAndEyeOffset45Degrees(t *testing.T
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV, false)
+	actual := mat.Lighting(obj, light, pos, eyeV, normalV, false)
 	expected := NewColor(1, 1, 1)
 
 	assertEqualColor(t, expected, actual)
@@ -67,6 +69,7 @@ func TestLightingWithEyeBetweenLightAndSurfaceAndEyeOffset45Degrees(t *testing.T
 // 	 				 	|
 
 func TestLightingWithEyeOppositeSurfaceAndLightOffset45Degrees(t *testing.T) {
+	obj := NewSphere()
 	mat := DefaultMaterial()
 	pos := NewPoint(0, 0, 0)
 
@@ -74,7 +77,7 @@ func TestLightingWithEyeOppositeSurfaceAndLightOffset45Degrees(t *testing.T) {
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 10, -10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV, false)
+	actual := mat.Lighting(obj, light, pos, eyeV, normalV, false)
 	expected := NewColor(0.7364, 0.7364, 0.7364)
 
 	assertEqualColor(t, expected, actual)
@@ -88,6 +91,7 @@ func TestLightingWithEyeOppositeSurfaceAndLightOffset45Degrees(t *testing.T) {
 //  				/	|
 // 	 			👁	|
 func TestLightingWithEyeInPathOfReflectionVector(t *testing.T) {
+	obj := NewSphere()
 	mat := DefaultMaterial()
 	pos := NewPoint(0, 0, 0)
 
@@ -95,7 +99,7 @@ func TestLightingWithEyeInPathOfReflectionVector(t *testing.T) {
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 10, -10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV, false)
+	actual := mat.Lighting(obj, light, pos, eyeV, normalV, false)
 	expected := NewColor(1.6364, 1.6364, 1.6364)
 
 	assertEqualColor(t, expected, actual)
@@ -109,6 +113,7 @@ func TestLightingWithEyeInPathOfReflectionVector(t *testing.T) {
 //  				 		|
 // 	 				 	  |
 func TestLightingWithLightBehindSurface(t *testing.T) {
+	obj := NewSphere()
 	mat := DefaultMaterial()
 	pos := NewPoint(0, 0, 0)
 
@@ -116,7 +121,7 @@ func TestLightingWithLightBehindSurface(t *testing.T) {
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 0, 10), Colors["White"])
 
-	actual := mat.Lighting(light, pos, eyeV, normalV, false)
+	actual := mat.Lighting(obj, light, pos, eyeV, normalV, false)
 	expected := NewColor(0.1, 0.1, 0.1)
 
 	assertEqualColor(t, expected, actual)
@@ -130,6 +135,7 @@ func TestLightingWithLightBehindSurface(t *testing.T) {
 //  				 		 |
 // 	 				 	   |
 func TestLightingWithTheSurfaceInShadow(t *testing.T) {
+	obj := NewSphere()
 	mat := DefaultMaterial()
 	pos := NewPoint(0, 0, 0)
 
@@ -138,8 +144,26 @@ func TestLightingWithTheSurfaceInShadow(t *testing.T) {
 	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
 	inShadow := true
 
-	actual := mat.Lighting(light, pos, eyeV, normalV, inShadow)
+	actual := mat.Lighting(obj, light, pos, eyeV, normalV, inShadow)
 	expected := NewColor(0.1, 0.1, 0.1)
 
 	assertEqualColor(t, expected, actual)
+}
+
+func TestLightingWithAPatternApplied(t *testing.T) {
+	obj := NewSphere()
+	mat := DefaultMaterial()
+	mat.Pattern = NewStripePattern(Colors["White"], Colors["Black"])
+	mat.Ambient = 1
+	mat.Diffuse = 0
+	mat.Specular = 0
+	eyeV := NewVector(0, 0, -1)
+	normalV := NewVector(0, 0, -1)
+	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
+
+	c1 := mat.Lighting(obj, light, NewPoint(0.9, 0, 0), eyeV, normalV, false)
+	c2 := mat.Lighting(obj, light, NewPoint(1.1, 0, 0), eyeV, normalV, false)
+
+	assertEqualColor(t, Colors["White"], c1)
+	assertEqualColor(t, Colors["Black"], c2)
 }

@@ -17,7 +17,13 @@ func TestDefaultWorld(t *testing.T) {
 	l := NewPointLight(NewPoint(-10, 10, -10), Colors["White"])
 
 	s1 := NewSphere()
-	s1.Material = Material{NewColor(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200}
+	s1.Material = Material{
+		Color:     NewColor(0.8, 1.0, 0.6),
+		Ambient:   0.1,
+		Diffuse:   0.7,
+		Specular:  0.2,
+		Shininess: 200,
+	}
 
 	s2 := NewSphere()
 	s2.Transform = NewScale(0.5, 0.5, 0.5)

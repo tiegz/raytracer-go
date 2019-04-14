@@ -11,6 +11,7 @@ type Material struct {
 	Diffuse   float64
 	Specular  float64
 	Shininess float64
+	Pattern   Pattern
 }
 
 func DefaultMaterial() Material {
@@ -48,11 +49,17 @@ func (m Material) String() string {
 //   * Diffuse reflection:  reflection from matte surface; depends on angle btwn light and surface.
 //   * Specular reflection: reflection of the light source; depends on angle btwn the reflection
 //      										and eye vectors. Intensity is controlled by "shininess".
-func (m *Material) Lighting(light PointLight, point Tuple, eyeVector, normalVector Tuple, inShadow bool) Color {
-	var ambient, specular, diffuse Color
+func (m *Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, normalVector Tuple, inShadow bool) Color {
+	var baseColor, ambient, specular, diffuse Color
+
+	if !m.Pattern.IsEqualTo(NullPattern()) {
+		baseColor = m.Pattern.StripeAtObject(obj, point)
+	} else {
+		baseColor = m.Color
+	}
 
 	// combine the surface color with the light's color/intensity
-	effectiveColor := m.Color.MultiplyColor(light.Intensity)
+	effectiveColor := baseColor.MultiplyColor(light.Intensity)
 
 	// find the direction to the light source
 	lightVector := light.Position.Subtract(point)

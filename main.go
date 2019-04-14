@@ -10,7 +10,8 @@ func main() {
 	// examples.RunDrawSphereSilhouette(false, true, true, true)
 	// examples.RunDrawSphereShaded(false, true, true, true)
 	// examples.RunDrawWorld()
-	examples.RunDrawWorldWithPlane()
+	// examples.RunDrawWorldWithPlane()
+	examples.RunDrawWorldWithPatterns()
 
 	// // my own experiments
 	// examples.RunAnimation()
