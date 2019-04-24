@@ -2,48 +2,47 @@ package raytracer
 
 import (
 	"fmt"
-	"math"
 )
 
+type PatternInterface interface {
+	LocalPatternAt(Tuple) Color
+	localIsEqualTo(PatternInterface) bool
+	localType() string
+}
+
+// Pattern is a general pattern (Transform), with the specific type of pattern stored as a PatternInterface in LocalPattern.
 type Pattern struct {
-	A         Color
-	B         Color
-	Transform Matrix
+	LocalPattern PatternInterface
+	Transform    Matrix
 }
 
-func NullPattern() Pattern {
-	return Pattern{}
-}
-
-func NewStripePattern(a, b Color) Pattern {
-	return Pattern{a, b, IdentityMatrix()}
+func NewPattern(pi PatternInterface) Pattern {
+	return Pattern{LocalPattern: pi, Transform: IdentityMatrix()}
 }
 
 func (p Pattern) String() string {
-	return fmt.Sprintf("Pattern( )")
+	return fmt.Sprintf("Pattern( %v )", p.LocalPattern)
 }
 
-func (p *Pattern) IsEqualTo(p2 Pattern) bool {
-	if !p.A.IsEqualTo(p2.A) || !p.B.IsEqualTo(p2.B) || !p.Transform.IsEqualTo(p2.Transform) {
+func (p Pattern) IsEqualTo(p2 Pattern) bool {
+	pt1 := p.LocalPattern.localType()
+	pt2 := p2.LocalPattern.localType()
+
+	if pt1 != pt2 {
 		return false
-	}
-	return true
-}
-
-func (p *Pattern) StripeAt(point Tuple) Color {
-	if math.Mod(math.Floor(point.X), 2) == 0 {
-		return p.A
+	} else if !p.Transform.IsEqualTo(p2.Transform) {
+		return false
 	} else {
-		return p.B
+		return p.LocalPattern.localIsEqualTo(p2.LocalPattern)
 	}
 }
 
-func (p *Pattern) StripeAtObject(obj Shape, point Tuple) Color {
+func (p Pattern) PatternAtShape(obj Shape, point Tuple) Color {
 	inverseObjTransform := obj.Transform.Inverse()
 	objectPoint := inverseObjTransform.MultiplyByTuple(point)
 
 	inversePatternTransform := p.Transform.Inverse()
 	patternPoint := inversePatternTransform.MultiplyByTuple(objectPoint)
 
-	return p.StripeAt(patternPoint)
+	return p.LocalPattern.LocalPatternAt(patternPoint)
 }

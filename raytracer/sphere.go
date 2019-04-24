@@ -6,11 +6,8 @@ import (
 )
 
 type Sphere struct {
-	// Shape  // Shape
 	Origin Tuple
 	Radius float64
-	// Transform Matrix
-	// Material  Material
 }
 
 func NewSphere() Shape {

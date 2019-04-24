@@ -21,6 +21,7 @@ func DefaultMaterial() Material {
 		Diffuse:   0.9,
 		Specular:  0.9,
 		Shininess: 200,
+		Pattern:   NewNullPattern(),
 	}
 }
 
@@ -40,7 +41,7 @@ func (m *Material) IsEqualTo(m2 Material) bool {
 }
 
 func (m Material) String() string {
-	return fmt.Sprintf("Material( %v %v %v %v %v\n)", m.Color, m.Ambient, m.Diffuse, m.Specular, m.Shininess)
+	return fmt.Sprintf("Material( %v %v %v %v %v %v\n)", m.Color, m.Ambient, m.Diffuse, m.Specular, m.Shininess, m.Pattern)
 }
 
 // Calculates the lighting for a given point and material, based on Phong reflection.
@@ -52,8 +53,8 @@ func (m Material) String() string {
 func (m *Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, normalVector Tuple, inShadow bool) Color {
 	var baseColor, ambient, specular, diffuse Color
 
-	if !m.Pattern.IsEqualTo(NullPattern()) {
-		baseColor = m.Pattern.StripeAtObject(obj, point)
+	if !m.Pattern.IsEqualTo(NewNullPattern()) {
+		baseColor = m.Pattern.PatternAtShape(obj, point)
 	} else {
 		baseColor = m.Color
 	}
