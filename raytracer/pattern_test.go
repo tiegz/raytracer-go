@@ -102,3 +102,45 @@ func TestAPatternWithBothAnObjectAndAPatternTransformation(t *testing.T) {
 
 	assertEqualColor(t, NewColor(0.75, 0.5, 0.25), pattern.PatternAtShape(shape, NewPoint(2.5, 3, 3.5)))
 }
+
+func TestAGradientLinearlyInterpolatesBetweenColors(t *testing.T) {
+	p := NewGradientPattern(Colors["White"], Colors["Black"])
+
+	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0)))
+	assertEqualColor(t, NewColor(0.75, 0.75, 0.75), p.LocalPattern.LocalPatternAt(NewPoint(0.25, 0, 0)))
+	assertEqualColor(t, NewColor(0.5, 0.5, 0.5), p.LocalPattern.LocalPatternAt(NewPoint(0.5, 0, 0)))
+	assertEqualColor(t, NewColor(0.25, 0.25, 0.25), p.LocalPattern.LocalPatternAt(NewPoint(0.75, 0, 0)))
+}
+
+func TestARingShouldExtendInBothXAndZ(t *testing.T) {
+	p := NewRingPattern(Colors["White"], Colors["Black"])
+
+	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0)))
+	assertEqualColor(t, Colors["Black"], p.LocalPattern.LocalPatternAt(NewPoint(1, 0, 0)))
+	assertEqualColor(t, Colors["Black"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 1)))
+	assertEqualColor(t, Colors["Black"], p.LocalPattern.LocalPatternAt(NewPoint(0.708, 0, 0.709)))
+}
+
+func TestCheckersShouldRepeatInX(t *testing.T) {
+	p := NewCheckerPattern(Colors["White"], Colors["Black"])
+
+	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0)))
+	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0.99, 0, 0)))
+	assertEqualColor(t, Colors["Black"], p.LocalPattern.LocalPatternAt(NewPoint(1.01, 0, 0)))
+}
+
+func TestCheckersShouldRepeatInY(t *testing.T) {
+	p := NewCheckerPattern(Colors["White"], Colors["Black"])
+
+	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0)))
+	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0.99, 0)))
+	assertEqualColor(t, Colors["Black"], p.LocalPattern.LocalPatternAt(NewPoint(0, 1.01, 0)))
+}
+
+func TestCheckersShouldRepeatInZ(t *testing.T) {
+	p := NewCheckerPattern(Colors["White"], Colors["Black"])
+
+	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0)))
+	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0.99)))
+	assertEqualColor(t, Colors["Black"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 1.01)))
+}

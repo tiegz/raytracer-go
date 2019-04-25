@@ -5,7 +5,6 @@ import (
 	"math"
 )
 
-// This is just a dummy "child" of Pattern, for testing purposes.
 type StripePattern struct {
 	A Color
 	B Color

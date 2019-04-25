@@ -25,7 +25,9 @@ Would be nice to enable method chaining here. If we try that now, we get:
 - https://golang.org/doc/faq#methods_on_values_or_pointers
 - Using value receivers is better for concurrency
 
-### Use sync.Pool to reuse some types?
+### Fix Checker/Sphere rendering by implementing UV mapping:
+
+> To apply a two-dimensional texture (like checkers) to the surface of an object, you need to implement something called UV mapping, which converts a three-dimensional point of intersection (x, y, z) into a two-dimensional surface coordinate (u, v). You’d then map that surface coordinate to a color. It’s fun to do, but sadly beyond the scope of this book. Tutorial-style resources are hard to find, but with a bit of reading between the lines and some experimentation, searching for topics like “spherical texture mapping” can bear fruit.
 
 ### Optimizations ideas:
 
