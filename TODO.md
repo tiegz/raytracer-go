@@ -26,3 +26,10 @@ Would be nice to enable method chaining here. If we try that now, we get:
 - Using value receivers is better for concurrency
 
 ### Use sync.Pool to reuse some types?
+
+### Optimizations ideas:
+
+- create benchmarks for different levels/scopes (world, camera, shape, matrix, tuple)
+- reset to non-pointers, and then try making each field-by-field a pointer (get rid of NullX types first?)
+- sync.Pool
+- goroutines
