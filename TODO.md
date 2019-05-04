@@ -1,5 +1,7 @@
 # TODOs
 
+### Add indentation-nesting to String() methods so we can truly pretty-print them, e.g. String(indentation_level int)
+
 ### Work around method chaining problem
 
 ### Can we replace the NewX methods with just literals? Is there much constructor logic even needed?

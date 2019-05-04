@@ -28,10 +28,9 @@ var Colors = map[string]Color{
 }
 
 func (c *Color) IsEqualTo(c2 Color) bool {
-	const tolerance = 0.00001
 	equals := func(x, y float64) bool {
 		diff := math.Abs(x - y)
-		return diff < tolerance
+		return diff < equalFloat64sTolerance
 	}
 
 	return equals(c.Red, c2.Red) && equals(c.Green, c2.Green) && equals(c.Blue, c2.Blue)

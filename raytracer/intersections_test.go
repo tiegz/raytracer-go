@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"math"
 	"testing"
 )
 
@@ -110,4 +111,90 @@ func TestHitShouldOffsetPoint(t *testing.T) {
 
 	assert(t, c.OverPoint.Z < -EPSILON/2)
 	assert(t, c.Point.Z > c.OverPoint.Z)
+}
+
+func TestPrecomputingTheReflectionVector(t *testing.T) {
+	shape := NewPlane()
+	r := NewRay(NewPoint(0, 1, -1), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2)) // ray arrives at 45° angle
+	i := NewIntersection(math.Sqrt(2), shape)                                      // √2 units away, given the above line + pythagoream theorem
+	c := i.PrepareComputations(r)
+
+	assertEqualTuple(t, NewVector(0, math.Sqrt(2)/2, math.Sqrt(2)/2), c.ReflectV) // ray reflects at 45° angle
+}
+
+func TestTheReflectedColorForANonreflectiveMaterial(t *testing.T) {
+	w := DefaultWorld()
+	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 0, 1))
+	shape := w.Objects[1]
+	i := NewIntersection(1, shape)
+	c := i.PrepareComputations(r)
+
+	assertEqualColor(t, NewColor(0, 0, 0), w.ReflectedColor(c, DefaultMaximumReflections))
+}
+
+func TestTheReflectedColorForAReflectiveMaterial(t *testing.T) {
+	w := DefaultWorld()
+	shape := NewPlane()
+	shape.Material.Reflective = 0.5
+	shape.Transform = NewTranslation(0, -1, 0)
+	w.Objects = append(w.Objects, shape)
+
+	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
+	i := NewIntersection(math.Sqrt(2), shape)
+	c := i.PrepareComputations(r)
+
+	// ERRATA book values were: 0.19032, 0.2379, 0.14274
+	assertEqualColor(t, NewColor(0.19033, 0.23791, 0.14274), w.ReflectedColor(c, DefaultMaximumReflections))
+}
+
+func TestShadeHitWithAReflectiveMaterial(t *testing.T) {
+	w := DefaultWorld()
+	shape := NewPlane()
+	shape.Material.Reflective = 0.5
+	shape.Transform = NewTranslation(0, -1, -0)
+	w.Objects = append(w.Objects, shape)
+	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
+	i := NewIntersection(math.Sqrt(2), shape)
+	c := i.PrepareComputations(r)
+
+	// ERRATA book values were: 0.87677, 0.92436, 0.82918
+	assertEqualColor(t, NewColor(0.87675, 0.92434, 0.82917), w.ShadeHit(c, DefaultMaximumReflections))
+}
+
+// Avoid infinite recursion (ShadeHit -> ReflectedColor -> ColorAt -> ShadeHit)
+// ERRATA page 145 says to use OverPoint in ReflectedColor, which doesn't result
+// in infinite recursion. If I use Point though, this test will recurse infinitely.
+func TestColorAtWithMutuallyReflectiveSurfaces(t *testing.T) {
+	w := DefaultWorld()
+	light := NewPointLight(NewPoint(0, 0, 0), NewColor(1, 1, 1))
+	w.Lights = []PointLight{light}
+
+	lower := NewPlane()
+	lower.Material.Reflective = 1
+	lower.Transform = NewTranslation(0, -1, 0)
+
+	upper := NewPlane()
+	upper.Material.Reflective = 1
+	upper.Transform = NewTranslation(0, 1, 0)
+
+	w.Objects = []Shape{lower, upper}
+
+	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 1, 0))
+
+	// The book only wanted us to write this to prove that infinite
+	// recursion was possible, but I added this assertion anyway.
+	assertEqualColor(t, NewColor(0.2, 0.2, 0.2), w.ColorAt(r, 999999))
+}
+
+func TestTheReflectedColorAtTheMaximumRecursiveDepth(t *testing.T) {
+	w := DefaultWorld()
+	shape := NewPlane()
+	shape.Material.Reflective = 0.5
+	shape.Transform = NewTranslation(0, -1, 0)
+	w.Objects = append(w.Objects, shape)
+	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
+	i := NewIntersection(math.Sqrt(2), shape)
+	c := i.PrepareComputations(r)
+
+	assertEqualColor(t, NewColor(0, 0, 0), w.ReflectedColor(c, 0))
 }

@@ -52,7 +52,7 @@ func TestShadingAnIntersection(t *testing.T) {
 	i := NewIntersection(4, s1)
 	c := i.PrepareComputations(r)
 
-	actual := w.ShadeHit(c)
+	actual := w.ShadeHit(c, DefaultMaximumReflections)
 	expected := NewColor(0.38066, 0.47583, 0.2855)
 	assertEqualColor(t, expected, actual)
 }
@@ -68,7 +68,7 @@ func TestShadingAnIntersectionFromInside(t *testing.T) {
 	i := NewIntersection(0.5, s2)
 	c := i.PrepareComputations(r)
 
-	actual := w.ShadeHit(c)
+	actual := w.ShadeHit(c, DefaultMaximumReflections)
 	expected := NewColor(0.1, 0.1, 0.1)
 	// expected := NewColor(0.90498, 0.90498, 0.90498) // TODO this is the answer from the book -- why not working?
 	assertEqualColor(t, expected, actual)
@@ -92,7 +92,7 @@ func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 	i := NewIntersection(4, s2)
 
 	c := i.PrepareComputations(r)
-	actual := w.ShadeHit(c)
+	actual := w.ShadeHit(c, DefaultMaximumReflections)
 	expected := NewColor(0.1, 0.1, 0.1)
 
 	assertEqualColor(t, expected, actual)
@@ -101,7 +101,7 @@ func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 func TestColorAtWhenRayMisses(t *testing.T) {
 	w := DefaultWorld()
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 1, 0))
-	actual := w.ColorAt(r)
+	actual := w.ColorAt(r, DefaultMaximumReflections)
 	expected := Colors["Black"]
 
 	assertEqualColor(t, expected, actual)
@@ -111,7 +111,7 @@ func TestColorAtWhenRayMisses(t *testing.T) {
 func TestColorAtWhenRayHitsOuterSphere(t *testing.T) {
 	w := DefaultWorld()
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
-	actual := w.ColorAt(r)
+	actual := w.ColorAt(r, DefaultMaximumReflections)
 	expected := NewColor(0.38066, 0.47583, 0.2855)
 
 	assertEqualColor(t, expected, actual)
@@ -123,7 +123,7 @@ func TestColorAtWithAnIntersectionBehindRay(t *testing.T) {
 	w.Objects[0].Material.Ambient = 1 // outer
 	w.Objects[1].Material.Ambient = 1 // inner
 	r := NewRay(NewPoint(0, 0, 0.75), NewVector(0, 0, -1))
-	actual := w.ColorAt(r)
+	actual := w.ColorAt(r, DefaultMaximumReflections)
 	expected := w.Objects[1].Material.Color
 
 	assertEqualColor(t, expected, actual)

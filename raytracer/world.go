@@ -5,6 +5,9 @@ import (
 	"sort"
 )
 
+// TODO ugh can we make this a default argument somehow?
+const DefaultMaximumReflections int = 4 // recommended on page 148
+
 type World struct {
 	Objects []Shape
 	Lights  []PointLight
@@ -63,20 +66,33 @@ func (w *World) Intersect(r Ray) Intersections {
 }
 
 // ShadeHit returns the color for the given computation's intersection.
-func (w *World) ShadeHit(c Computation) Color {
+func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 	color := NewColor(0, 0, 0)
 
 	for _, light := range w.Lights {
 		isShadowed := w.IsShadowed(c.OverPoint)
-		result := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
-		color = color.Add(result)
+		surface := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
+		surface = surface.Add(w.ReflectedColor(c, remainingReflections))
+		color = color.Add(surface)
 	}
 
 	return color
 }
 
+func (w *World) ReflectedColor(c Computation, remainingReflections int) Color {
+	if remainingReflections < 1 {
+		return Colors["Black"]
+	} else if c.Object.Material.Reflective == 0 {
+		return Colors["Black"]
+	} else {
+		reflectionRay := NewRay(c.OverPoint, c.ReflectV)
+		color := w.ColorAt(reflectionRay, remainingReflections-1)
+		return color.Multiply(c.Object.Material.Reflective)
+	}
+}
+
 // ColorAt gets a ray's intersection in the world and returns that intersection's color.
-func (w *World) ColorAt(r Ray) Color {
+func (w *World) ColorAt(r Ray, remainingReflections int) Color {
 	var color Color
 
 	// 	Call intersect_world to find the intersections of the given ray with the given world.
@@ -84,6 +100,7 @@ func (w *World) ColorAt(r Ray) Color {
 
 	// 2. Find the hit from the resulting intersections.
 	if hit := is.Hit(); hit.IsNull() {
+
 		// 3. Return the color black if there is no such intersection.
 		color = Colors["Black"]
 	} else {
@@ -91,7 +108,7 @@ func (w *World) ColorAt(r Ray) Color {
 		c := hit.PrepareComputations(r)
 
 		// 5. Finally, call shade_hit to find the color at the hit.
-		color = w.ShadeHit(c)
+		color = w.ShadeHit(c, remainingReflections)
 	}
 
 	return color

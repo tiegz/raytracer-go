@@ -167,3 +167,9 @@ func TestLightingWithAPatternApplied(t *testing.T) {
 	assertEqualColor(t, Colors["White"], c1)
 	assertEqualColor(t, Colors["Black"], c2)
 }
+
+func TestReflectivityForTheDefaultMaterial(t *testing.T) {
+	m := DefaultMaterial()
+
+	assertEqualFloat64(t, 0.0, m.Reflective)
+}
