@@ -9,8 +9,8 @@ import (
 )
 
 func RunDrawWorldWithPatterns() {
-	// camera := raytracer.NewCamera(320, 200, math.Pi/3)
-	camera := raytracer.NewCamera(640, 480, math.Pi/3)
+	camera := raytracer.NewCamera(320, 200, math.Pi/3)
+	// camera := raytracer.NewCamera(640, 480, math.Pi/3)
 	// camera := raytracer.NewCamera(400, 200, math.Pi/3)
 	// camera := raytracer.NewCamera(1000, 500, math.Pi/3)
 	// camera := raytracer.NewCamera(1920, 1080, math.Pi/3)

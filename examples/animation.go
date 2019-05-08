@@ -10,12 +10,12 @@ import (
 )
 
 func RunAnimation() {
-	camera := raytracer.NewCamera(160, 100, math.Pi/3) // VGA
-	// camera := raytracer.NewCamera(320, 200, math.Pi/3) // VGA
-	// camera := raytracer.NewCamera(640, 480, math.Pi/3) // VGA
+	// camera := raytracer.NewCamera(160, 100, math.Pi/3)
+	// camera := raytracer.NewCamera(320, 200, math.Pi/3)
+	camera := raytracer.NewCamera(640, 480, math.Pi/3)
 	// camera := raytracer.NewCamera(400, 200, math.Pi/3)
 	// camera := raytracer.NewCamera(1000, 500, math.Pi/3)
-	// camera := raytracer.NewCamera(1280, 960, math.Pi/3)
+	// camera := raytracer.NewCamera(1920, 1080, math.Pi/3)
 
 	camera.Transform = raytracer.NewViewTransform(
 		raytracer.NewPoint(0, 1.5, -5),
@@ -23,50 +23,49 @@ func RunAnimation() {
 		raytracer.NewVector(0, 1, 0),
 	)
 
-	floor := raytracer.NewSphere()
-	floor.Transform = raytracer.NewScale(10, 0.01, 10)
-	floor.Material.Color = raytracer.NewColor(1, 0.9, 0.9)
-	floor.Material.Specular = 0
+	floor := raytracer.NewPlane()
+	floor.Material.Pattern = raytracer.NewCheckerPattern(raytracer.Colors["Black"], raytracer.Colors["White"])
 
-	leftWall := raytracer.NewSphere()
-	leftWall.Transform = raytracer.NewTranslation(0, 0, 5)
-	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewRotateY(-math.Pi / 4))
-	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewRotateX(math.Pi / 2))
-	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewScale(10, 0.01, 10))
-	leftWall.Material = floor.Material
-
-	rightWall := raytracer.NewSphere()
-	rightWall.Transform = raytracer.NewTranslation(0, 0, 5)
+	rightWall := raytracer.NewPlane()
+	rightWall.Material.Ambient = 0.5
+	rightWall.Material.Reflective = 0.5
+	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewTranslation(0, 0, 5))
 	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewRotateY(math.Pi / 4))
 	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewRotateX(math.Pi / 2))
-	rightWall.Transform = rightWall.Transform.Multiply(raytracer.NewScale(10, 0.01, 10))
-	rightWall.Material = floor.Material
+	rightWall.Material.Pattern = raytracer.NewCheckerPattern(raytracer.Colors["Blue"], raytracer.Colors["Green"])
+
+	leftWall := raytracer.NewPlane()
+	leftWall.Material.Ambient = 0.5
+	leftWall.Material.Reflective = 0.2
+	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewTranslation(0, 0, 5))
+	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewRotateY(-math.Pi / 4))
+	leftWall.Transform = leftWall.Transform.Multiply(raytracer.NewRotateX(math.Pi / 2))
+	leftWall.Material.Pattern = raytracer.NewCheckerPattern(raytracer.Colors["Purple"], raytracer.Colors["Yellow"])
 
 	midSphere := raytracer.NewSphere()
 	midSphere.Transform = raytracer.NewTranslation(-0.5, 1, 0.5)
-	midSphere.Material.Color = raytracer.NewColor(0.1, 1, 0.5)
-	midSphere.Material.Diffuse = 0.7
-	midSphere.Material.Specular = 0.3
+	midSphere.Material.Reflective = 1.0
+	midSphere.Material.Diffuse = 0.1
+	midSphere.Material.Color = raytracer.NewColor(0.75, 0.75, 0.75)
 
 	rightSphere := raytracer.NewSphere()
-	rightSphere.Transform = raytracer.NewTranslation(1.5, 0.5, -0.5)
+	rightSphere.Transform = raytracer.NewTranslation(1.5, 0.5, -1.5)
 	rightSphere.Transform = rightSphere.Transform.Multiply(raytracer.NewScale(0.5, 0.5, 0.5))
-	rightSphere.Material.Color = raytracer.NewColor(0.5, 1, 0.1)
-	rightSphere.Material.Diffuse = 0.7
-	rightSphere.Material.Specular = 0.3
+	rightSphere.Material.Pattern = raytracer.NewRingPattern(raytracer.Colors["Red"], raytracer.Colors["White"])
+	rightSphere.Material.Pattern.Transform = raytracer.NewScale(0.23, 0.1, 0.23)
 
 	leftSphere := raytracer.NewSphere()
 	leftSphere.Transform = raytracer.NewTranslation(-1.5, 0.33, -0.75)
 	leftSphere.Transform = leftSphere.Transform.Multiply(raytracer.NewScale(0.33, 0.33, 0.33))
+	leftSphere.Material.Pattern = raytracer.NewRingPattern(raytracer.Colors["Blue"], raytracer.Colors["White"])
+	leftSphere.Material.Pattern.Transform = raytracer.NewScale(0.23, 0.23, 0.23)
 	leftSphere.Material.Color = raytracer.NewColor(1, 0.8, 0.1)
-	leftSphere.Material.Diffuse = 0.7
-	leftSphere.Material.Specular = 0.3
 
 	world := raytracer.NewWorld()
 	world.Objects = []raytracer.Shape{
 		floor,
-		leftWall,
 		rightWall,
+		leftWall,
 		midSphere,
 		leftSphere,
 		rightSphere,
@@ -76,15 +75,18 @@ func RunAnimation() {
 	}
 
 	frameCount := 100
-	leftSphereTranslation := raytracer.NewTranslation(0, 0.1, 0)
-	midSphereTranslation := raytracer.NewTranslation(0.1, 0, 0)
-	rightSphereTranslation := raytracer.NewTranslation(0, 0.1, 0.2)
+	leftSphereTranslation := raytracer.NewTranslation(0, 0.05, 0)
+	leftSphereTranslation = leftSphereTranslation.Multiply(raytracer.NewRotateZ(math.Pi / 40))
+	leftSphereTranslation = leftSphereTranslation.Multiply(raytracer.NewTranslation(0, 0.1, 0))
+	leftSphereTranslation = leftSphereTranslation.Multiply(raytracer.NewRotateX(math.Pi / 20))
+	midSphereTranslation := raytracer.NewTranslation(0.075, 0, 0)
+	rightSphereTranslation := raytracer.NewTranslation(0, 0.05, 0.1)
 
 	for i := 0; i < frameCount; i++ {
 		canvas := camera.Render(world)
 
-		world.Objects[3].Transform = leftSphereTranslation.Multiply(world.Objects[3].Transform)
-		world.Objects[4].Transform = midSphereTranslation.Multiply(world.Objects[4].Transform)
+		world.Objects[3].Transform = midSphereTranslation.Multiply(world.Objects[3].Transform)
+		world.Objects[4].Transform = leftSphereTranslation.Multiply(world.Objects[4].Transform)
 		world.Objects[5].Transform = rightSphereTranslation.Multiply(world.Objects[5].Transform)
 
 		fmt.Println("Generating PPM...")
@@ -97,7 +99,7 @@ func RunAnimation() {
 		}
 	}
 
-	if _, err := exec.Command("convert -delay 2 tmp/sphere_silhouette*ppm movie.gif").Output(); err != nil {
+	if _, err := exec.Command("convert -delay 5 tmp/sphere_silhouette*ppm movie.gif").Output(); err != nil {
 		fmt.Println("error occured")
 		fmt.Printf("%s", err)
 	}

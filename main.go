@@ -11,8 +11,10 @@ func main() {
 	// examples.RunDrawSphereShaded(false, true, true, true)
 	// examples.RunDrawWorld()
 	// examples.RunDrawWorldWithPlane()
-	examples.RunDrawWorldWithPatterns()
+	// examples.RunDrawWorldWithPatterns()
+	// examples.RunDrawWorldWithMultiplePatterns()
+	// examples.RunDrawWorldWithReflection()
 
 	// // my own experiments
-	// examples.RunAnimation()
+	examples.RunAnimation()
 }
