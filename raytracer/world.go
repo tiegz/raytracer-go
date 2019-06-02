@@ -105,7 +105,7 @@ func (w *World) ColorAt(r Ray, remainingReflections int) Color {
 		color = Colors["Black"]
 	} else {
 		// 4. Otherwise, precompute the necessary values with prepare_computations.
-		c := hit.PrepareComputations(r)
+		c := hit.PrepareComputations(r, is...)
 
 		// 5. Finally, call shade_hit to find the color at the hit.
 		color = w.ShadeHit(c, remainingReflections)

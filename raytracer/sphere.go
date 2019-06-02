@@ -14,6 +14,13 @@ func NewSphere() Shape {
 	return NewShape(&Sphere{NewPoint(0, 0, 0), 1})
 }
 
+func NewGlassSphere() Shape {
+	shape := NewShape(&Sphere{NewPoint(0, 0, 0), 1})
+	shape.Material.Transparency = 1.0
+	shape.Material.RefractiveIndex = 1.5
+	return shape
+}
+
 func (s Sphere) String() string {
 	return fmt.Sprintf("Sphere( %v, %.1f )", s.Origin, s.Radius)
 }

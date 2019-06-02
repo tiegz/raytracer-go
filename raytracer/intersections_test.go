@@ -198,3 +198,45 @@ func TestTheReflectedColorAtTheMaximumRecursiveDepth(t *testing.T) {
 
 	assertEqualColor(t, NewColor(0, 0, 0), w.ReflectedColor(c, 0))
 }
+
+func TestFindingN1AndN2AtVariousIntersections(t *testing.T) {
+	a := NewGlassSphere()
+	a.Transform = NewScale(2, 2, 2)
+	a.Material.RefractiveIndex = 1.5
+
+	b := NewGlassSphere()
+	b.Transform = NewTranslation(0, 0, -0.25)
+	b.Material.RefractiveIndex = 2.0
+
+	c := NewGlassSphere()
+	c.Transform = NewTranslation(0, 0, 0.25)
+	c.Material.RefractiveIndex = 2.5
+
+	r := NewRay(NewPoint(0, 0, -4), NewVector(0, 0, 1))
+	// NB the book uses Intersection[], but I'm making the intersections arg to
+	// PrepareComputations() a variadic array of Intersection instead, because
+	// it's optional and Go lacks default values.
+	xs := Intersections{
+		NewIntersection(2, a),
+		NewIntersection(2.75, b),
+		NewIntersection(3.25, c),
+		NewIntersection(4.75, b),
+		NewIntersection(5.25, c),
+		NewIntersection(6, a),
+	}
+
+	var expectedRefractedIndexValues = [][]float64{
+		{1.0, 1.5},
+		{1.5, 2.0},
+		{2.0, 2.5},
+		{2.5, 2.5},
+		{2.5, 1.5},
+		{1.5, 1.0},
+	}
+	for idx, expected := range expectedRefractedIndexValues {
+		comps := xs[idx].PrepareComputations(r, xs...)
+
+		assertEqualFloat64(t, expected[0], comps.N1)
+		assertEqualFloat64(t, expected[1], comps.N2)
+	}
+}

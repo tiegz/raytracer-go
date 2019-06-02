@@ -138,9 +138,9 @@ func (m *Matrix) Determinant() float64 {
 	if m.Rows == 2 {
 		return (m.At(0, 0) * m.At(1, 1)) - (m.At(1, 0) * m.At(0, 1))
 	} else {
-		// The magical thing is that it doesn’t matter which row or column you choose. It just works.
+		// ... The magical thing is that it doesn’t matter which row or column you choose. It just works. ...
 		row, sum := 0, 0.0
-		for col := 0; col < m.Cols; col += 1 {
+		for col := 0; col < m.Cols; col++ {
 			sum += m.At(row, col) * m.Cofactor(row, col)
 		}
 		return sum

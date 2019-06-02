@@ -173,3 +173,10 @@ func TestReflectivityForTheDefaultMaterial(t *testing.T) {
 
 	assertEqualFloat64(t, 0.0, m.Reflective)
 }
+
+func TestTransparencyAndRefractiveIndexForTheDefaultMaterial(t *testing.T) {
+	m := DefaultMaterial()
+
+	assertEqualFloat64(t, 0.0, m.Transparency)
+	assertEqualFloat64(t, 1.0, m.RefractiveIndex)
+}

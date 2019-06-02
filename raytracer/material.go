@@ -6,24 +6,28 @@ import (
 )
 
 type Material struct {
-	Color      Color
-	Ambient    float64
-	Diffuse    float64
-	Specular   float64
-	Shininess  float64
-	Pattern    Pattern
-	Reflective float64
+	Color           Color
+	Ambient         float64
+	Diffuse         float64
+	Specular        float64
+	Shininess       float64
+	Pattern         Pattern
+	Reflective      float64
+	Transparency    float64
+	RefractiveIndex float64
 }
 
 func DefaultMaterial() Material {
 	return Material{
-		Color:      Colors["White"],
-		Ambient:    0.1,
-		Diffuse:    0.9,
-		Specular:   0.9,
-		Shininess:  200,
-		Pattern:    NewNullPattern(),
-		Reflective: 0.0,
+		Color:           Colors["White"],
+		Ambient:         0.1,
+		Diffuse:         0.9,
+		Specular:        0.9,
+		Shininess:       200,
+		Pattern:         NewNullPattern(),
+		Reflective:      0.0,
+		Transparency:    0.0,
+		RefractiveIndex: 1.0,
 	}
 }
 

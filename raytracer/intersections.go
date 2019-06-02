@@ -19,6 +19,8 @@ type Computation struct {
 	NormalV   Tuple   // the normal on the object at the given Point
 	ReflectV  Tuple   // the vector of reflection
 	Inside    bool    // was the intersection inside the object?
+	N1        float64 // refractive index of object being exited at ray-object intersection
+	N2        float64 // refractive index of object being entered at ray-object intersection
 }
 
 func NullIntersection() Intersection {
@@ -61,7 +63,13 @@ func (is *Intersections) Hit() Intersection {
 	return minIntersection
 }
 
-func (i *Intersection) PrepareComputations(r Ray) Computation {
+// r:  the ray that hit the intersection
+// xs: "... the collection of all intersections, which can tell you where the hit is relative to the rest of the intersections ...""
+func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computation {
+	if len(xs) == 0 {
+		xs = []Intersection{*i}
+	}
+
 	c := Computation{}
 	c.Time = i.Time
 	c.Object = i.Object
@@ -75,6 +83,44 @@ func (i *Intersection) PrepareComputations(r Ray) Computation {
 		c.NormalV = c.NormalV.Negate()
 	} else {
 		c.Inside = false
+	}
+
+	visitedShapes := []Shape{}
+	for _, intersection := range xs {
+		isHit := intersection.IsEqualTo(*i) // is this intersection the hit?
+
+		if isHit {
+			if len(visitedShapes) == 0 {
+				c.N1 = 1.0
+			} else {
+				c.N1 = visitedShapes[len(visitedShapes)-1].Material.RefractiveIndex
+			}
+		}
+
+		// TODO move somewhere else?
+		indexOf := func(shape Shape, shapes []Shape) int {
+			for idx, s := range shapes {
+				if s.IsEqualTo(shape) {
+					return idx
+				}
+			}
+			return -1
+		}
+
+		if containerIdx := indexOf(intersection.Object, visitedShapes); containerIdx == -1 { // enter
+			visitedShapes = append(visitedShapes, intersection.Object)
+		} else { // exit
+			visitedShapes = append(visitedShapes[:containerIdx], visitedShapes[containerIdx+1:]...)
+		}
+
+		if isHit {
+			if len(visitedShapes) == 0 {
+				c.N2 = 1.0
+			} else {
+				c.N2 = visitedShapes[len(visitedShapes)-1].Material.RefractiveIndex
+			}
+			break
+		}
 	}
 
 	return c

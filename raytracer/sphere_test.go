@@ -100,3 +100,12 @@ func TestRayIsBehindAndIntersectsSphere(t *testing.T) {
 	assertEqualIntersection(t, NewIntersection(-6.0, sphere), intersections[0])
 	assertEqualIntersection(t, NewIntersection(-4.0, sphere), intersections[1])
 }
+
+func TestAHelperForProducingASphereWithAGlassyMaterial(t *testing.T) {
+	s := NewGlassSphere()
+
+	assertEqualMatrix(t, IdentityMatrix(), s.Transform)
+	assertEqualFloat64(t, 1.0, s.Material.Transparency)
+	assertEqualFloat64(t, 1.5, s.Material.RefractiveIndex)
+
+}
