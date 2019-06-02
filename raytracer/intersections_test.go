@@ -240,3 +240,15 @@ func TestFindingN1AndN2AtVariousIntersections(t *testing.T) {
 		assertEqualFloat64(t, expected[1], comps.N2)
 	}
 }
+
+func TestTheUnderPointIsOffsetBElowTheSurface(t *testing.T) {
+	shape := NewGlassSphere()
+	shape.Transform = NewTranslation(0, 0, 1)
+	i := NewIntersection(5, shape)
+	xs := Intersections{i}
+	ray := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	comps := i.PrepareComputations(ray, xs...)
+
+	assert(t, comps.UnderPoint.Z > EPSILON/2)
+	assert(t, comps.Point.Z < comps.UnderPoint.Z)
+}

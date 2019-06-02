@@ -11,16 +11,17 @@ type Intersection struct {
 }
 
 type Computation struct {
-	Time      float64 // the moment (in time units) at which the intersection happened
-	Object    Shape   // the object that was intersected
-	Point     Tuple   // the point where intersection happened
-	OverPoint Tuple   // the Point value adjusted slightly to avoid "raytracer acne"
-	EyeV      Tuple   // the vector from eye to the Point
-	NormalV   Tuple   // the normal on the object at the given Point
-	ReflectV  Tuple   // the vector of reflection
-	Inside    bool    // was the intersection inside the object?
-	N1        float64 // refractive index of object being exited at ray-object intersection
-	N2        float64 // refractive index of object being entered at ray-object intersection
+	Time       float64 // the moment (in time units) at which the intersection happened
+	Object     Shape   // the object that was intersected
+	Point      Tuple   // the point where intersection happened
+	OverPoint  Tuple   // the Point value adjusted slightly to avoid "raytracer acne"
+	UnderPoint Tuple   //
+	EyeV       Tuple   // the vector from eye to the Point
+	NormalV    Tuple   // the normal on the object at the given Point
+	ReflectV   Tuple   // the vector of reflection
+	Inside     bool    // was the intersection inside the object?
+	N1         float64 // refractive index of object being exited at ray-object intersection
+	N2         float64 // refractive index of object being entered at ray-object intersection
 }
 
 func NullIntersection() Intersection {
@@ -78,6 +79,8 @@ func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computatio
 	c.NormalV = c.Object.NormalAt(c.Point)
 	c.ReflectV = r.Direction.Reflect(c.NormalV)            // TODO after negating the normal, if necessary
 	c.OverPoint = c.Point.Add(c.NormalV.Multiply(EPSILON)) // to avoid "raytracer acne" with shadows
+	c.UnderPoint = c.Point.Subtract(c.NormalV.Multiply(EPSILON))
+
 	if c.NormalV.Dot(c.EyeV) < 0 {
 		c.Inside = true
 		c.NormalV = c.NormalV.Negate()
