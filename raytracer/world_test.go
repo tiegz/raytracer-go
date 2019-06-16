@@ -184,3 +184,26 @@ func TestThereIsNoShadowWhenObjectIsBehindThePoint(t *testing.T) {
 
 	assert(t, !w.IsShadowed(p))
 }
+
+func TestTheRefractedColorWithAnOpaqueSurface(t *testing.T) {
+	w := DefaultWorld()
+	shape := w.Objects[0]
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	xs := Intersections{NewIntersection(4, shape), NewIntersection(6, shape)}
+	comps := xs[0].PrepareComputations(r, xs...)
+	c := w.RefractedColor(comps, 5)
+
+	assertEqualColor(t, Colors["Black"], c)
+}
+func TestTheRefractedColorAtTheMaximumRecursiveDepth(t *testing.T) {
+	w := DefaultWorld()
+	shape := w.Objects[0]
+	shape.Material.Transparency = 1.0
+	shape.Material.RefractiveIndex = 1.5
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	xs := Intersections{NewIntersection(4, shape), NewIntersection(6, shape)}
+	comps := xs[0].PrepareComputations(r, xs...)
+	color := w.RefractedColor(comps, 0)
+
+	assertEqualColor(t, Colors["Black"], color)
+}

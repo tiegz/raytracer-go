@@ -10,6 +10,8 @@ type Intersection struct {
 	Object Shape
 }
 
+type Intersections []Intersection
+
 type Computation struct {
 	Time       float64 // the moment (in time units) at which the intersection happened
 	Object     Shape   // the object that was intersected
@@ -31,8 +33,6 @@ func NullIntersection() Intersection {
 func (i Intersection) IsNull() bool {
 	return i.Time == math.MaxFloat64
 }
-
-type Intersections []Intersection
 
 func NewIntersection(t float64, obj Shape) Intersection {
 	return Intersection{t, obj}

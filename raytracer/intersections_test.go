@@ -241,7 +241,7 @@ func TestFindingN1AndN2AtVariousIntersections(t *testing.T) {
 	}
 }
 
-func TestTheUnderPointIsOffsetBElowTheSurface(t *testing.T) {
+func TestTheUnderPointIsOffsetBelowTheSurface(t *testing.T) {
 	shape := NewGlassSphere()
 	shape.Transform = NewTranslation(0, 0, 1)
 	i := NewIntersection(5, shape)

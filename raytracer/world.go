@@ -114,6 +114,14 @@ func (w *World) ColorAt(r Ray, remainingReflections int) Color {
 	return color
 }
 
+func (w *World) RefractedColor(c Computation, remaining int64) Color { // remaining
+	if remaining == 0 || c.Object.Material.Transparency == 0 {
+		return Colors["Black"]
+	}
+
+	return Colors["White"]
+}
+
 func (w *World) IsShadowed(p Tuple) bool {
 	// TODO enable for more than 1 world light
 	v := w.Lights[0].Position.Subtract(p)
