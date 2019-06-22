@@ -263,3 +263,24 @@ func TestShadeHitWithATransparentMaterial(t *testing.T) {
 
 	assertEqualColor(t, NewColor(0.93642, 0.68642, 0.68642), color)
 }
+
+// ... Show that the schlick() reflectance value is used by shade_hit() when a material is both transparent and reflective. ...
+func TestShadeHitWithAReflectiveTransparentMaterial(t *testing.T) {
+	w := DefaultWorld()
+	floor := NewPlane()
+	floor.Transform = NewTranslation(0, -1, 0)
+	floor.Material.Reflective = 0.5
+	floor.Material.Transparency = 0.5
+	floor.Material.RefractiveIndex = 1.5
+	ball := NewSphere()
+	ball.Transform = NewTranslation(0, -3.5, -0.5)
+	ball.Material.Color = NewColor(1, 0, 0)
+	ball.Material.Ambient = 0.5
+	w.Objects = append(w.Objects, floor, ball)
+	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
+	xs := Intersections{NewIntersection(math.Sqrt(2), floor)}
+	comps := xs[0].PrepareComputations(r, xs...)
+	color := w.ShadeHit(comps, 5)
+
+	assertEqualColor(t, NewColor(0.93391, 0.69643, 0.69243), color)
+}

@@ -73,10 +73,19 @@ func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 	for _, light := range w.Lights {
 		isShadowed := w.IsShadowed(c.OverPoint)
 		surfaceColor := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
-		surfaceColor = surfaceColor.Add(w.ReflectedColor(c, remainingReflections))
+
+		reflectedColor := w.ReflectedColor(c, remainingReflections)
 		refractedColor := w.RefractedColor(c, remainingReflections)
-		color = color.Add(surfaceColor)
-		color = color.Add(refractedColor)
+		if c.Object.Material.Reflective > 0 && c.Object.Material.Transparency > 0 {
+			reflectance := c.Schlick()
+			color = color.Add(surfaceColor)
+			color = color.Add(reflectedColor.Multiply(reflectance))
+			color = color.Add(refractedColor.Multiply(1 - reflectance))
+		} else {
+			color = color.Add(surfaceColor)
+			color = color.Add(reflectedColor)
+			color = color.Add(refractedColor)
+		}
 	}
 
 	return color

@@ -128,3 +128,25 @@ func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computatio
 
 	return c
 }
+
+// Schlick's equation is an approximation of Fresnel's.
+// Returns the "reflectance", which represents what fraction of the light is reflected at the given hit.
+// TODO rename "SchlickReflectance"?
+// TODO read “Reflections and Refractions in Ray Tracing” paper to understand this.
+func (c *Computation) Schlick() float64 {
+	cos := c.EyeV.Dot(c.NormalV) // Cosine of angle between eye and normal vectors
+
+	if c.N1 > c.N2 {
+		n := c.N1 / c.N2
+		sinSquared := (n * n) * (1 - (cos * cos))
+		if sinSquared > 1.0 {
+			return 1.0
+		}
+		cosT := math.Sqrt(1.0 - sinSquared) // Cosine of theta_t using trig identity
+		cos = cosT                          // When N1 > N2 use cosT instead of cos
+	}
+
+	r0 := math.Pow((c.N1-c.N2)/(c.N1+c.N2), 2)
+	return r0 + (1-r0)*math.Pow((1-cos), 5)
+	return 0.0
+}

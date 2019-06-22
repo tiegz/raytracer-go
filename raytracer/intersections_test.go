@@ -252,3 +252,42 @@ func TestTheUnderPointIsOffsetBelowTheSurface(t *testing.T) {
 	assert(t, comps.UnderPoint.Z > EPSILON/2)
 	assert(t, comps.Point.Z < comps.UnderPoint.Z)
 }
+
+// ...  "total internal reflection" means all the light is reflected and none is refracted. ...
+func TestTheSchlickApproximationUnderTotalInternalReflection(t *testing.T) {
+	shape := NewGlassSphere()
+	r := NewRay(NewPoint(0, 0, math.Sqrt(2)/2), NewVector(0, 1, 0))
+	xs := Intersections{
+		NewIntersection(-math.Sqrt(2)/2, shape),
+		NewIntersection(math.Sqrt(2)/2, shape),
+	}
+	comps := xs[1].PrepareComputations(r, xs...)
+	reflectance := comps.Schlick()
+
+	assertEqualFloat64(t, 1.0, reflectance)
+}
+
+// ... Show that reflectance (via schlick()) is small when a ray strikes the surface at a perpendicular angle. ...
+func TestTheSchlickApproximationWithAPerpendicularViewingAngle(t *testing.T) {
+	shape := NewGlassSphere()
+	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 1, 0))
+	xs := Intersections{
+		NewIntersection(-1, shape),
+		NewIntersection(1, shape),
+	}
+	comps := xs[1].PrepareComputations(r, xs...)
+	reflectance := comps.Schlick()
+
+	assertEqualFloat64(t, 0.4, reflectance)
+}
+
+// ... Show that reflectance (via schlick()) is significant when n2 > n1 and the ray strikes the surface at a small angle. ...
+func TestTheSchlickApproximationWithSmallAngleAndN2GreaterThanN1(t *testing.T) {
+	shape := NewGlassSphere()
+	r := NewRay(NewPoint(0, 0.99, -2), NewVector(0, 0, 1))
+	xs := Intersections{NewIntersection(1.8589, shape)}
+	comps := xs[0].PrepareComputations(r, xs...)
+	reflectance := comps.Schlick()
+
+	assertEqualFloat64(t, 0.48873, reflectance)
+}
