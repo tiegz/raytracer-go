@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"math"
 	"testing"
 )
 
@@ -206,4 +207,59 @@ func TestTheRefractedColorAtTheMaximumRecursiveDepth(t *testing.T) {
 	color := w.RefractedColor(comps, 0)
 
 	assertEqualColor(t, Colors["Black"], color)
+}
+
+func TestTheRefractedColorUnderTotalInternalReflection(t *testing.T) {
+	w := DefaultWorld()
+	shape := w.Objects[0]
+	shape.Material.Transparency = 1.0
+	shape.Material.RefractiveIndex = 1.5
+	r := NewRay(NewPoint(0, 0, math.Sqrt(2)/2), NewVector(0, 1, 0))
+	xs := Intersections{NewIntersection(-math.Sqrt(2)/2, shape), NewIntersection(math.Sqrt(2)/2, shape)}
+	// NOTE: this time you're inside the sphere, so you need to look at the second intersection, xs[1], not xs[0]
+	comps := xs[1].PrepareComputations(r, xs...)
+	color := w.RefractedColor(comps, 5)
+
+	assertEqualColor(t, Colors["Black"], color)
+}
+
+func TestTheRefractedColorWithARefractedRay(t *testing.T) {
+	w := DefaultWorld()
+	w.Objects[0].Material.Ambient = 1.0
+	w.Objects[0].Material.Pattern = NewTestPattern()
+	w.Objects[1].Material.Transparency = 1.0
+	w.Objects[1].Material.RefractiveIndex = 1.5
+	r := NewRay(NewPoint(0, 0, 0.1), NewVector(0, 1, 0))
+	xs := Intersections{
+		NewIntersection(-0.9899, w.Objects[0]),
+		NewIntersection(-0.4899, w.Objects[1]),
+		NewIntersection(0.4899, w.Objects[1]),
+		NewIntersection(0.9899, w.Objects[0]),
+	}
+	// NOTE: this time you're inside the sphere, so you need to look at the second intersection, xs[1], not xs[0]
+	comps := xs[1].PrepareComputations(r, xs...)
+	color := w.RefractedColor(comps, 5)
+
+	// TODO not passing yet? (but the following test passed?)
+	// expected Color( 0.1 0.1 0.1 ) to be equal to Color( 0 0.99888 0.04725 ), but was not
+	assertEqualColor(t, NewColor(0, 0.99888, 0.04725), color)
+}
+
+func TestShadeHitWithATransparentMaterial(t *testing.T) {
+	w := DefaultWorld()
+	floor := NewPlane()
+	floor.Transform = NewTranslation(0, -1, 0)
+	floor.Material.Transparency = 0.5
+	floor.Material.RefractiveIndex = 1.5
+	ball := NewSphere()
+	ball.Transform = NewTranslation(0, -3.5, -0.5)
+	ball.Material.Color = NewColor(1, 0, 0)
+	ball.Material.Ambient = 0.5
+	w.Objects = append(w.Objects, floor, ball)
+	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
+	xs := Intersections{NewIntersection(math.Sqrt(2), floor)}
+	comps := xs[0].PrepareComputations(r, xs...)
+	color := w.ShadeHit(comps, 5)
+
+	assertEqualColor(t, NewColor(0.93642, 0.68642, 0.68642), color)
 }

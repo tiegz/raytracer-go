@@ -2,6 +2,7 @@ package raytracer
 
 import (
 	"fmt"
+	"math"
 	"sort"
 )
 
@@ -71,9 +72,11 @@ func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 
 	for _, light := range w.Lights {
 		isShadowed := w.IsShadowed(c.OverPoint)
-		surface := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
-		surface = surface.Add(w.ReflectedColor(c, remainingReflections))
-		color = color.Add(surface)
+		surfaceColor := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
+		surfaceColor = surfaceColor.Add(w.ReflectedColor(c, remainingReflections))
+		refractedColor := w.RefractedColor(c, remainingReflections)
+		color = color.Add(surfaceColor)
+		color = color.Add(refractedColor)
 	}
 
 	return color
@@ -114,12 +117,32 @@ func (w *World) ColorAt(r Ray, remainingReflections int) Color {
 	return color
 }
 
-func (w *World) RefractedColor(c Computation, remaining int64) Color { // remaining
+func (w *World) RefractedColor(c Computation, remaining int) Color { // remaining
 	if remaining == 0 || c.Object.Material.Transparency == 0 {
 		return Colors["Black"]
 	}
 
-	return Colors["White"]
+	// Check for Total Internal Reflection using Snell's Law (p 157)
+	// ... a phenomenon that occurs when light enters a new medium at a sufficiently acute angle, and the new medium has a lower refractive index than the old ...
+	nRatio := c.N1 / c.N2                                 // Find the ratio of first index of refraction to the second.
+	cosI := c.EyeV.Dot(c.NormalV)                         // cos(theta_i) is the same as the dot product of the two vectors
+	sinSquared := (nRatio * nRatio) * (1 - (cosI * cosI)) // Find sin(theta_t)^2 via trigonometric identity
+	if sinSquared > 1 {                                   // total I
+		return Colors["Black"]
+	}
+
+	// ... Show that refracted_color() in all other cases will spawn a secondary ray in the correct direction, and return its color. ...
+	cosT := math.Sqrt(1 - sinSquared) // Find cos(theta_t) via trigonometric identity
+
+	normalScaled := c.NormalV.Multiply(nRatio*cosI - cosT)
+	eyeScaled := c.EyeV.Multiply(nRatio)
+	direction := normalScaled.Subtract(eyeScaled)   // Compute the direction of the refracted ray
+	refractedRay := NewRay(c.UnderPoint, direction) // The refracted ray
+
+	color := w.ColorAt(refractedRay, remaining-1.0)
+	color = color.Multiply(c.Object.Material.Transparency) // Find the color of the refracted ray, making sure to multiply # by the transparency value to account for any opacity
+
+	return color
 }
 
 func (w *World) IsShadowed(p Tuple) bool {
