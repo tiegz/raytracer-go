@@ -278,7 +278,7 @@ func TestTheSchlickApproximationWithAPerpendicularViewingAngle(t *testing.T) {
 	comps := xs[1].PrepareComputations(r, xs...)
 	reflectance := comps.Schlick()
 
-	assertEqualFloat64(t, 0.4, reflectance)
+	assertEqualFloat64(t, 0.04, reflectance)
 }
 
 // ... Show that reflectance (via schlick()) is significant when n2 > n1 and the ray strikes the surface at a small angle. ...

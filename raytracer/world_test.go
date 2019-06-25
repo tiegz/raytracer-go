@@ -237,7 +237,7 @@ func TestTheRefractedColorWithARefractedRay(t *testing.T) {
 		NewIntersection(0.9899, w.Objects[0]),
 	}
 	// NOTE: this time you're inside the sphere, so you need to look at the second intersection, xs[1], not xs[0]
-	comps := xs[1].PrepareComputations(r, xs...)
+	comps := xs[2].PrepareComputations(r, xs...)
 	color := w.RefractedColor(comps, 5)
 
 	// TODO not passing yet? (but the following test passed?)
