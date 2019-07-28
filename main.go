@@ -14,7 +14,10 @@ func main() {
 	// examples.RunDrawWorldWithPatterns()
 	// examples.RunDrawWorldWithMultiplePatterns()
 	// examples.RunDrawWorldWithReflection()
+	// examples.RunDrawWorldWithReflectionAndRefraction()
+	// examples.RunDrawWorldWithRefraction()
+	examples.RunDrawWorldWithCube()
 
 	// // my own experiments
-	examples.RunAnimation()
+	// examples.RunAnimation()
 }
