@@ -25,13 +25,13 @@ func (s Sphere) String() string {
 	return fmt.Sprintf("Sphere( %v, %.1f )", s.Origin, s.Radius)
 }
 
-func (s Sphere) localString() string {
-	return s.String()
-}
-
 /////////////////////////
 // ShapeInterface methods
 /////////////////////////
+
+func (s Sphere) localString() string {
+	return s.String()
+}
 
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(

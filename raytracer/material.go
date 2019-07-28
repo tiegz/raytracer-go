@@ -17,6 +17,7 @@ type Material struct {
 	RefractiveIndex float64
 }
 
+// Beware: use this instead of Material{}, for Material{} without all the args will throw errors when rendering.
 func DefaultMaterial() Material {
 	return Material{
 		Color:           Colors["White"],
