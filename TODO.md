@@ -39,3 +39,7 @@ Would be nice to enable method chaining here. If we try that now, we get:
 - reset to non-pointers, and then try making each field-by-field a pointer (get rid of NullX types first?)
 - sync.Pool
 - goroutines
+
+### Flags for main.go
+
+- options: run examples, run a specific file, etc.
