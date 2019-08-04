@@ -16,15 +16,23 @@ func NewColor(x, y, z float64) Color {
 }
 
 var Colors = map[string]Color{
-	"White":  NewColor(1, 1, 1),
-	"Gray":   NewColor(0.5, 0.5, 0.5),
-	"Black":  NewColor(0, 0, 0),
-	"Red":    NewColor(1, 0, 0),
-	"Orange": NewColor(1, 0.5, 0),
-	"Yellow": NewColor(1, 1, 0),
-	"Green":  NewColor(0, 1, 0),
-	"Blue":   NewColor(0, 0, 1),
-	"Purple": NewColor(0.5, 0, 0.5),
+	"White":      NewColor(1, 1, 1),
+	"Gray":       NewColor(0.5, 0.5, 0.5),
+	"Black":      NewColor(0, 0, 0),
+	"Red":        NewColor(1, 0, 0),
+	"Orange":     NewColor(1, 0.5, 0),
+	"Yellow":     NewColor(1, 1, 0),
+	"Green":      NewColor(0, 1, 0),
+	"Blue":       NewColor(0, 0, 1),
+	"Purple":     NewColor(0.5, 0, 0.5),
+	"DarkGray":   NewColor(0.5, 0.5, 0.5),
+	"DarkBlack":  NewColor(0, 0, 0),
+	"DarkRed":    NewColor(1, 0, 0),
+	"DarkOrange": NewColor(1, 0.5, 0),
+	"DarkYellow": NewColor(1, 1, 0),
+	"DarkGreen":  NewColor(0, 1, 0),
+	"DarkBlue":   NewColor(0, 0, 1),
+	"DarkPurple": NewColor(0.5, 0, 0.5),
 }
 
 func (c *Color) IsEqualTo(c2 Color) bool {
