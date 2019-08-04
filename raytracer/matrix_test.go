@@ -114,6 +114,30 @@ func TestMultiplyingTwoMatrices(t *testing.T) {
 	assertEqualMatrix(t, expected, actual)
 }
 
+func TestComposeMatrices(t *testing.T) {
+	m1 := NewMatrix(4, 4, []float64{
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 8, 7, 6,
+		5, 4, 3, 2,
+	})
+	m2 := NewMatrix(4, 4, []float64{
+		-2, 1, 2, 3,
+		3, 2, 1, -1,
+		4, 3, 6, 5,
+		1, 2, 7, 8,
+	})
+	expected := NewMatrix(4, 4, []float64{
+		20, 22, 50, 48,
+		44, 54, 114, 108,
+		40, 58, 110, 102,
+		16, 26, 46, 42,
+	})
+	actual := IdentityMatrix().Compose(m2, m1)
+
+	assertEqualMatrix(t, expected, actual)
+}
+
 func TestMultiplyingMatrixByTuple(t *testing.T) {
 	m1 := NewMatrix(4, 4, []float64{
 		1, 2, 3, 4,
@@ -361,3 +385,4 @@ func TestMultiplyingProductByInverse(t *testing.T) {
 
 	assertEqualMatrix(t, expected, actual)
 }
+

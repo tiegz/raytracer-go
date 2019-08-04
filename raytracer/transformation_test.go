@@ -94,6 +94,15 @@ func TestReflectingPointByNegativeScaleMatrix(t *testing.T) {
 	assertEqualTuple(t, expected, actual)
 }
 
+func TestScalingPointByUScale(t *testing.T) {
+	scale := NewUScale(2)
+	point := NewPoint(-4, 6, 8)
+	expected := NewPoint(-8, 12, 16)
+	actual := scale.MultiplyByTuple(point)
+
+	assertEqualTuple(t, expected, actual)
+}
+
 func TestRotatingPointAroundXAxis(t *testing.T) {
 	point := NewPoint(0, 1, 0)
 	half_quarter_rotation := NewRotateX(math.Pi / 4)

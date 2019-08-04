@@ -44,6 +44,16 @@ func NewScale(x, y, z float64) Matrix {
 	return scale
 }
 
+func NewUScale(n float64) Matrix {
+	scale := NewMatrix(4, 4, []float64{
+		n, 0, 0, 0,
+		0, n, 0, 0,
+		0, 0, n, 0,
+		0, 0, 0, 1,
+	})
+	return scale
+}
+
 // aka "skew"
 func NewShear(xToY, xToZ, yToX, yToZ, zToX, zToY float64) Matrix {
 	scale := NewMatrix(4, 4, []float64{

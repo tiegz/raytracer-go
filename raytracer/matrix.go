@@ -72,6 +72,13 @@ func (m *Matrix) Transpose() Matrix {
 	return m2
 }
 
+func (m Matrix) Compose(transformations ...Matrix) Matrix {
+	for _, transformation := range transformations {
+		m = transformation.Multiply(m)
+	}
+	return m
+}
+
 func (m *Matrix) Multiply(m2 Matrix) Matrix {
 	m3 := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols, m.Rows*m.Cols))
 
