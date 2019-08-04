@@ -14,7 +14,7 @@ type Material struct {
 	Pattern         Pattern
 	Reflective      float64
 	Transparency    float64
-	RefractiveIndex float64
+	RefractiveIndex float64 // Vacuum=1, Water=1.333, Glass=1.52, Diamond=2.42
 }
 
 // Beware: use this instead of Material{}, for Material{} without all the args will throw errors when rendering.
