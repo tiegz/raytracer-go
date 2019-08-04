@@ -23,7 +23,13 @@ func (p CheckerPattern) String() string {
 /////////////////////////
 
 func (p CheckerPattern) LocalPatternAt(point Tuple) Color {
-	if int(math.Abs(point.X)+math.Abs(point.Y)+math.Abs(point.Z))%2 == 0 {
+	// This version Doesn't produce a checker pattern
+	// if int(math.Abs(point.X)+math.Abs(point.Y)+math.Abs(point.Z))%2 == 0 {
+	// 	return p.A
+	// } else {
+	// 	return p.B
+	// }
+	if math.Mod(math.Floor(point.X)+math.Floor(point.Y)+math.Floor(point.Z), 2) == 0 {
 		return p.A
 	} else {
 		return p.B
