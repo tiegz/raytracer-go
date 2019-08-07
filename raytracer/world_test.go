@@ -140,7 +140,7 @@ func TestThereIsNoShadowWhenNothingIsCollinearWithPointAndLight(t *testing.T) {
 	w := DefaultWorld()
 	p := NewPoint(0, 10, 0)
 
-	assert(t, !w.IsShadowed(p))
+	assert(t, !w.IsShadowed(p, w.Lights[0]))
 }
 
 // 	 	     |
@@ -155,7 +155,7 @@ func TestTheShadowWhenObjectIsBetweenPointAndLight(t *testing.T) {
 	w := DefaultWorld()
 	p := NewPoint(10, -10, 10)
 
-	assert(t, w.IsShadowed(p))
+	assert(t, w.IsShadowed(p, w.Lights[0]))
 }
 
 // 	 				   |
@@ -169,7 +169,7 @@ func TestTheShadowWhenObjectIsBehindLight(t *testing.T) {
 	w := DefaultWorld()
 	p := NewPoint(-20, 20, -20)
 
-	assert(t, !w.IsShadowed(p))
+	assert(t, !w.IsShadowed(p, w.Lights[0]))
 }
 
 // 	 				   |
@@ -183,7 +183,7 @@ func TestThereIsNoShadowWhenObjectIsBehindThePoint(t *testing.T) {
 	w := DefaultWorld()
 	p := NewPoint(-2, 2, -2)
 
-	assert(t, !w.IsShadowed(p))
+	assert(t, !w.IsShadowed(p, w.Lights[0]))
 }
 
 func TestTheRefractedColorWithAnOpaqueSurface(t *testing.T) {

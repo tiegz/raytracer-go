@@ -71,7 +71,7 @@ func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 	color := NewColor(0, 0, 0)
 
 	for _, light := range w.Lights {
-		isShadowed := w.IsShadowed(c.OverPoint)
+		isShadowed := w.IsShadowed(c.OverPoint, light)
 		surfaceColor := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
 
 		reflectedColor := w.ReflectedColor(c, remainingReflections)
@@ -154,9 +154,9 @@ func (w *World) RefractedColor(c Computation, remaining int) Color { // remainin
 	return color
 }
 
-func (w *World) IsShadowed(p Tuple) bool {
+func (w *World) IsShadowed(p Tuple, l PointLight) bool {
 	// TODO enable for more than 1 world light
-	v := w.Lights[0].Position.Subtract(p)
+	v := l.Position.Subtract(p)
 	distance := v.Magnitude()
 	direction := v.Normalized()
 	r := NewRay(p, direction)
@@ -165,10 +165,7 @@ func (w *World) IsShadowed(p Tuple) bool {
 	if hit := is.Hit(); hit.IsNull() {
 		return false
 	} else {
-		if hit.Time < distance {
-			return true // the intersection is between the point and the light
-		} else {
-			return false
-		}
+		// is the intersection between the point and the light?
+		return hit.Time < distance
 	}
 }
