@@ -148,5 +148,4 @@ func (c *Computation) Schlick() float64 {
 
 	r0 := math.Pow((c.N1-c.N2)/(c.N1+c.N2), 2)
 	return r0 + (1-r0)*math.Pow((1-cos), 5)
-	return 0.0
 }
