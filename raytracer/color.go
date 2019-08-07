@@ -2,7 +2,6 @@ package raytracer
 
 import (
 	"fmt"
-	"math"
 )
 
 type Color struct {
@@ -36,12 +35,7 @@ var Colors = map[string]Color{
 }
 
 func (c *Color) IsEqualTo(c2 Color) bool {
-	equals := func(x, y float64) bool {
-		diff := math.Abs(x - y)
-		return diff < equalFloat64sTolerance
-	}
-
-	return equals(c.Red, c2.Red) && equals(c.Green, c2.Green) && equals(c.Blue, c2.Blue)
+	return equalFloat64s(c.Red, c2.Red) && equalFloat64s(c.Green, c2.Green) && equalFloat64s(c.Blue, c2.Blue)
 }
 
 func (c Color) String() string {

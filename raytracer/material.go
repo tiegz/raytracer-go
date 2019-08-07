@@ -33,6 +33,7 @@ func DefaultMaterial() Material {
 }
 
 func (m *Material) IsEqualTo(m2 Material) bool {
+	// TODO add check for Pattern equality too
 	if !m.Color.IsEqualTo(m2.Color) {
 		return false
 	} else if m.Ambient != m2.Ambient {
@@ -42,6 +43,12 @@ func (m *Material) IsEqualTo(m2 Material) bool {
 	} else if m.Specular != m2.Specular {
 		return false
 	} else if m.Shininess != m2.Shininess {
+		return false
+	} else if m.Reflective != m2.Reflective {
+		return false
+	} else if m.Transparency != m2.Transparency {
+		return false
+	} else if m.RefractiveIndex != m2.RefractiveIndex {
 		return false
 	}
 	return true

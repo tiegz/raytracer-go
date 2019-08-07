@@ -38,13 +38,7 @@ func (t Tuple) String() string {
 }
 
 func (t *Tuple) IsEqualTo(t2 Tuple) bool {
-	const tolerance = 0.00001
-	equals := func(x, y float64) bool {
-		diff := math.Abs(x - y)
-		return diff < tolerance
-	}
-
-	return equals(t.X, t2.X) && equals(t.Y, t2.Y) && equals(t.Z, t2.Z) && equals(t.W, t2.W)
+	return equalFloat64s(t.X, t2.X) && equalFloat64s(t.Y, t2.Y) && equalFloat64s(t.Z, t2.Z) && equalFloat64s(t.W, t2.W)
 }
 
 func (t *Tuple) Add(t2 Tuple) Tuple {

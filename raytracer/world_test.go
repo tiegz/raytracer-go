@@ -19,11 +19,15 @@ func TestDefaultWorld(t *testing.T) {
 
 	s1 := NewSphere()
 	s1.Material = Material{
-		Color:     NewColor(0.8, 1.0, 0.6),
-		Ambient:   0.1,
-		Diffuse:   0.7,
-		Specular:  0.2,
-		Shininess: 200,
+		Color:           NewColor(0.8, 1.0, 0.6),
+		Ambient:         0.1,
+		Diffuse:         0.7,
+		Specular:        0.2,
+		Shininess:       200,
+		Pattern:         NewNullPattern(),
+		Reflective:      0.0,
+		Transparency:    0.0,
+		RefractiveIndex: 1.0,
 	}
 
 	s2 := NewSphere()
