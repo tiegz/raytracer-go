@@ -54,7 +54,7 @@ func (i Intersection) String() string {
 func (is *Intersections) Hit() Intersection {
 	minIntersection := NullIntersection()
 	for _, intersection := range *is {
-		if intersection.Time > 0 {
+		if intersection.Time > EPSILON { // NB the book uses 0, but I had to use this instead to fix the minute difference that broke in TestTheRefractedColorWithARefractedRay's Sphere#LocalIntersect's i2 calcluation
 			if minIntersection.IsEqualTo(intersection) || intersection.Time < minIntersection.Time {
 				minIntersection = intersection
 			}

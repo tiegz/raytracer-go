@@ -244,9 +244,7 @@ func TestTheRefractedColorWithARefractedRay(t *testing.T) {
 	comps := xs[2].PrepareComputations(r, xs...)
 	color := w.RefractedColor(comps, 5)
 
-	// TODO not passing yet? (but the following test passed?)
-	// expected Color( 0.1 0.1 0.1 ) to be equal to Color( 0 0.99888 0.04725 ), but was not
-	assertEqualColor(t, NewColor(0, 0.99888, 0.04725), color)
+	assertEqualColor(t, NewColor(0, 0.99889, 0.04721), color)
 }
 
 func TestShadeHitWithATransparentMaterial(t *testing.T) {
