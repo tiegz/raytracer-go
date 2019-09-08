@@ -18,6 +18,7 @@ func main() {
 	// examples.RunDrawWorldWithRefraction()
 	// examples.RunDrawWorldWithCube()
 	examples.RunDrawWorldWithTable()
+	// examples.RunDrawWorldInsideShape()
 
 	// // my own experiments
 	// examples.RunAnimation()

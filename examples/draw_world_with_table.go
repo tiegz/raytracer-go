@@ -11,7 +11,7 @@ import (
 // Adapted from https://github.com/jamis/rtc-ocaml/blob/master/progs/chap12.ml
 // TODO: include NewSolidPattern() in here
 func RunDrawWorldWithTable() {
-	camera := NewCamera(400, 200, math.Pi/4)
+	camera := NewCamera(1600, 800, math.Pi/4)
 	// camera := NewCamera(640, 480, math.Pi/3)
 	// camera := NewCamera(400, 200, math.Pi/3)
 	// camera := NewCamera(1000, 500, math.Pi/3)
