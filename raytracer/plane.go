@@ -27,16 +27,16 @@ func (p Plane) localString() string {
 
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
-func (p Plane) LocalIntersect(localRay Ray, shape *Shape) Intersections {
+func (p Plane) LocalIntersect(r Ray, shape *Shape) Intersections {
 	i := make(Intersections, 0, 1)
 
 	// TODO worth short-circuiting this to return a slice with 0,0 instead of 0,1?
 	// No intersections for planes that are parallel or coplanar to plane.
-	if math.Abs(localRay.Direction.Y) < EPSILON {
+	if math.Abs(r.Direction.Y) < EPSILON {
 		return i
 	}
 
-	i1 := NewIntersection(-localRay.Origin.Y/localRay.Direction.Y, *shape)
+	i1 := NewIntersection(-r.Origin.Y/r.Direction.Y, *shape)
 
 	i = append(i, i1)
 
