@@ -28,7 +28,7 @@ func NewShape(si ShapeInterface) Shape {
 func (s *Shape) Intersect(r Ray) Intersections {
 	// Instead of applying object's transformation to object, we can just apply
 	// the inverse of the transformation to the ray.
-	r := r.Transform(s.Transform.Inverse())
+	r = r.Transform(s.Transform.Inverse())
 	return s.LocalShape.LocalIntersect(r, s)
 }
 
