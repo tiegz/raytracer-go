@@ -2,13 +2,12 @@ package raytracer
 
 import "math"
 
-// TODO are these both the same semantically?
-const equalFloat64sTolerance = 0.00001
-const EPSILON = 0.00001
+const EPSILON = 0.00001 // TODO: rename? this is the difference btwn floats less thanw which we'd conisder them the same
 
+// TODO: wait wait wait this could be wrong
 func equalFloat64s(x, y float64) bool {
 	diff := math.Abs(x - y)
-	return diff < equalFloat64sTolerance
+	return diff < EPSILON
 }
 
 func minFloat64(floats ...float64) float64 {
