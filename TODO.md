@@ -6,6 +6,8 @@
 
 ### Can we replace the NewX methods with just literals? Is there much constructor logic even needed?
 
+### How to get test helpers to print out the line where the test actually failed, rather than the test helper file?
+
 ### Can the testing methods just be instance methods on testing.T? e.g. t.assertEqual(e, a)
 
 For example:
