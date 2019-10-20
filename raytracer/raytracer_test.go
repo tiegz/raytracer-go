@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -90,6 +91,9 @@ func assertEqualMaterial(t *testing.T, expected Material, actual Material) {
 
 func assertNil(t *testing.T, object interface{}) {
 	if object != nil {
-		expectationFailure(t, nil, object)
+		val := reflect.ValueOf(object)
+		if !val.IsNil() {
+			expectationFailure(t, nil, object)
+		}
 	}
 }
