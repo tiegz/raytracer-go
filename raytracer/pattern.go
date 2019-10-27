@@ -37,9 +37,8 @@ func (p Pattern) IsEqualTo(p2 Pattern) bool {
 	}
 }
 
-func (p Pattern) PatternAtShape(obj Shape, point Tuple) Color {
-	inverseObjTransform := obj.Transform.Inverse()
-	objectPoint := inverseObjTransform.MultiplyByTuple(point)
+func (p Pattern) PatternAtShape(s Shape, worldPoint Tuple) Color {
+	objectPoint := s.WorldToObject(worldPoint)
 
 	inversePatternTransform := p.Transform.Inverse()
 	patternPoint := inversePatternTransform.MultiplyByTuple(objectPoint)

@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"math"
 	"testing"
 )
 
@@ -101,6 +102,20 @@ func TestAPatternWithBothAnObjectAndAPatternTransformation(t *testing.T) {
 	pattern.Transform = NewTranslation(0.5, 1, 1.5)
 
 	assertEqualColor(t, NewColor(0.75, 0.5, 0.25), pattern.PatternAtShape(shape, NewPoint(2.5, 3, 3.5)))
+}
+
+func TestAPatternInAGroup(t *testing.T) {
+	g1 := NewGroup()
+	g1.Transform = NewRotateY(math.Pi / 2)
+
+	g2 := NewGroup()
+	g2.Transform = NewScale(2, 2, 2)
+
+	shape := NewSphere()
+	pattern := NewTestPattern()
+
+	// NB: this is my own test from the Group chapter (p200) -- confirm these numbers are correct.
+	assertEqualColor(t, NewColor(2.5, 3, 3.5), pattern.PatternAtShape(shape, NewPoint(2.5, 3, 3.5)))
 }
 
 func TestAGradientLinearlyInterpolatesBetweenColors(t *testing.T) {

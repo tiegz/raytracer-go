@@ -27,14 +27,12 @@ func (cone Cone) intersectCaps(xs Intersections, r Ray, shape *Shape) Intersecti
 
 	t := (cone.Minimum - r.Origin.Y) / r.Direction.Y
 	if checkCap(r, t, math.Abs(cone.Minimum)) {
-		// fmt.Printf("Should betting here 2\n")
 		xs = append(xs, NewIntersection(t, *shape))
 	}
 
 	// Does the ray intersect top cap?
 	t = (cone.Maximum - r.Origin.Y) / r.Direction.Y
 	if checkCap(r, t, math.Abs(cone.Maximum)) {
-		// fmt.Printf("Should betting here 3\n")
 		xs = append(xs, NewIntersection(t, *shape))
 	}
 

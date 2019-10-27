@@ -31,9 +31,9 @@ func NewVector(x, y, z float64) Tuple {
 
 func (t Tuple) String() string {
 	if t.W == 0 {
-		return fmt.Sprintf("Vector( %.3f, %.3f, %.3f, %.3f )", t.X, t.Y, t.Z, t.W)
+		return fmt.Sprintf("Vector( %.5f, %.5f, %.5f, %.5f )", t.X, t.Y, t.Z, t.W)
 	} else {
-		return fmt.Sprintf("Point( %.3f, %.3f, %.3f, %.3f )", t.X, t.Y, t.Z, t.W)
+		return fmt.Sprintf("Point( %.5f, %.5f, %.5f, %.5f )", t.X, t.Y, t.Z, t.W)
 	}
 }
 

@@ -55,7 +55,7 @@ func (m *Material) IsEqualTo(m2 Material) bool {
 }
 
 func (m Material) String() string {
-	return fmt.Sprintf("Material( %v %v %v %v %v %v %v\n)", m.Color, m.Ambient, m.Diffuse, m.Specular, m.Shininess, m.Pattern, m.Reflective)
+	return fmt.Sprintf("Material( %v %v %v %v %v %v %v )", m.Color, m.Ambient, m.Diffuse, m.Specular, m.Shininess, m.Pattern, m.Reflective)
 }
 
 // Calculates the lighting for a given point and material, based on Phong reflection.

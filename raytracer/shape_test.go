@@ -73,3 +73,61 @@ func TestComputingTheNormalOnATransformedShape(t *testing.T) {
 
 	assertEqualTuple(t, NewVector(0, 0.97014, -0.24254), n)
 }
+
+func TestAShapeHasAParentAttribute(t *testing.T) {
+	s := NewTestShape()
+
+	assertNil(t, s.Parent)
+}
+
+func TestConvertingAPointFromWorldToObjectSpace(t *testing.T) {
+	g1 := NewGroup()
+	g1.Transform = NewRotateY(math.Pi / 2)
+	g2 := NewGroup()
+	g2.Transform = NewScale(2, 2, 2)
+	g1.AddChildren(&g2)
+
+	s := NewSphere()
+	s.Transform = NewTranslation(5, 0, 0)
+	g2.AddChildren(&s)
+
+	p := s.WorldToObject(NewPoint(-2, 0, -10))
+
+	assertEqualTuple(t, NewPoint(0, 0, -1), p)
+}
+
+func TestConvertingANormalFromObjectToWorldSpace(t *testing.T) {
+	g1 := NewGroup()
+	g1.Transform = NewRotateY(math.Pi / 2)
+
+	g2 := NewGroup()
+	g2.Transform = NewScale(1, 2, 3)
+	g1.AddChildren(&g2)
+
+	s := NewSphere()
+	s.Transform = NewTranslation(5, 0, 0)
+	g2.AddChildren(&s)
+
+	n := s.NormalToWorld(NewVector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
+
+	// NB: values in book were slightly different: (0.2857, 0.4286, -0.8571)
+	assertEqualTuple(t, NewVector(0.28571, 0.42857, -0.85714), n)
+}
+
+func TestFindingTheNormalOnAChildObject(t *testing.T) {
+	g1 := NewGroup()
+	g1.Transform = NewRotateY(math.Pi / 2)
+
+	g2 := NewGroup()
+	g2.Transform = NewScale(1, 2, 3)
+	g1.AddChildren(&g2)
+
+	s := NewSphere()
+	s.Transform = NewTranslation(5, 0, 0)
+	g2.AddChildren(&s)
+
+	n := s.NormalAt(NewPoint(1.7321, 1.1547, -5.5774))
+
+	// NB: values in book were slightly different: (0.2857, 0.4286, -0.8571)
+	assertEqualTuple(t, NewVector(0.28570, 0.42854, -0.85716), n)
+}
