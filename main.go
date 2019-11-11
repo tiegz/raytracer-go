@@ -19,7 +19,8 @@ func main() {
 	// examples.RunDrawWorldWithCube()
 	// examples.RunDrawWorldWithTable()
 	// examples.RunDrawWorldInsideShape()
-	examples.RunDrawWorldWithCylinderAndCone()
+	// examples.RunDrawWorldWithCylinderAndCone()
+	examples.RunDrawWorldWithHexagonGroup() // TODO
 
 	// // my own experiments
 	// examples.RunAnimation()
