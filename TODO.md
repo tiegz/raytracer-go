@@ -49,3 +49,11 @@ Would be nice to enable method chaining here. If we try that now, we get:
 ### Flags for main.go
 
 - options: run examples, run a specific file, etc.
+
+### Cache the inverse transform for a speedup (convert Transform to Getter/Setter)
+
+### Define where pointers/values should be used as a design (e.g. values for Matrix, pointers for Shapes, etc)
+
+### Give shapes a label? For String(), etc
+
+### Panic or return an error if NewScale() is given a zero value? (which causes a panic bc matrix is not invertible)

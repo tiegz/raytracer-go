@@ -125,7 +125,7 @@ func (m *Matrix) MultiplyByTuple(t Tuple) Tuple {
 
 func (m *Matrix) Inverse() Matrix {
 	if !m.IsInvertible() {
-		panic("Matrix is not invertible!")
+		panic(fmt.Sprintf("Matrix is not invertible! (determinant was %f on matrix %v)", m.Determinant(), m))
 	}
 
 	im := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols))

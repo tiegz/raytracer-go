@@ -75,6 +75,7 @@ func (s *Shape) AddChildren(shapes ...*Shape) {
 		s.LocalShape = group
 	} else {
 		// TODO: return error
+		panic("Should never AddChildren() to non-Group!\n")
 	}
 }
 
