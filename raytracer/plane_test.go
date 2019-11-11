@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"math"
 	"testing"
 )
 
@@ -56,4 +57,12 @@ func TestARayIntersectingAPlaneFromBelow(t *testing.T) {
 	assertEqualInt(t, 1, len(xs))
 	assertEqualFloat64(t, 1, xs[0].Time)
 	assertEqualShape(t, plane, xs[0].Object)
+}
+
+func TestAPlaneHasABoundingBox(t *testing.T) {
+	p := NewPlane()
+	b := p.Bounds()
+
+	assertEqualTuple(t, NewPoint(math.Inf(-1), 0, math.Inf(-1)), b.MinPoint)
+	assertEqualTuple(t, NewPoint(math.Inf(1), 0, math.Inf(1)), b.MaxPoint)
 }

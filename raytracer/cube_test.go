@@ -83,3 +83,11 @@ func TestTheNormalOnTheSurfaceOfACube(t *testing.T) {
 		})
 	}
 }
+
+func TestACubeHasABoundingBox(t *testing.T) {
+	c := NewCube()
+	b := c.Bounds()
+
+	assertEqualTuple(t, NewPoint(-1, -1, -1), b.MinPoint)
+	assertEqualTuple(t, NewPoint(1, 1, 1), b.MaxPoint)
+}

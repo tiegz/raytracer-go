@@ -161,3 +161,22 @@ func TestTheNormalVectorOnACylindersEndCaps(t *testing.T) {
 		})
 	}
 }
+
+func TestAnUnboundedCylinderHasABoundingBox(t *testing.T) {
+	c := NewCylinder()
+	b := c.Bounds()
+
+	assertEqualTuple(t, NewPoint(-1, math.Inf(-1), -1), b.MinPoint)
+	assertEqualTuple(t, NewPoint(1, math.Inf(1), 1), b.MaxPoint)
+}
+
+func TestABoundedCylinderHasABoundingBox(t *testing.T) {
+	c := NewCylinder()
+	cc := c.LocalShape.(*Cylinder)
+	cc.Minimum = -5
+	cc.Maximum = 3
+	b := c.Bounds()
+
+	assertEqualTuple(t, NewPoint(-1, -5, -1), b.MinPoint)
+	assertEqualTuple(t, NewPoint(1, 3, 1), b.MaxPoint)
+}

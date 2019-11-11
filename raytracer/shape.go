@@ -7,6 +7,7 @@ import (
 type ShapeInterface interface {
 	LocalNormalAt(Tuple, Intersection) Tuple
 	LocalIntersect(Ray, *Shape) Intersections
+	LocalBounds() BoundingBox
 	localIsEqualTo(ShapeInterface) bool
 	localType() string
 	localString() string
@@ -29,6 +30,7 @@ func NewShape(si ShapeInterface) Shape {
 		LocalShape: si,
 		Transform:  IdentityMatrix(),
 		Material:   DefaultMaterial(),
+		SavedRay:   NullRay(),
 		Shadows:    true, // does this shape cast shadows?
 	}
 }
@@ -106,6 +108,15 @@ func (s *Shape) Includes(s2 *Shape) bool {
 	}
 
 	return false
+}
+
+func (s Shape) Bounds() BoundingBox {
+	return s.LocalShape.LocalBounds()
+}
+
+func (s Shape) ParentSpaceBounds() BoundingBox {
+	b := s.Bounds()
+	return b.Transform(s.Transform)
 }
 
 func (s Shape) String() string {

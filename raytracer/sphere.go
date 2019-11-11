@@ -29,6 +29,10 @@ func (s Sphere) String() string {
 // ShapeInterface methods
 /////////////////////////
 
+func (s Sphere) LocalBounds() BoundingBox {
+	return NewBoundingBox(NewPoint(-1, -1, -1), NewPoint(1, 1, 1))
+}
+
 func (s Sphere) localString() string {
 	return s.String()
 }

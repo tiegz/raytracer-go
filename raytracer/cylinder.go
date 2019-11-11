@@ -32,6 +32,10 @@ func checkCap(r Ray, t float64, radius float64) bool {
 // ShapeInterface methods
 /////////////////////////
 
+func (c Cylinder) LocalBounds() BoundingBox {
+	return NewBoundingBox(NewPoint(-1, c.Minimum, -1), NewPoint(1, c.Maximum, 1))
+}
+
 func (c Cylinder) localString() string {
 	return c.String()
 }

@@ -88,5 +88,24 @@ func TestComputingTheNormalVectorOnACone(t *testing.T) {
 			assertEqualTuple(t, tc.Normal, n)
 		})
 	}
+}
 
+func TestAnUnboundedConeHasABoundingBox(t *testing.T) {
+	c := NewCone()
+	b := c.Bounds()
+
+	assertEqualTuple(t, NewPoint(math.Inf(-1), math.Inf(-1), math.Inf(-1)), b.MinPoint)
+	assertEqualTuple(t, NewPoint(math.Inf(1), math.Inf(1), math.Inf(1)), b.MaxPoint)
+}
+
+func TestABoundedConeHasABoundingBox(t *testing.T) {
+	c := NewCone()
+	cc := c.LocalShape.(*Cone)
+	cc.Minimum = -5
+	cc.Maximum = 3
+
+	b := c.Bounds()
+
+	assertEqualTuple(t, NewPoint(-5, -5, -5), b.MinPoint)
+	assertEqualTuple(t, NewPoint(5, 3, 5), b.MaxPoint)
 }

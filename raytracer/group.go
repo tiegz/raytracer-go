@@ -21,12 +21,14 @@ func NewGroup() Shape {
 func (g Group) LocalIntersect(r Ray, shape *Shape) Intersections {
 	xs := Intersections{}
 
-	for _, s := range g.Children {
-		xs = append(xs, s.Intersect(r)...)
+	// This is the optimization that Groups offers: only calculate its Children
+	// intersections if the ray interects the BoundingBox itself.
+	if g.LocalBounds().Intersects(r) {
+		for _, s := range g.Children {
+			xs = append(xs, s.Intersect(r)...)
+		}
+		sort.Slice(xs, func(i, j int) bool { return xs[i].Time < xs[j].Time })
 	}
-
-	// TODO: sort all xs by T
-	sort.Slice(xs, func(i, j int) bool { return xs[i].Time < xs[j].Time })
 
 	return xs
 }
@@ -54,6 +56,14 @@ func (g Group) localIsEqualTo(s2 ShapeInterface) bool {
 
 func (g Group) String() string {
 	return fmt.Sprintf("Group( Children:%d )", len(g.Children))
+}
+
+func (g Group) LocalBounds() BoundingBox {
+	b := NullBoundingBox()
+	for _, c := range g.Children {
+		b.AddBoundingBoxes(c.ParentSpaceBounds())
+	}
+	return b
 }
 
 func (g Group) localString() string {

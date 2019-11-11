@@ -117,3 +117,54 @@ func TestARayHitsACsgObject(t *testing.T) {
 	assertEqualFloat64(t, 6.5, xs[1].Time)
 	assertEqualShape(t, s2, xs[1].Object)
 }
+
+func TestCreatingANewCsg(t *testing.T) {
+	shape1 := NewCube()
+	shape2 := NewSphere()
+	s := NewCsg("difference", &shape1, &shape2)
+	g := s.LocalShape.(Csg)
+
+	assertEqualMatrix(t, IdentityMatrix(), s.Transform)
+	assertEqualString(t, "difference", g.Operation)
+
+}
+
+// TODO: add more Csg tests similar to Group tests?
+
+func TestACsgShapeHasABoundingBoxThatContainsItseChildren(t *testing.T) {
+	left := NewSphere()
+	right := NewSphere()
+	right.Transform = NewTranslation(2, 3, 4)
+
+	csg := NewCsg("difference", &left, &right)
+	box := csg.Bounds()
+
+	assertEqualTuple(t, NewPoint(-1, -1, -1), box.MinPoint)
+	assertEqualTuple(t, NewPoint(3, 4, 5), box.MaxPoint)
+}
+
+func TestIntersectingRayAndCsgDoesntTestChildrenIfBoxIsMissed(t *testing.T) {
+	left := NewTestShape()
+	right := NewTestShape()
+	s := NewCsg("difference", &left, &right)
+	csg := s.LocalShape.(Csg)
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 2, 0))
+
+	s.Intersect(r)
+
+	assertEqualRay(t, NullRay(), csg.Left.SavedRay)
+	//	assertEqualRay(t, NullRay(), csg.Right.SavedRay)
+}
+
+func TestIntersectingRayAndCsgTestsChildrenIfBoxIsHit(t *testing.T) {
+	left := NewTestShape()
+	right := NewTestShape()
+	s := NewCsg("difference", &left, &right)
+	csg := s.LocalShape.(Csg)
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+
+	s.Intersect(r)
+
+	assertEqualRay(t, r, csg.Left.SavedRay)
+	assertEqualRay(t, r, csg.Right.SavedRay)
+}

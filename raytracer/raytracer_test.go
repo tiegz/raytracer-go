@@ -17,6 +17,18 @@ func assert(t *testing.T, result bool) {
 	}
 }
 
+func assertEqualBool(t *testing.T, expected, actual bool) {
+	if expected != actual {
+		expectationFailure(t, expected, actual)
+	}
+}
+
+func assertEqualRay(t *testing.T, expected, actual Ray) {
+	if !expected.IsEqualTo(actual) {
+		expectationFailure(t, expected, actual)
+	}
+}
+
 func assertEqualMatrix(t *testing.T, expected, actual Matrix) {
 	if !expected.IsEqualTo(actual) {
 		expectationFailure(t, expected, actual)
@@ -30,6 +42,12 @@ func assertNotEqualMatrix(t *testing.T, expected, actual Matrix) {
 }
 
 func assertEqualTuple(t *testing.T, expected, actual Tuple) {
+	if !expected.IsEqualTo(actual) {
+		expectationFailure(t, expected, actual)
+	}
+}
+
+func assertEqualBoundingBox(t *testing.T, expected, actual BoundingBox) {
 	if !expected.IsEqualTo(actual) {
 		expectationFailure(t, expected, actual)
 	}

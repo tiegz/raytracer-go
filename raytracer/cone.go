@@ -43,6 +43,12 @@ func (cone Cone) intersectCaps(xs Intersections, r Ray, shape *Shape) Intersecti
 // ShapeInterface methods
 /////////////////////////
 
+func (c Cone) LocalBounds() BoundingBox {
+	limit := math.Max(math.Abs(c.Minimum), math.Abs(c.Maximum))
+
+	return NewBoundingBox(NewPoint(-limit, c.Minimum, -limit), NewPoint(limit, c.Maximum, limit))
+}
+
 func (cone Cone) localString() string {
 	return cone.String()
 }

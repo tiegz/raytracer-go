@@ -25,6 +25,10 @@ func (p Plane) localString() string {
 // ShapeInterface methods
 /////////////////////////
 
+func (p Plane) LocalBounds() BoundingBox {
+	return NewBoundingBox(NewPoint(math.Inf(-1), 0, math.Inf(-1)), NewPoint(math.Inf(1), 0, math.Inf(1)))
+}
+
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
 func (p Plane) LocalIntersect(r Ray, shape *Shape) Intersections {

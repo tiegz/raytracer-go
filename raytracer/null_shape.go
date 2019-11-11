@@ -13,6 +13,10 @@ func NewNullShape() Shape {
 // ShapeInterface methods
 /////////////////////////
 
+func (ns NullShape) LocalBounds() BoundingBox {
+	return NewBoundingBox(NewPoint(0, 0, 0), NewPoint(0, 0, 0))
+}
+
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
 func (ns NullShape) LocalIntersect(r Ray, shape *Shape) Intersections {

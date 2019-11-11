@@ -109,3 +109,11 @@ func TestAHelperForProducingASphereWithAGlassyMaterial(t *testing.T) {
 	assertEqualFloat64(t, 1.5, s.Material.RefractiveIndex)
 
 }
+
+func TestASphereHasABoundingBox(t *testing.T) {
+	s := NewSphere()
+	b := s.Bounds()
+
+	assertEqualTuple(t, NewPoint(-1, -1, -1), b.MinPoint)
+	assertEqualTuple(t, NewPoint(1, 1, 1), b.MaxPoint)
+}

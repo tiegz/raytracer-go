@@ -21,6 +21,10 @@ func (c Cube) String() string {
 // ShapeInterface methods
 /////////////////////////
 
+func (c Cube) LocalBounds() BoundingBox {
+	return NewBoundingBox(NewPoint(-1, -1, -1), NewPoint(1, 1, 1))
+}
+
 func (c Cube) localString() string {
 	return c.String()
 }

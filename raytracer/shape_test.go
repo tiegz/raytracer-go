@@ -156,3 +156,28 @@ func TestIncludesInspectsShapesChildren(t *testing.T) {
 	assert(t, sphere.Includes(&sphere))
 	assert(t, !sphere.Includes(&cylinder))
 }
+
+func TestFindingTheBoundsOnAnObject(t *testing.T) {
+	s := NewSphere()
+
+	assertEqualBoundingBox(t, NewBoundingBox(NewPoint(-1, -1, -1), NewPoint(1, 1, 1)), s.Bounds())
+}
+
+func TestTestShapeHasArbitraryBounds(t *testing.T) {
+	s := NewTestShape()
+	b := s.Bounds()
+
+	assertEqualTuple(t, NewPoint(-1, -1, -1), b.MinPoint)
+	assertEqualTuple(t, NewPoint(1, 1, 1), b.MaxPoint)
+}
+
+func TestQueryingAShapesBoundingBoxInItsParentsSpace(t *testing.T) {
+	s := NewSphere()
+	s.Transform = NewTranslation(1, -3, 5)
+	s.Transform = s.Transform.Multiply(NewScale(0.5, 2, 4))
+
+	b := s.ParentSpaceBounds()
+
+	assertEqualTuple(t, NewPoint(0.5, -5, 1), b.MinPoint)
+	assertEqualTuple(t, NewPoint(1.5, -1, 9), b.MaxPoint)
+}

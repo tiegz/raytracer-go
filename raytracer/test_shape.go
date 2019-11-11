@@ -4,7 +4,6 @@ import "fmt"
 
 // This is just a dummy "child" of Shape, for testing purposes.
 type TestShape struct {
-	SavedRay Ray
 }
 
 func NewTestShape() Shape {
@@ -15,8 +14,12 @@ func NewTestShape() Shape {
 // ShapeInterface methods
 /////////////////////////
 
+func (ts TestShape) LocalBounds() BoundingBox {
+	return NewBoundingBox(NewPoint(-1, -1, -1), NewPoint(1, 1, 1))
+}
+
 func (ts TestShape) LocalIntersect(r Ray, shape *Shape) Intersections {
-	shape.SavedRay = r // the book has this on the TestShape object, but for Go I've put it on Shape :shruggie:
+	shape.SavedRay = r
 	return Intersections{}
 }
 
@@ -25,15 +28,16 @@ func (ts TestShape) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
 }
 
 func (s TestShape) localIsEqualTo(s2 ShapeInterface) bool {
-	s2TestShape := s2.(TestShape)
-	if !s.SavedRay.IsEqualTo(s2TestShape.SavedRay) {
-		return false
-	}
+	// TODO: when we are able to move SavedRay from Shape to TestShape, uncomment this
+	// s2TestShape := s2.(TestShape)
+	// if !s.SavedRay.IsEqualTo(s2TestShape.SavedRay) {
+	// 	return false
+	// }
 	return true
 }
 
 func (s TestShape) String() string {
-	return fmt.Sprintf("TestShape( %v )", s.SavedRay)
+	return fmt.Sprintf("TestShape( )") // , s.SavedRay)
 }
 
 func (s TestShape) localString() string {

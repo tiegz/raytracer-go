@@ -62,3 +62,43 @@ func TestIntersectingATransformedGroup(t *testing.T) {
 
 	assertEqualInt(t, 2, len(xs))
 }
+
+func TestAGroupHasABoundingBoxThatContainsItsChildren(t *testing.T) {
+	s := NewSphere()
+	s.Transform = NewTranslation(2, 5, -3)
+	s.Transform = s.Transform.Multiply(NewScale(2, 2, 2))
+	c := NewCylinder()
+	cc := c.LocalShape.(*Cylinder)
+	cc.Minimum = -2
+	cc.Maximum = 2
+	c.Transform = NewTranslation(-4, -1, 4)
+	c.Transform = c.Transform.Multiply(NewScale(0.5, 1, 0.5))
+	g := NewGroup()
+	g.AddChildren(&s, &c)
+
+	b := g.Bounds()
+
+	assertEqualTuple(t, NewPoint(-4.5, -3, -5), b.MinPoint)
+	assertEqualTuple(t, NewPoint(4, 7, 4.5), b.MaxPoint)
+}
+
+func TestIntersectingRayAndGroupDoesntTestChildrenIfBoxIsMissed(t *testing.T) {
+	ts := NewTestShape()
+	g := NewGroup()
+	g.AddChildren(&ts)
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 1, 0))
+
+	g.Intersect(r)
+
+	assertEqualRay(t, NullRay(), ts.SavedRay)
+}
+func TestIntersectingRayAndGroupDoesntTestsChildrenIfBoxIsHit(t *testing.T) {
+	ts := NewTestShape()
+	g := NewGroup()
+	g.AddChildren(&ts)
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+
+	g.Intersect(r)
+
+	assertEqualRay(t, r, ts.SavedRay)
+}

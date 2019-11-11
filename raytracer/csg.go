@@ -65,17 +65,32 @@ func (c *Csg) FilterIntersections(xs Intersections) Intersections {
 // ShapeInterface methods
 /////////////////////////
 
+func (c Csg) LocalBounds() BoundingBox {
+	b := NullBoundingBox()
+	b.AddBoundingBoxes(
+		c.Left.ParentSpaceBounds(),
+		c.Right.ParentSpaceBounds(),
+	)
+	return b
+}
+
 func (c Csg) LocalIntersect(r Ray, shape *Shape) Intersections {
-	xs := Intersections{}
+	// This is the optimization that Csg offers: only calculate its Left/Right
+	// intersections if the ray interects the BoundingBox itself.
+	if c.LocalBounds().Intersects(r) {
+		xs := Intersections{}
 
-	leftXs, rightXs := c.Left.Intersect(r), c.Right.Intersect(r)
-	xs = append(xs, leftXs...)
-	xs = append(xs, rightXs...)
+		leftXs, rightXs := c.Left.Intersect(r), c.Right.Intersect(r)
+		xs = append(xs, leftXs...)
+		xs = append(xs, rightXs...)
 
-	// TODO: extract into an Intersections.SortByTime() method?
-	sort.Slice(xs, func(i, j int) bool { return xs[i].Time < xs[j].Time })
+		// TODO: extract into an Intersections.SortByTime() method?
+		sort.Slice(xs, func(i, j int) bool { return xs[i].Time < xs[j].Time })
 
-	return c.FilterIntersections(xs)
+		return c.FilterIntersections(xs)
+	} else {
+		return Intersections{}
+	}
 }
 
 func (c Csg) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
