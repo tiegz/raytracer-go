@@ -8,6 +8,8 @@
 
 ### How to get test helpers to print out the line where the test actually failed, rather than the test helper file?
 
+### Can we replace assertEqualXXX with a single assertEqualObject helper, using reflect.TypeOf and reflect.ValueOf?
+
 ### Can the testing methods just be instance methods on testing.T? e.g. t.assertEqual(e, a)
 
 For example:
@@ -49,6 +51,9 @@ Would be nice to enable method chaining here. If we try that now, we get:
 ### Flags for main.go
 
 - options: run examples, run a specific file, etc.
+- or just bin commands?
+
+### Fill in the glossary
 
 ### Cache the inverse transform for a speedup (convert Transform to Getter/Setter)
 
