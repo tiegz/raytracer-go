@@ -30,6 +30,7 @@ Would be nice to enable method chaining here. If we try that now, we get:
 
 - https://golang.org/doc/faq#methods_on_values_or_pointers
 - Using value receivers is better for concurrency
+- Especially Tuple, which we could then chain when manipulating, instead of creating intermediate variables
 
 ### Replace shape types with shape functions?
 
@@ -62,3 +63,5 @@ Would be nice to enable method chaining here. If we try that now, we get:
 ### Give shapes a label? For String(), etc
 
 ### Panic or return an error if NewScale() is given a zero value? (which causes a panic bc matrix is not invertible)
+
+### Parsing OBJ files: look into storing them as triangle meshes instead of groups, which will be faster (p2123)
