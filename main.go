@@ -20,7 +20,8 @@ func main() {
 	// examples.RunDrawWorldWithTable()
 	// examples.RunDrawWorldInsideShape()
 	// examples.RunDrawWorldWithCylinderAndCone()
-	examples.RunDrawWorldWithHexagonGroup() // TODO
+	// examples.RunDrawWorldWithHexagonGroup()
+	examples.RunDrawWorldWithTriangles()
 
 	// // my own experiments
 	// examples.RunAnimation()
