@@ -111,13 +111,6 @@ func TestTrianglesInGroups(t *testing.T) {
 	assertEqualTuple(t, parser.Vertices[4], t2.P3)
 }
 
-// Scenario: Converting an OBJ file to a group
-// Given file ← the file "triangles.obj"
-// And parser ← parse_obj_file(file)
-// When g ← obj_to_group(parser)
-// Then g includes "FirstGroup" from parser
-// And g includes "SecondGroup" from parser
-
 func TestConvertingAnOBJFileToAGroup(t *testing.T) {
 	dat, err := ioutil.ReadFile("files/triangles.obj")
 	if err != nil {
@@ -138,4 +131,43 @@ func TestConvertingAnOBJFileToAGroup(t *testing.T) {
 	if !g.Contains(expectedGroup) {
 		t.Errorf("\nExpected group to contain %s, but did not.\n", "SecondGroup")
 	}
+}
+
+func TestVertexNormalRecord(t *testing.T) {
+	file := `v -1 1 0
+vn 0 0 1
+vn 0.707 0 -0.707
+vn 1 2 3`
+	parser := ParseObjFile(file)
+
+	assertEqualTuple(t, NewVector(0, 0, 1), parser.Normals[1])
+	assertEqualTuple(t, NewVector(0.707, 0, -0.707), parser.Normals[2])
+	assertEqualTuple(t, NewVector(1, 2, 3), parser.Normals[3])
+}
+
+func TestFacesWithNormals(t *testing.T) {
+	file := `v 0 1 0
+v -1 0 0
+v 1 0 0
+vn -1 0 0
+vn 1 0 0
+vn 0 1 0
+f 1//3 2//1 3//2
+f 1/0/3 2/102/1 3/14/2`
+
+	parser := ParseObjFile(file)
+	group := parser.DefaultGroup
+	g := group.LocalShape.(Group)
+
+	shape1 := g.Children[0]
+	t1 := shape1.LocalShape.(*SmoothTriangle)
+	shape2 := g.Children[1]
+
+	assertEqualTuple(t, parser.Vertices[1], t1.P1)
+	assertEqualTuple(t, parser.Vertices[2], t1.P2)
+	assertEqualTuple(t, parser.Vertices[3], t1.P3)
+	assertEqualTuple(t, parser.Normals[3], t1.N1)
+	assertEqualTuple(t, parser.Normals[1], t1.N2)
+	assertEqualTuple(t, parser.Normals[2], t1.N3)
+	assertEqualShape(t, *shape1, *shape2)
 }

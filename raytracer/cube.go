@@ -42,8 +42,8 @@ func (c Cube) LocalIntersect(r Ray, shape *Shape) Intersections {
 	}
 
 	return Intersections{
-		Intersection{tMin, *shape},
-		Intersection{tMax, *shape},
+		Intersection{Time: tMin, Object: *shape},
+		Intersection{Time: tMax, Object: *shape},
 	}
 }
 
@@ -66,7 +66,7 @@ func (c Cube) checkAxis(origin float64, direction float64) (float64, float64) {
 	}
 }
 
-func (c Cube) LocalNormalAt(localPoint Tuple) Tuple {
+func (c Cube) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
 	maxC := maxFloat64(math.Abs(localPoint.X), math.Abs(localPoint.Y), math.Abs(localPoint.Z))
 	if maxC == math.Abs(localPoint.X) {
 		return NewVector(localPoint.X, 0, 0)

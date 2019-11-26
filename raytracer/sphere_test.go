@@ -15,7 +15,7 @@ func TestNewSphere(t *testing.T) {
 
 func TestNormalAtOnXAxis(t *testing.T) {
 	s1 := NewSphere()
-	actual := s1.NormalAt(NewPoint(1, 0, 0))
+	actual := s1.NormalAt(NewPoint(1, 0, 0), NewIntersection(0, s1))
 	expected := NewVector(1, 0, 0)
 
 	assertEqualTuple(t, expected, actual)
@@ -23,7 +23,7 @@ func TestNormalAtOnXAxis(t *testing.T) {
 
 func TestNormalAtOnYAxis(t *testing.T) {
 	s1 := NewSphere()
-	actual := s1.NormalAt(NewPoint(0, 1, 0))
+	actual := s1.NormalAt(NewPoint(0, 1, 0), NewIntersection(0, s1))
 	expected := NewVector(0, 1, 0)
 
 	assertEqualTuple(t, expected, actual)
@@ -31,7 +31,7 @@ func TestNormalAtOnYAxis(t *testing.T) {
 
 func TestNormalAtOnZAxis(t *testing.T) {
 	s1 := NewSphere()
-	actual := s1.NormalAt(NewPoint(0, 0, 1))
+	actual := s1.NormalAt(NewPoint(0, 0, 1), NewIntersection(0, s1))
 	expected := NewVector(0, 0, 1)
 
 	assertEqualTuple(t, expected, actual)
@@ -39,7 +39,7 @@ func TestNormalAtOnZAxis(t *testing.T) {
 
 func TestNormalAtOnNonAxialPoint(t *testing.T) {
 	s1 := NewSphere()
-	actual := s1.NormalAt(NewPoint(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
+	actual := s1.NormalAt(NewPoint(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3), NewIntersection(0, s1))
 	expected := NewVector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3)
 
 	assertEqualTuple(t, expected, actual)
@@ -47,7 +47,7 @@ func TestNormalAtOnNonAxialPoint(t *testing.T) {
 
 func TestNormalAtIsNormalized(t *testing.T) {
 	s1 := NewSphere()
-	actual := s1.NormalAt(NewPoint(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
+	actual := s1.NormalAt(NewPoint(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3), NewIntersection(0, s1))
 	expected := actual.Normalized()
 
 	assertEqualTuple(t, expected, actual)

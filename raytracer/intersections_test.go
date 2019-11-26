@@ -291,3 +291,11 @@ func TestTheSchlickApproximationWithSmallAngleAndN2GreaterThanN1(t *testing.T) {
 
 	assertEqualFloat64(t, 0.48873, reflectance)
 }
+
+func TestAnIntersectionCanEncapsulateUAndV(t *testing.T) {
+	s := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
+	i := NewIntersectionWithUV(3.5, s, 0.2, 0.4)
+
+	assertEqualFloat64(t, 0.2, i.U)
+	assertEqualFloat64(t, 0.4, i.V)
+}

@@ -12,4 +12,4 @@ A helpful guide to some raytracing terms.
 
 - Intersection:
 
--
+- UV mapping:

@@ -19,8 +19,8 @@ func (ns NullShape) LocalIntersect(r Ray, shape *Shape) Intersections {
 	return Intersections{}
 }
 
-func (ns NullShape) LocalNormalAt(worldPoint Tuple) Tuple {
-	return NewVector(worldPoint.X, worldPoint.Y, worldPoint.Z)
+func (ns NullShape) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+	return NewVector(localPoint.X, localPoint.Y, localPoint.Z)
 }
 
 func (ns NullShape) localIsEqualTo(s2 ShapeInterface) bool {

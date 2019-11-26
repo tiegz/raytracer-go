@@ -77,7 +77,7 @@ func TestTheNormalOnTheSurfaceOfACube(t *testing.T) {
 		t.Run(fmt.Sprintf("Normal on the surface at %v", tc.Point), func(t *testing.T) {
 			shape := NewCube()
 			cube := shape.LocalShape.(*Cube)
-			normal := cube.LocalNormalAt(tc.Point)
+			normal := cube.LocalNormalAt(tc.Point, NewIntersection(0, shape))
 
 			assertEqualTuple(t, tc.ExpectedNormal, normal)
 		})

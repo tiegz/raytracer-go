@@ -3,14 +3,12 @@ package raytracer
 import "fmt"
 
 type Triangle struct {
-	P1        Tuple
-	P2        Tuple
-	P3        Tuple
-	E1        Tuple
-	E2        Tuple
-	Normal    Tuple
-	boundsMin Tuple
-	boundsMax Tuple
+	P1     Tuple
+	P2     Tuple
+	P3     Tuple
+	E1     Tuple
+	E2     Tuple
+	Normal Tuple
 }
 
 func NewTriangle(p1, p2, p3 Tuple) Shape {
@@ -20,26 +18,12 @@ func NewTriangle(p1, p2, p3 Tuple) Shape {
 	tri.E2 = p3.Subtract(p1)
 	cross := tri.E2.Cross(tri.E1)
 	tri.Normal = cross.Normalized()
-	tri.boundsMin = NewPoint(
-		minFloat64(p1.X, p2.X, p3.X),
-		minFloat64(p1.Y, p2.Y, p3.Y),
-		minFloat64(p1.Z, p2.Z, p3.Z),
-	)
-	tri.boundsMax = NewPoint(
-		maxFloat64(p1.X, p2.X, p3.X),
-		maxFloat64(p1.Y, p2.Y, p3.Y),
-		maxFloat64(p1.Z, p2.Z, p3.Z),
-	)
 	return NewShape(&tri)
 }
 
 /////////////////////////
 // ShapeInterface methods
 /////////////////////////
-
-func (t Triangle) LocalBounds() BoundingBox {
-	return NewBoundingBox(t.boundsMin, t.boundsMax)
-}
 
 // Uses the Möller–Trumbore algorithm to find the intersection of the
 // ray and the triangle.
@@ -68,7 +52,7 @@ func (t Triangle) LocalIntersect(r Ray, shape *Shape) Intersections {
 	}
 }
 
-func (t Triangle) LocalNormalAt(worldPoint Tuple) Tuple {
+func (t Triangle) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
 	return t.Normal
 }
 

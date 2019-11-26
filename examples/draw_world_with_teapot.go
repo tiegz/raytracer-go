@@ -10,12 +10,12 @@ import (
 )
 
 func RunDrawWorldWithTeapot() {
-	camera := NewCamera(320, 200, math.Pi/3)
-	// camera := NewCamera(640, 400, math.Pi/3)
+	// camera := NewCamera(320, 200, math.Pi/3)
+	camera := NewCamera(640, 400, math.Pi/3)
 
 	camera.Transform = NewViewTransform(
-		NewPoint(0, 5, -8),
-		NewPoint(0, 1.5, 0),
+		NewPoint(0, 20, -20),
+		NewPoint(2, 5, 0),
 		NewVector(0, 1, 0),
 	)
 
@@ -29,14 +29,17 @@ func RunDrawWorldWithTeapot() {
 	)
 	backWall.Material.Pattern = raytracer.NewCheckerPattern(raytracer.Colors["White"], raytracer.Colors["Gray"])
 
-	dat, err := ioutil.ReadFile("raytracer/files/mit_teapot.obj")
+	dat, err := ioutil.ReadFile("raytracer/files/utah_teapot_hires.obj") // ("raytracer/files/mit_teapot.obj")
 	if err != nil {
 		panic(err)
 	}
 
 	objFile := ParseObjFile(string(dat))
 	group := objFile.ToGroup()
-	group.Transform = NewRotateY(math.Pi / 6)
+	group.Transform = group.Transform.Compose(
+		NewRotateX(-math.Pi/2),
+		NewUScale(0.75),
+	)
 	// TODO: color on group not working?
 	// group.Material.Color = Colors["Red"]
 
@@ -47,8 +50,8 @@ func RunDrawWorldWithTeapot() {
 		group,
 	}
 	world.Lights = []PointLight{
-		NewPointLight(NewPoint(0, 0.5, -5), NewColor(1, 1, 1)),
-		NewPointLight(NewPoint(0, 5, -2), NewColor(1, 1, 1)),
+		NewPointLight(NewPoint(0, -10, -5), NewColor(1, 1, 1)),
+		NewPointLight(NewPoint(0, 10, -5), NewColor(1, 1, 1)),
 	}
 
 	canvas := camera.Render(world)

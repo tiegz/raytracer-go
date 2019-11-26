@@ -61,7 +61,7 @@ func RunDrawSphereShaded(scaleX, scaleY, rotateZ, skew bool) {
 			if hit := intersections.Hit(); !hit.IsNull() {
 				// calculate the shading color for this hit point
 				point := r.Position(hit.Time)
-				normal := hit.Object.NormalAt(point)
+				normal := hit.Object.NormalAt(point, hit)
 				eye := r.Direction.Negate()
 				color := hit.Object.Material.Lighting(hit.Object, light, point, eye, normal, false)
 

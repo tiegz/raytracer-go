@@ -66,7 +66,7 @@ func TestNormalVectorOnACylinder(t *testing.T) {
 		t.Run(fmt.Sprintf("Normal at point %v", tc.Point), func(t *testing.T) {
 			shape := NewCylinder()
 			cyl := shape.LocalShape.(*Cylinder)
-			n := cyl.LocalNormalAt(tc.Point)
+			n := cyl.LocalNormalAt(tc.Point, NewIntersection(0, shape))
 			assertEqualTuple(t, tc.Normal, n)
 		})
 	}
@@ -156,7 +156,7 @@ func TestTheNormalVectorOnACylindersEndCaps(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("Intersecting the caps of a closed cylinder %v", tc.Point), func(t *testing.T) {
-			normal := cyl.LocalNormalAt(tc.Point)
+			normal := cyl.LocalNormalAt(tc.Point, NewIntersection(0, shape))
 			assertEqualTuple(t, tc.Normal, normal)
 		})
 	}

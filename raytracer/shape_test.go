@@ -59,7 +59,7 @@ func TestIntersectingATranslatedShapeWithARay(t *testing.T) {
 func TestComputingTheNormalOnATranslatedShape(t *testing.T) {
 	s := NewTestShape()
 	s.Transform = NewTranslation(0, 1, 0)
-	n := s.NormalAt(NewPoint(0, 1.70711, -0.70711))
+	n := s.NormalAt(NewPoint(0, 1.70711, -0.70711), NewIntersection(0, s))
 
 	assertEqualTuple(t, NewVector(0, 0.70711, -0.70711), n)
 }
@@ -69,7 +69,7 @@ func TestComputingTheNormalOnATransformedShape(t *testing.T) {
 	transform := NewScale(1, 0.5, 1)
 	transform = transform.Multiply(NewRotateZ(math.Pi / 5))
 	s.Transform = transform
-	n := s.NormalAt(NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2))
+	n := s.NormalAt(NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2), NewIntersection(0, s))
 
 	assertEqualTuple(t, NewVector(0, 0.97014, -0.24254), n)
 }
@@ -126,7 +126,7 @@ func TestFindingTheNormalOnAChildObject(t *testing.T) {
 	s.Transform = NewTranslation(5, 0, 0)
 	g2.AddChildren(&s)
 
-	n := s.NormalAt(NewPoint(1.7321, 1.1547, -5.5774))
+	n := s.NormalAt(NewPoint(1.7321, 1.1547, -5.5774), NewIntersection(0, s))
 
 	// NB: values in book were slightly different: (0.2857, 0.4286, -0.8571)
 	assertEqualTuple(t, NewVector(0.28570, 0.42854, -0.85716), n)

@@ -8,9 +8,9 @@ func TestNewPlane(t *testing.T) {
 	plane := NewPlane()
 	localPlane := plane.LocalShape.(*Plane)
 
-	n1 := localPlane.LocalNormalAt(NewPoint(0, 0, 0))
-	n2 := localPlane.LocalNormalAt(NewPoint(10, 0, -10))
-	n3 := localPlane.LocalNormalAt(NewPoint(-5, 0, 150))
+	n1 := localPlane.LocalNormalAt(NewPoint(0, 0, 0), NewIntersection(0, plane))
+	n2 := localPlane.LocalNormalAt(NewPoint(10, 0, -10), NewIntersection(0, plane))
+	n3 := localPlane.LocalNormalAt(NewPoint(-5, 0, 150), NewIntersection(0, plane))
 
 	assertEqualTuple(t, NewVector(0, 1, 0), n1)
 	assertEqualTuple(t, NewVector(0, 1, 0), n2)

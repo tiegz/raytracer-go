@@ -3,6 +3,7 @@ package raytracer
 import (
 	"bufio"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -10,6 +11,7 @@ import (
 type ObjFile struct {
 	IgnoredLineCount int
 	Vertices         []Tuple
+	Normals          []Tuple
 	DefaultGroup     *Shape
 	Groups           map[string]*Shape
 	CurrentGroupName string
@@ -37,6 +39,7 @@ func (o ObjFile) String() string {
 func ParseObjFile(s string) ObjFile {
 	of := ObjFile{}
 	of.Vertices = []Tuple{NewPoint(0, 0, 0)} // first element is dummy, this is a 1-indexed array
+	of.Normals = []Tuple{NewVector(0, 0, 0)} // first element is dummy, this is a 1-indexed array
 	defaultGroup := NewGroup()
 	of.Groups = map[string]*Shape{
 		"": &defaultGroup,
@@ -45,7 +48,9 @@ func ParseObjFile(s string) ObjFile {
 	of.DefaultGroup = of.Groups[""]
 
 	scanner := bufio.NewScanner(strings.NewReader(s))
+	var fExtendedRegex = regexp.MustCompile(`(\d+)?/(\d+)?/(\d+)?`)
 	var va, vb, vc float64
+	var vna, vnb, vnc float64
 	var g string
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -56,20 +61,37 @@ func ParseObjFile(s string) ObjFile {
 			continue
 		}
 
+		// Scan for vertex normals
+		if n, err := fmt.Sscanf(line, "vn %f %f %f", &vna, &vnb, &vnc); err == nil && n == 3 {
+			of.Normals = append(of.Normals, NewVector(vna, vnb, vnc))
+			continue
+		}
+
 		// Scan for faces
 		if strings.HasPrefix(line, "f ") {
-			faceVertices := []Tuple{} // TODO: can we use uint instead?
+			faceVertices := []Tuple{}
+			faceNormals := []Tuple{}
 
 			tokens := strings.Split(line, " ")
 			for _, token := range tokens {
-				i, err := strconv.Atoi(token)
-				if err == nil {
-					faceVertices = append(faceVertices, of.Vertices[i])
+				if foo := fExtendedRegex.FindSubmatch([]byte(token)); len(foo) > 0 {
+					vertexIdx, _, normalIdx := foo[1], foo[2], foo[3] // TODO: 2 is the texture index
+
+					if vi, err := strconv.Atoi(string(vertexIdx)); err == nil {
+						faceVertices = append(faceVertices, of.Vertices[vi])
+					}
+					if ni, err := strconv.Atoi(string(normalIdx)); err == nil {
+						faceNormals = append(faceNormals, of.Normals[ni])
+					}
+				} else {
+					i, err := strconv.Atoi(token)
+					if err == nil {
+						faceVertices = append(faceVertices, of.Vertices[i])
+					}
 				}
 			}
 
-			var tri *Shape
-			for _, tri = range fanTriangulation(faceVertices) {
+			for _, tri := range fanTriangulation(faceVertices, faceNormals) {
 				tri.Material.Color = Colors["Red"]
 				g := of.Groups[of.CurrentGroupName]
 				g.AddChildren(tri)
@@ -107,10 +129,22 @@ func ParseObjFile(s string) ObjFile {
 //          \   \  /
 //           e----d
 // And return the list of triangles
-func fanTriangulation(faceVertices []Tuple) []*Shape {
+func fanTriangulation(faceVertices, faceNormals []Tuple) []*Shape {
 	triangles := []*Shape{}
 	for idx := 0; idx < len(faceVertices)-2; idx++ {
-		tri := NewTriangle(faceVertices[0], faceVertices[idx+1], faceVertices[idx+2])
+		var tri Shape
+		if len(faceNormals) > 0 {
+			tri = NewSmoothTriangle(
+				faceVertices[0],
+				faceVertices[idx+1],
+				faceVertices[idx+2],
+				faceNormals[0],
+				faceNormals[idx+1],
+				faceNormals[idx+2],
+			)
+		} else {
+			tri = NewTriangle(faceVertices[0], faceVertices[idx+1], faceVertices[idx+2])
+		}
 		triangles = append(triangles, &tri)
 	}
 	return triangles

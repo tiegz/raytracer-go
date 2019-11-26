@@ -99,7 +99,7 @@ func (cone Cone) LocalIntersect(r Ray, shape *Shape) Intersections {
 	// }
 }
 
-func (cone Cone) LocalNormalAt(localPoint Tuple) Tuple {
+func (cone Cone) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
 	// ... compute the square of the distance from the y axis ...
 	distance := math.Pow(localPoint.X, 2) + math.Pow(localPoint.Z, 2)
 

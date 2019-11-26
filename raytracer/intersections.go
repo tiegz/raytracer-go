@@ -8,6 +8,8 @@ import (
 type Intersection struct {
 	Time   float64
 	Object Shape
+	U      float64 // identifies where on 2D triangle that an intersection occurred, relative to corners.
+	V      float64 // identifies where on 2D triangle that an intersection occurred, relative to corners.
 }
 
 type Intersections []Intersection
@@ -27,7 +29,7 @@ type Computation struct {
 }
 
 func NullIntersection() Intersection {
-	return Intersection{math.MaxFloat64, NewNullShape()}
+	return Intersection{Time: math.MaxFloat64, Object: NewNullShape()}
 }
 
 func (i Intersection) IsNull() bool {
@@ -35,7 +37,11 @@ func (i Intersection) IsNull() bool {
 }
 
 func NewIntersection(t float64, obj Shape) Intersection {
-	return Intersection{t, obj}
+	return Intersection{Time: t, Object: obj}
+}
+
+func NewIntersectionWithUV(t float64, obj Shape, u, v float64) Intersection {
+	return Intersection{Time: t, Object: obj, U: u, V: v}
 }
 
 func (i Intersection) IsEqualTo(i2 Intersection) bool {
@@ -76,7 +82,7 @@ func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computatio
 	c.Object = i.Object
 	c.Point = r.Position(c.Time)
 	c.EyeV = r.Direction.Negate()
-	c.NormalV = c.Object.NormalAt(c.Point)
+	c.NormalV = c.Object.NormalAt(c.Point, *i)
 	c.ReflectV = r.Direction.Reflect(c.NormalV)            // TODO after negating the normal, if necessary
 	c.OverPoint = c.Point.Add(c.NormalV.Multiply(EPSILON)) // to avoid "raytracer acne" with shadows
 	c.UnderPoint = c.Point.Subtract(c.NormalV.Multiply(EPSILON))

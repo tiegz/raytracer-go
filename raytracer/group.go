@@ -41,10 +41,10 @@ func (g Group) LocalIntersect(r Ray, shape *Shape) Intersections {
 	return xs
 }
 
-func (g Group) LocalNormalAt(worldPoint Tuple) Tuple {
+func (g Group) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
 	// TODO: return error instead
 	//  ... if your code ever tries to call local_normal_at() on a group, that means there’s a bug somewhere (p200) ...
-	return NewVector(worldPoint.X, worldPoint.Y, worldPoint.Z)
+	return NewVector(localPoint.X, localPoint.Y, localPoint.Z)
 }
 
 func (g Group) localIsEqualTo(s2 ShapeInterface) bool {

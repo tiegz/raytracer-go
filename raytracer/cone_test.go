@@ -84,7 +84,7 @@ func TestComputingTheNormalVectorOnACone(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("Normal at point %v", tc.Point), func(t *testing.T) {
-			n := cone.LocalNormalAt(tc.Point)
+			n := cone.LocalNormalAt(tc.Point, NewIntersection(0, shape))
 			assertEqualTuple(t, tc.Normal, n)
 		})
 	}

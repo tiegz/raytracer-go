@@ -88,7 +88,7 @@ func (cyl Cylinder) LocalIntersect(r Ray, shape *Shape) Intersections {
 	return xs
 }
 
-func (cyl Cylinder) LocalNormalAt(localPoint Tuple) Tuple {
+func (cyl Cylinder) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
 	// ... compute the square of the distance from the y axis ...
 	distance := math.Pow(localPoint.X, 2) + math.Pow(localPoint.Z, 2)
 	if distance < 1 && localPoint.Y >= cyl.Maximum-EPSILON {

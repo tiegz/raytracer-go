@@ -22,9 +22,9 @@ func TestConstructingATriangle(t *testing.T) {
 func TestFindingTheNormalOnATriangle(t *testing.T) {
 	shape := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
 	tri := shape.LocalShape.(*Triangle)
-	n1 := tri.LocalNormalAt(NewPoint(0, 0.5, 0))
-	n2 := tri.LocalNormalAt(NewPoint(-0.5, 0.75, 0))
-	n3 := tri.LocalNormalAt(NewPoint(0.5, 0.25, 0))
+	n1 := tri.LocalNormalAt(NewPoint(0, 0.5, 0), NewIntersection(0, shape))
+	n2 := tri.LocalNormalAt(NewPoint(-0.5, 0.75, 0), NewIntersection(0, shape))
+	n3 := tri.LocalNormalAt(NewPoint(0.5, 0.25, 0), NewIntersection(0, shape))
 
 	assertEqualTuple(t, tri.Normal, n1)
 	assertEqualTuple(t, tri.Normal, n2)
