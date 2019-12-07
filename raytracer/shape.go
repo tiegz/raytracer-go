@@ -20,6 +20,7 @@ type Shape struct {
 	Material   Material
 	SavedRay   Ray // TODO replace this later, it's only for testing purposes with TestShape
 	Parent     *Shape
+	Label      string
 }
 
 func NewShape(si ShapeInterface) Shape {
@@ -79,8 +80,31 @@ func (s *Shape) AddChildren(shapes ...*Shape) {
 	}
 }
 
+// NB: this returns true for "regular shape includes itself"
+func (s *Shape) Includes(s2 *Shape) bool {
+	if s.IsEqualTo(*s2) {
+		return true
+	}
+
+	switch localShape := s.LocalShape.(type) {
+	case Group:
+		for _, child := range localShape.Children {
+			if child.Includes(s2) {
+				return true
+			}
+		}
+	case Csg:
+		if localShape.Left.Includes(s2) || localShape.Right.Includes(s2) {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (s Shape) String() string {
-	return fmt.Sprintf("Shape( \n  %v \n  %v \n  %v\n)", s.Material, s.Transform, s.LocalShape.localString())
+	// return fmt.Sprintf("Shape( \n  %v \n  %v \n  %v\n)", s.Material, s.Transform, s.LocalShape.localString())
+	return fmt.Sprintf("Shape( Label: %v LocalShape: %v )", s.Label, s.LocalShape.localString())
 }
 
 func (s *Shape) IsEqualTo(s2 Shape) bool {

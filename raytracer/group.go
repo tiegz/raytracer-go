@@ -14,16 +14,6 @@ func NewGroup() Shape {
 	return NewShape(Group{c})
 }
 
-// TODO: test
-func (g *Group) Contains(s *Shape) bool {
-	for _, shape := range g.Children {
-		if shape == s {
-			return true
-		}
-	}
-	return false
-}
-
 /////////////////////////
 // ShapeInterface methods
 /////////////////////////

@@ -57,6 +57,15 @@ func (i Intersection) String() string {
 	return fmt.Sprintf("Intersection( %.3f, %v )", i.Time, i.Object)
 }
 
+func (xs Intersections) String() string {
+	str := fmt.Sprintf("Intersections(\n")
+	for _, x := range xs {
+		str += fmt.Sprintf("  %v\n", x)
+	}
+	str += ")\n"
+	return str
+}
+
 func (is *Intersections) Hit() Intersection {
 	minIntersection := NullIntersection()
 	for _, intersection := range *is {

@@ -131,3 +131,28 @@ func TestFindingTheNormalOnAChildObject(t *testing.T) {
 	// NB: values in book were slightly different: (0.2857, 0.4286, -0.8571)
 	assertEqualTuple(t, NewVector(0.28570, 0.42854, -0.85716), n)
 }
+
+func TestIncludesInspectsShapesChildren(t *testing.T) {
+	sphere := NewSphere()
+	cylinder := NewCylinder()
+	cube := NewCube()
+	group1 := NewGroup()
+	group1.AddChildren(&sphere)
+	group2 := NewGroup()
+	group2.AddChildren(&group1)
+	csg := NewCsg("intersection", &sphere, &cube)
+
+	// group
+	assert(t, group1.Includes(&sphere))
+	assert(t, group2.Includes(&group1))
+	assert(t, group2.Includes(&sphere))
+
+	// csg
+	assert(t, csg.Includes(&sphere))
+	assert(t, csg.Includes(&cube))
+	assert(t, !sphere.Includes(&cylinder))
+
+	// etc
+	assert(t, sphere.Includes(&sphere))
+	assert(t, !sphere.Includes(&cylinder))
+}

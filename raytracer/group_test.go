@@ -19,7 +19,7 @@ func TestAddingAChildToAGroup(t *testing.T) {
 	gs := g.LocalShape.(Group)
 
 	assertEqualInt(t, 1, len(gs.Children))
-	assert(t, gs.Contains(&ts))
+	assert(t, g.Includes(&ts))
 }
 
 func TestIntersectingARayWithAnEmptyGroup(t *testing.T) {

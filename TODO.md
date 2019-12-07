@@ -1,5 +1,7 @@
 # TODOs
 
+### Add some runnable example functions that would be useful in the docs
+
 ### Add indentation-nesting to String() methods so we can truly pretty-print them, e.g. String(indentation_level int)
 
 ### Work around method chaining problem

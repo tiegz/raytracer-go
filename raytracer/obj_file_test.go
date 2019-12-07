@@ -118,17 +118,16 @@ func TestConvertingAnOBJFileToAGroup(t *testing.T) {
 	}
 	parser := ParseObjFile(string(dat))
 	group := parser.ToGroup()
-	g := group.LocalShape.(Group)
 
 	// TODO: abstract into an assertContainsValue([]interface{}) method,
 	// and maybe turn Group into a Contains interface?
 	expectedGroup := parser.Groups["FirstGroup"]
-	if !g.Contains(expectedGroup) {
+	if !group.Includes(expectedGroup) {
 		t.Errorf("\nExpected group to contain %s, but did not.\n", "FirstGroup")
 	}
 
 	expectedGroup = parser.Groups["SecondGroup"]
-	if !g.Contains(expectedGroup) {
+	if !group.Includes(expectedGroup) {
 		t.Errorf("\nExpected group to contain %s, but did not.\n", "SecondGroup")
 	}
 }
