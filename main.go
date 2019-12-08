@@ -22,7 +22,8 @@ func main() {
 	// examples.RunDrawWorldWithCylinderAndCone()
 	// examples.RunDrawWorldWithHexagonGroup()
 	// examples.RunDrawWorldWithTriangles()
-	examples.RunDrawWorldWithTeapot()
+	// examples.RunDrawWorldWithTeapot()
+	examples.RunDrawWorldWithDice()
 
 	// // my own experiments
 	// examples.RunAnimation()

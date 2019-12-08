@@ -31,6 +31,8 @@ func IntersectionAllowed(op string, lhit, inl, inr bool) bool {
 	} else if op == "difference" { // ... preserves all intersections not exclusively inside the object on the right ...
 		// ... keep every intersection on left that is not inside right, and every intersection on right that is inside left ..
 		return (lhit && !inr) || (!lhit && inl)
+	} else {
+		panic("Invalid Csg operation!") // TODO: replace eith returned error?
 	}
 	return false
 }

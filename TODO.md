@@ -67,3 +67,5 @@ Would be nice to enable method chaining here. If we try that now, we get:
 ### Panic or return an error if NewScale() is given a zero value? (which causes a panic bc matrix is not invertible)
 
 ### Parsing OBJ files: look into storing them as triangle meshes instead of groups, which will be faster (p2123)
+
+### Progress indicator while rendering a canvas
