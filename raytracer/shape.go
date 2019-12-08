@@ -21,10 +21,16 @@ type Shape struct {
 	SavedRay   Ray // TODO replace this later, it's only for testing purposes with TestShape
 	Parent     *Shape
 	Label      string
+	Shadows    bool
 }
 
 func NewShape(si ShapeInterface) Shape {
-	return Shape{LocalShape: si, Transform: IdentityMatrix(), Material: DefaultMaterial()}
+	return Shape{
+		LocalShape: si,
+		Transform:  IdentityMatrix(),
+		Material:   DefaultMaterial(),
+		Shadows:    true, // does this shape cast shadows?
+	}
 }
 
 func (s *Shape) Intersect(r Ray) Intersections {

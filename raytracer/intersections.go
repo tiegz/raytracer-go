@@ -66,10 +66,11 @@ func (xs Intersections) String() string {
 	return str
 }
 
-func (is *Intersections) Hit() Intersection {
+// TODO: should we just break out the shadow-checking Hit() into a new method?
+func (is *Intersections) Hit(checkingForShadows bool) Intersection {
 	minIntersection := NullIntersection()
 	for _, intersection := range *is {
-		if intersection.Time > EPSILON { // NB the book uses 0, but I had to use this instead to fix the minute difference that broke in TestTheRefractedColorWithARefractedRay's Sphere#LocalIntersect's i2 calcluation
+		if intersection.Time > EPSILON && (!checkingForShadows || intersection.Object.Shadows) { // NB the book uses 0, but I had to use this instead to fix the minute difference that broke in TestTheRefractedColorWithARefractedRay's Sphere#LocalIntersect's i2 calcluation
 			if minIntersection.IsEqualTo(intersection) || intersection.Time < minIntersection.Time {
 				minIntersection = intersection
 			}

@@ -58,7 +58,7 @@ func RunDrawSphereShaded(scaleX, scaleY, rotateZ, skew bool) {
 			r := raytracer.NewRay(rayOrigin, rayDirection)
 			intersections := sphere.Intersect(r)
 
-			if hit := intersections.Hit(); !hit.IsNull() {
+			if hit := intersections.Hit(false); !hit.IsNull() {
 				// calculate the shading color for this hit point
 				point := r.Position(hit.Time)
 				normal := hit.Object.NormalAt(point, hit)
