@@ -122,7 +122,7 @@ func RunDrawWorldWithDice() {
 		NewPointLight(NewPoint(2, 2, 5), NewColor(1, 1, 1)),
 	}
 
-	canvas := camera.Render(world)
+	canvas := camera.RenderWithProgress(world)
 
 	fmt.Println("Generating PPM...")
 	ppm := canvas.ToPpm()

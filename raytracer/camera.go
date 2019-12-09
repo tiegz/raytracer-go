@@ -1,6 +1,9 @@
 package raytracer
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 type Camera struct {
 	HSize       int
@@ -76,6 +79,27 @@ func (c *Camera) Render(w World) Canvas {
 			r := c.RayForPixel(x, y)
 			color := w.ColorAt(r, DefaultMaximumReflections)
 			canvas.WritePixel(x, y, color)
+		}
+	}
+
+	return canvas
+}
+
+func (c *Camera) RenderWithProgress(w World) Canvas {
+	canvas := NewCanvas(c.HSize, c.VSize)
+
+	count := c.HSize * c.VSize
+	i := 0
+
+	for y := 0; y < c.VSize; y += 1 {
+		for x := 0; x < c.HSize; x += 1 {
+			r := c.RayForPixel(x, y)
+			color := w.ColorAt(r, DefaultMaximumReflections)
+			canvas.WritePixel(x, y, color)
+
+			i += 1
+			progress := ((float64(i) / float64(count)) * 100)
+			fmt.Printf("\rProgress: %6.02f%%", progress)
 		}
 	}
 
