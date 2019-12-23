@@ -6,12 +6,14 @@ import (
 )
 
 type Group struct {
-	Children []*Shape
+	Children    []*Shape
+	LeftBounds  BoundingBox
+	RightBounds BoundingBox
 }
 
 func NewGroup() Shape {
 	c := []*Shape{}
-	return NewShape(Group{c})
+	return NewShape(Group{Children: c})
 }
 
 /////////////////////////

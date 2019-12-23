@@ -1,5 +1,7 @@
 # TODOs
 
+### Fix acronyms (https://github.com/golang/go/wiki/CodeReviewComments#initialisms)
+
 ### Add some runnable example functions that would be useful in the docs
 
 ### Add indentation-nesting to String() methods so we can truly pretty-print them, e.g. String(indentation_level int)
@@ -47,6 +49,7 @@ Would be nice to enable method chaining here. If we try that now, we get:
 ### Optimizations ideas:
 
 - create benchmarks for different levels/scopes (world, camera, shape, matrix, tuple)
+- GH Actions based on those benchmarks that track them over time / by commit
 - reset to non-pointers, and then try making each field-by-field a pointer (get rid of NullX types first?)
 - sync.Pool
 - goroutines
@@ -69,3 +72,5 @@ Would be nice to enable method chaining here. If we try that now, we get:
 ### Parsing OBJ files: look into storing them as triangle meshes instead of groups, which will be faster (p2123)
 
 ### Progress indicator while rendering a canvas
+
+### Try out BSPs, quadtrees, octrees, etc as alternaives to BVHs.

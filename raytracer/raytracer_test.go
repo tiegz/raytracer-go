@@ -89,6 +89,14 @@ func assertEqualShape(t *testing.T, expected Shape, actual Shape) {
 	}
 }
 
+func assertEqualGroup(t *testing.T, expectedShapes []*Shape, actual Shape) {
+	g := actual.LocalShape.(Group)
+	assertEqualInt(t, len(expectedShapes), len(g.Children))
+	for i, _ := range expectedShapes {
+		assertEqualShape(t, *expectedShapes[i], *g.Children[i])
+	}
+}
+
 func assertEqualIntersection(t *testing.T, expected Intersection, actual Intersection) {
 	if !expected.IsEqualTo(actual) {
 		expectationFailure(t, expected, actual)

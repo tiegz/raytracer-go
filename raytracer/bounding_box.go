@@ -43,6 +43,35 @@ func (b *BoundingBox) AddBoundingBoxes(boundingBoxes ...BoundingBox) {
 	}
 }
 
+// Divide a bounding box into two sub-boxes.
+func (b *BoundingBox) SplitBounds() (BoundingBox, BoundingBox) {
+	dx := b.MaxPoint.X - b.MinPoint.X
+	dy := b.MaxPoint.Y - b.MinPoint.Y
+	dz := b.MaxPoint.Z - b.MinPoint.Z
+
+	greatestDimmension := maxFloat64(dx, dy, dz)
+
+	x0, y0, z0 := b.MinPoint.X, b.MinPoint.Y, b.MinPoint.Z
+	x1, y1, z1 := b.MaxPoint.X, b.MaxPoint.Y, b.MaxPoint.Z
+
+	// ... adjust the points so that they lie on the dividing plane ...
+	if greatestDimmension == dx {
+		x0 = x0 + dx/2.0
+		x1 = x0
+	} else if greatestDimmension == dy {
+		y0 = y0 + dy/2.0
+		y1 = y0
+	} else {
+		z0 = z0 + dz/2.0
+		z1 = z0
+	}
+
+	midMin := NewPoint(x0, y0, z0)
+	midMax := NewPoint(x1, y1, z1)
+
+	return NewBoundingBox(b.MinPoint, midMax), NewBoundingBox(midMin, b.MaxPoint)
+}
+
 func (b *BoundingBox) ContainsPoint(point Tuple) bool {
 	return (point.X >= b.MinPoint.X && point.X <= b.MaxPoint.X) &&
 		(point.Y >= b.MinPoint.Y && point.Y <= b.MaxPoint.Y) &&
@@ -75,7 +104,7 @@ func (b *BoundingBox) Transform(m Matrix) BoundingBox {
 	return b2
 }
 
-// TODO: we can reuse the Cube LocalInterset code here if we make
+// TODO: we can reuse the Cube LocalIntersect code here if we make
 // this return an Interesctions instead.
 func (b BoundingBox) Intersects(r Ray) bool {
 	xTMin, xTMax := b.checkAxis(r.Origin.X, r.Direction.X, b.MinPoint.X, b.MaxPoint.X)

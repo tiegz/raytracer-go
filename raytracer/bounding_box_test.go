@@ -161,3 +161,60 @@ func TestIntersectingARayWithANonCubicBoundingBox(t *testing.T) {
 		})
 	}
 }
+
+func TestSplittingAPerfectCube(t *testing.T) {
+	box := NewBoundingBox(NewPoint(-1, -4, -5), NewPoint(9, 6, 5))
+	left, right := box.SplitBounds()
+
+	assertEqualTuple(t, NewPoint(-1, -4, -5), left.MinPoint)
+	assertEqualTuple(t, NewPoint(4, 6, 5), left.MaxPoint)
+	assertEqualTuple(t, NewPoint(4, -4, -5), right.MinPoint)
+	assertEqualTuple(t, NewPoint(9, 6, 5), right.MaxPoint)
+}
+
+func TestSplittingAnXWideBox(t *testing.T) {
+	box := NewBoundingBox(NewPoint(-1, -2, -3), NewPoint(9, 5.5, 3))
+	left, right := box.SplitBounds()
+
+	assertEqualTuple(t, NewPoint(-1, -2, -3), left.MinPoint)
+	assertEqualTuple(t, NewPoint(4, 5.5, 3), left.MaxPoint)
+	assertEqualTuple(t, NewPoint(4, -2, -3), right.MinPoint)
+	assertEqualTuple(t, NewPoint(9, 5.5, 3), right.MaxPoint)
+}
+
+func TestSplittingAYWideBox(t *testing.T) {
+	box := NewBoundingBox(NewPoint(-1, -2, -3), NewPoint(5, 8, 3))
+	left, right := box.SplitBounds()
+
+	assertEqualTuple(t, NewPoint(-1, -2, -3), left.MinPoint)
+	assertEqualTuple(t, NewPoint(5, 3, 3), left.MaxPoint)
+	assertEqualTuple(t, NewPoint(-1, 3, -3), right.MinPoint)
+	assertEqualTuple(t, NewPoint(5, 8, 3), right.MaxPoint)
+}
+
+func TestSplittingAZWideBox(t *testing.T) {
+	box := NewBoundingBox(NewPoint(-1, -2, -3), NewPoint(5, 3, 7))
+	left, right := box.SplitBounds()
+
+	assertEqualTuple(t, NewPoint(-1, -2, -3), left.MinPoint)
+	assertEqualTuple(t, NewPoint(5, 3, 2), left.MaxPoint)
+	assertEqualTuple(t, NewPoint(-1, -2, 2), right.MinPoint)
+	assertEqualTuple(t, NewPoint(5, 3, 7), right.MaxPoint)
+}
+
+func TestPartitioningAGroupsChildren(t *testing.T) {
+	s1 := NewSphere()
+	s1.Transform = NewTranslation(-2, 0, 0)
+	s2 := NewSphere()
+	s2.Transform = NewTranslation(2, 0, 0)
+	s3 := NewSphere()
+	g := NewGroup()
+	g.AddChildren(&s1, &s2, &s3)
+
+	left, right := g.PartitionChildren()
+	group := g.LocalShape.(Group)
+	assertEqualInt(t, 1, len(group.Children))
+	assertEqualShape(t, s3, *group.Children[0])
+	assertEqualShape(t, s1, *left[0])
+	assertEqualShape(t, s2, *right[0])
+}

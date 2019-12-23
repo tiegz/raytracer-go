@@ -73,19 +73,98 @@ func (s *Shape) NormalToWorld(normal Tuple) Tuple {
 	return normal
 }
 
-func (s *Shape) AddChildren(shapes ...*Shape) {
-	// HACK: sucks to have to create new Group. When we test out replacing value LocalShape with *LocalShape, we can just alter the Group directly? Otherwise, generalize this into a Copy() method for at least Group.
-	if s.LocalShape.localType() == "Group" {
-		group := s.LocalShape.(Group)
-		group.Children = append(group.Children, shapes...)
-		for _, shape := range group.Children {
-			shape.Parent = s
+// If the shape is a Group and has at least +threshhold+ children,
+// divide the children into new subgroups, to create the BVH.
+func (s *Shape) Divide(threshhold int) {
+	switch localShape := s.LocalShape.(type) {
+	case Group:
+		if threshhold <= len(localShape.Children) {
+			l, r := s.PartitionChildren()
+			if len(l) > 0 {
+				s.MakeSubGroup(l...)
+			}
+			if len(r) > 0 {
+				s.MakeSubGroup(r...)
+			}
 		}
-		s.LocalShape = group
-	} else {
+		for _, child := range s.LocalShape.(Group).Children {
+			child.Divide(threshhold)
+		}
+	case Csg:
+		s.LocalShape.(Csg).Left.Divide(threshhold)
+		s.LocalShape.(Csg).Right.Divide(threshhold)
+	default:
+		// no-op
+	}
+}
+
+// Adds a child that is a Group containing the given Shapes.
+func (s *Shape) MakeSubGroup(shapes ...*Shape) {
+	fmt.Printf("  MakeSubGroup():\n")
+	for _, c := range shapes {
+		fmt.Printf("    AddChildren with %v\n", c)
+	}
+	if s.LocalShape.localType() != "Group" {
+		// TODO: can we move this to just Group logic instead of all Shape logic?
 		// TODO: return error
 		panic("Should never AddChildren() to non-Group!\n")
 	}
+
+	subGroup := NewGroup()
+	subGroup.Label = "NewSubGroup"
+	subGroup.AddChildren(shapes...)
+	s.AddChildren(&subGroup)
+}
+
+// Adds one or more children to this Group.
+func (s *Shape) AddChildren(shapes ...*Shape) {
+	if s.LocalShape.localType() != "Group" {
+		// TODO: can we move this to just Group logic instead of all Shape logic?
+		// TODO: return error
+		panic("Should never AddChildren() to non-Group!\n")
+	}
+
+	// HACK: sucks to have to create new Group. When we test out replacing value LocalShape with *LocalShape, we can just alter the Group directly? Otherwise, generalize this into a Copy() method for at least Group.
+	group := s.LocalShape.(Group)
+	group.Children = append(group.Children, shapes...)
+	for _, shape := range group.Children {
+		shape.Parent = s
+	}
+	s.LocalShape = group
+}
+
+// TODO: can we move this to just Group logic instead of all Shape logic?
+// Divides the children into 2 subgroups, based on which sub-bounding-box
+// they are located in. Any shapes that are located in both remain in this Group.
+func (s *Shape) PartitionChildren() ([]*Shape, []*Shape) {
+	if s.LocalShape.localType() != "Group" {
+		// TODO: can we move this to just Group logic instead of all Shape logic?
+		// TODO: return error
+		panic("Should never AddChildren() to non-Group!\n")
+	}
+
+	// HACK: sucks to have to create new Group. When we test out replacing
+	// value LocalShape with *LocalShape, we can just alter the Group
+	// directly? Otherwise, generalize this into a Copy() method for at least Group.
+	g := s.LocalShape.(Group)
+	bounds := g.LocalBounds()
+	lBounds, rBounds := bounds.SplitBounds()
+	l, r := []*Shape{}, []*Shape{}
+
+	newChildren := []*Shape{}
+	for _, child := range g.Children {
+		if lBounds.ContainsBox(child.ParentSpaceBounds()) {
+			l = append(l, child)
+		} else if rBounds.ContainsBox(child.ParentSpaceBounds()) {
+			r = append(r, child)
+		} else {
+			newChildren = append(newChildren, child)
+		}
+		g.Children = newChildren
+		s.LocalShape = g
+	}
+
+	return l, r
 }
 
 // NB: this returns true for "regular shape includes itself"

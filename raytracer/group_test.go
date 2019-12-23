@@ -102,3 +102,106 @@ func TestIntersectingRayAndGroupDoesntTestsChildrenIfBoxIsHit(t *testing.T) {
 
 	assertEqualRay(t, r, ts.SavedRay)
 }
+
+func TestCreatingASubGroupFromAListOfChildren(t *testing.T) {
+	s1 := NewSphere()
+	s2 := NewSphere()
+	g := NewGroup()
+	g.MakeSubGroup(&s1, &s2)
+	group := g.LocalShape.(Group)
+
+	expectedSubGroup := NewGroup()
+	expectedSubGroup.AddChildren(&s1, &s2)
+
+	assertEqualInt(t, 1, len(group.Children))
+	assertEqualShape(t, expectedSubGroup, *group.Children[0])
+}
+
+func TestSubdividingAPrimitiveDoesNothing(t *testing.T) {
+	shape := NewSphere()
+	shape.Divide(1)
+
+	assertEqualString(t, "Sphere", shape.LocalShape.localType())
+}
+
+func TestSubdividingAGroupPartitionsItsChildren(t *testing.T) {
+	s1 := NewSphere()
+	s1.Transform = NewTranslation(-2, -2, 0)
+	s2 := NewSphere()
+	s2.Transform = NewTranslation(-2, 2, 0)
+	s3 := NewSphere()
+	s3.Transform = NewScale(4, 4, 4)
+	g := NewGroup()
+	g.AddChildren(&s1, &s2, &s3)
+	g.Divide(1)
+	group := g.LocalShape.(Group)
+
+	assertEqualShape(t, s3, *group.Children[0])
+
+	subGroup := group.Children[1].LocalShape.(Group)
+	assertEqualString(t, "Group", subGroup.localType())
+	assertEqualInt(t, 2, len(subGroup.Children))
+
+	subSubGroup1 := subGroup.Children[0].LocalShape.(Group)
+	subSubGroup2 := subGroup.Children[1].LocalShape.(Group)
+
+	assertEqualInt(t, 1, len(subSubGroup1.Children))
+	assertEqualShape(t, s1, *subSubGroup1.Children[0])
+	assertEqualInt(t, 1, len(subSubGroup2.Children))
+	assertEqualShape(t, s2, *subSubGroup2.Children[0])
+}
+
+// Scenario: Subdividing a group with too few children
+func TestSubdividingAGroupWithTooFewChildren(t *testing.T) {
+	s1 := NewSphere()
+	s1.Transform = NewTranslation(-2, 0, 0)
+	s2 := NewSphere()
+	s2.Transform = NewTranslation(2, 1, 0)
+	s3 := NewSphere()
+	s3.Transform = NewTranslation(2, -1, 0)
+	sg := NewGroup()
+	sg.AddChildren(&s1, &s2, &s3)
+	s4 := NewSphere()
+	g := NewGroup()
+	g.AddChildren(&sg, &s4)
+	g.Divide(3)
+
+	group := g.LocalShape.(Group)
+	subGroup := sg.LocalShape.(Group)
+
+	assertEqualShape(t, sg, *group.Children[0])
+	assertEqualShape(t, s4, *group.Children[1])
+
+	assertEqualInt(t, 2, len(subGroup.Children))
+	assertEqualGroup(t, []*Shape{&s1}, *subGroup.Children[0])
+	assertEqualGroup(t, []*Shape{&s2, &s3}, *subGroup.Children[1])
+}
+
+func TestSubdividingACsgShapeSubdividesItsChildren(t *testing.T) {
+	s1 := NewSphere()
+	s1.Transform = NewTranslation(-1.5, 0, 0)
+	s1.Label = "s1"
+	s2 := NewSphere()
+	s2.Transform = NewTranslation(1.5, 0, 0)
+	s2.Label = "s2"
+	l := NewGroup()
+	l.AddChildren(&s1, &s2)
+
+	s3 := NewSphere()
+	s3.Transform = NewTranslation(0, 0, -1.5)
+	s3.Label = "s3"
+	s4 := NewSphere()
+	s4.Transform = NewTranslation(0, 0, 1.5)
+	s4.Label = "s4"
+	r := NewGroup()
+	r.AddChildren(&s3, &s4)
+
+	shape := NewCsg("difference", &l, &r)
+
+	shape.Divide(1)
+
+	assertEqualGroup(t, []*Shape{&s1}, *l.LocalShape.(Group).Children[0])
+	assertEqualGroup(t, []*Shape{&s2}, *l.LocalShape.(Group).Children[1])
+	assertEqualGroup(t, []*Shape{&s3}, *r.LocalShape.(Group).Children[0])
+	assertEqualGroup(t, []*Shape{&s4}, *r.LocalShape.(Group).Children[1])
+}
