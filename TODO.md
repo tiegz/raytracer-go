@@ -74,3 +74,17 @@ Would be nice to enable method chaining here. If we try that now, we get:
 ### Progress indicator while rendering a canvas
 
 ### Try out BSPs, quadtrees, octrees, etc as alternaives to BVHs.
+
+### Implement area lights
+
+### Implement spotlights
+
+### Implement focal blur
+
+### Implement anti-aliasing
+
+### Implement texture maps
+
+### Implement normal perturbation
+
+### Implement torus primitive
