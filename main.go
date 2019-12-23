@@ -23,7 +23,8 @@ func main() {
 	// examples.RunDrawWorldWithHexagonGroup()
 	// examples.RunDrawWorldWithTriangles()
 	// examples.RunDrawWorldWithTeapot()
-	examples.RunDrawWorldWithDice()
+	// examples.RunDrawWorldWithDice()
+	examples.RunDrawWorldWithCubeOfSpheres()
 
 	// // my own experiments
 	// examples.RunAnimation()
