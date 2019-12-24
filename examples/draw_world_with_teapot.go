@@ -12,11 +12,11 @@ func RunDrawWorldWithTeapot() {
 	// camera := NewCamera(320, 200, math.Pi/3)
 	camera := NewCamera(640, 400, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(0, 20, -20),
 		NewPoint(2, 5, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	floor := NewPlane()
 	floor.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Gray"])

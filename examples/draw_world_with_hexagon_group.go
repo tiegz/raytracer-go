@@ -11,11 +11,11 @@ import (
 func RunDrawWorldWithHexagonGroup() {
 	camera := NewCamera(320, 200, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(0, 2, -4),
 		NewPoint(0, 0, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	hexagonCorner := func() *Shape {
 		corner := NewSphere()

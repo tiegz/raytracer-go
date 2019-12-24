@@ -11,11 +11,11 @@ import (
 func RunDrawWorldWithTriangles() {
 	camera := NewCamera(320, 200, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(-3, 2, 3),
 		NewPoint(0, 0, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	pyramid := func() *Shape {
 		bottom := NewTriangle(NewPoint(-1, 0, 0), NewPoint(0, 0, 1), NewPoint(1, 0, 0))

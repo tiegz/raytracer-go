@@ -15,11 +15,11 @@ func RunDrawWorldWithPlane() {
 	// camera := NewCamera(1000, 500, math.Pi/3)
 	// camera := NewCamera(1920, 1080, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(0, 1.5, -5),
 		NewPoint(0, 1, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	floor := NewPlane()
 	floor.Material.Color = NewColor(1, 0.9, 0.9)

@@ -12,11 +12,11 @@ func RunDrawWorldWithDice() {
 	// camera := NewCamera(150, 150, 0.9)
 	camera := NewCamera(600, 600, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(2, 3, -2), // NewPoint(0, 3, -4),
 		NewPoint(0, 1, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	room := NewCube()
 	room.Transform = room.Transform.Compose(

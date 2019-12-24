@@ -12,11 +12,11 @@ func RunDrawWorldWithCubeOfSpheres() {
 	camera := NewCamera(200, 200, math.Pi/3)
 	// camera := NewCamera(640, 400, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(-5, 15, -5),
 		NewPoint(0, 9, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	sphereRowCount := 10.0
 

@@ -15,11 +15,11 @@ func RunDrawWorld() {
 	// camera := NewCamera(1000, 500, math.Pi/3)
 	// camera := NewCamera(1920, 1080, math.Pi/3) // VGA
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(0, 1.5, -5),
 		NewPoint(0, 1, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	floor := NewSphere()
 	floor.Transform = NewScale(10, 0.01, 10)

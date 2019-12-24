@@ -17,11 +17,11 @@ func RunDrawWorldWithTable() {
 	// camera := NewCamera(1000, 500, math.Pi/3)
 	// camera := NewCamera(1920, 1080, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(8, 6, -8),
 		NewPoint(0, 3, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	floorCeiling := NewCube()
 	floorCeiling.Transform = floorCeiling.Transform.Compose(
