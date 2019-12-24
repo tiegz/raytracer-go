@@ -5,21 +5,20 @@ import (
 	"io/ioutil"
 	"math"
 
-	"github.com/tiegz/raytracer-go/raytracer"
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
 func RunDrawWorldWithCylinderAndCone() {
-	camera := raytracer.NewCamera(320, 200, math.Pi/3)
-	// camera := raytracer.NewCamera(640, 480, math.Pi/3)
-	// camera := raytracer.NewCamera(400, 200, math.Pi/3)
-	// camera := raytracer.NewCamera(1000, 500, math.Pi/3)
-	// camera := raytracer.NewCamera(1920, 1080, math.Pi/3)
+	camera := NewCamera(320, 200, math.Pi/3)
+	// camera := NewCamera(640, 480, math.Pi/3)
+	// camera := NewCamera(400, 200, math.Pi/3)
+	// camera := NewCamera(1000, 500, math.Pi/3)
+	// camera := NewCamera(1920, 1080, math.Pi/3)
 
-	camera.Transform = raytracer.NewViewTransform(
-		raytracer.NewPoint(0, 3, -7),
-		raytracer.NewPoint(0, 1, 0),
-		raytracer.NewVector(0, 1, 0),
+	camera.Transform = NewViewTransform(
+		NewPoint(0, 3, -7),
+		NewPoint(0, 1, 0),
+		NewVector(0, 1, 0),
 	)
 
 	floor := NewPlane()
@@ -71,8 +70,8 @@ func RunDrawWorldWithCylinderAndCone() {
 	iceCreamScoopThree.Transform = iceCreamScoopThree.Transform.Multiply(NewUScale(0.3))
 	iceCreamScoopThree.Material.Color = Colors["DarkRed"]
 
-	world := raytracer.NewWorld()
-	world.Objects = []raytracer.Shape{
+	world := NewWorld()
+	world.Objects = []Shape{
 		floor,
 		cylinder,
 		cone,
@@ -81,8 +80,8 @@ func RunDrawWorldWithCylinderAndCone() {
 		iceCreamScoopTwo,
 		iceCreamScoopThree,
 	}
-	world.Lights = []raytracer.PointLight{
-		raytracer.NewPointLight(raytracer.NewPoint(-10, 10, -10), raytracer.NewColor(1, 1, 1)),
+	world.Lights = []PointLight{
+		NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 	}
 
 	canvas := camera.Render(world)

@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"math"
 
-	"github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
 func RunDrawSphereShaded(scaleX, scaleY, rotateZ, skew bool) {
@@ -15,29 +15,29 @@ func RunDrawSphereShaded(scaleX, scaleY, rotateZ, skew bool) {
 	halfWallSize := float64(wallSize) / 2.0
 	pixelSize := wallSize / float64(canvasSize)
 
-	rayOrigin := raytracer.NewPoint(0, 0, -5)
-	canvas := raytracer.NewCanvas(int(canvasSize), int(canvasSize))
-	sphere := raytracer.NewSphere()
-	sphere.Material.Color = raytracer.NewColor(1, 0.2, 0.8)
-	lightPosition := raytracer.NewPoint(-10, 10, -10)
-	lightColor := raytracer.Colors["White"]
-	light := raytracer.NewPointLight(lightPosition, lightColor)
+	rayOrigin := NewPoint(0, 0, -5)
+	canvas := NewCanvas(int(canvasSize), int(canvasSize))
+	sphere := NewSphere()
+	sphere.Material.Color = NewColor(1, 0.2, 0.8)
+	lightPosition := NewPoint(-10, 10, -10)
+	lightColor := Colors["White"]
+	light := NewPointLight(lightPosition, lightColor)
 
-	transform := raytracer.IdentityMatrix()
+	transform := IdentityMatrix()
 	if scaleX {
-		scale := raytracer.NewScale(1, 0.5, 1)
+		scale := NewScale(1, 0.5, 1)
 		transform = scale.Multiply(transform)
 	}
 	if scaleY {
-		scale := raytracer.NewScale(0.5, 1, 1)
+		scale := NewScale(0.5, 1, 1)
 		transform = scale.Multiply(transform)
 	}
 	if rotateZ {
-		rotate := raytracer.NewRotateZ(math.Pi / 4)
+		rotate := NewRotateZ(math.Pi / 4)
 		transform = rotate.Multiply(transform)
 	}
 	if skew {
-		shear := raytracer.NewShear(1, 0, 0, 0, 0, 0)
+		shear := NewShear(1, 0, 0, 0, 0, 0)
 		transform = shear.Multiply(transform)
 	}
 	sphere.Transform = transform
@@ -52,10 +52,10 @@ func RunDrawSphereShaded(scaleX, scaleY, rotateZ, skew bool) {
 			worldX := -halfWallSize + (pixelSize * float64(x))
 
 			// describe the point on the wall that the ray will target
-			targetPoint := raytracer.NewPoint(worldX, worldY, wallZ)
+			targetPoint := NewPoint(worldX, worldY, wallZ)
 			rayDirection := targetPoint.Subtract(rayOrigin)
 			rayDirection = rayDirection.Normalized()
-			r := raytracer.NewRay(rayOrigin, rayDirection)
+			r := NewRay(rayOrigin, rayDirection)
 			intersections := sphere.Intersect(r)
 
 			if hit := intersections.Hit(false); !hit.IsNull() {

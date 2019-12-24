@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"math"
 
-	"github.com/tiegz/raytracer-go/raytracer"
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
@@ -19,15 +18,15 @@ func RunDrawWorldWithTeapot() {
 		NewVector(0, 1, 0),
 	)
 
-	floor := raytracer.NewPlane()
-	floor.Material.Pattern = raytracer.NewCheckerPattern(raytracer.Colors["White"], raytracer.Colors["Gray"])
+	floor := NewPlane()
+	floor.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Gray"])
 
-	backWall := raytracer.NewPlane()
+	backWall := NewPlane()
 	backWall.Transform = backWall.Transform.Compose(
 		NewRotateX(math.Pi/2),
 		NewTranslation(0, 0, 20),
 	)
-	backWall.Material.Pattern = raytracer.NewCheckerPattern(raytracer.Colors["White"], raytracer.Colors["Gray"])
+	backWall.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Gray"])
 
 	dat, err := ioutil.ReadFile("raytracer/files/utah_teapot_hires.obj") // ("raytracer/files/mit_teapot.obj")
 	if err != nil {

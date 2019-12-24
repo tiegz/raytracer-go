@@ -5,17 +5,16 @@ import (
 	"io/ioutil"
 	"math"
 
-	"github.com/tiegz/raytracer-go/raytracer"
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
 func RunDrawWorldWithHexagonGroup() {
-	camera := raytracer.NewCamera(320, 200, math.Pi/3)
+	camera := NewCamera(320, 200, math.Pi/3)
 
-	camera.Transform = raytracer.NewViewTransform(
-		raytracer.NewPoint(0, 2, -4),
-		raytracer.NewPoint(0, 0, 0),
-		raytracer.NewVector(0, 1, 0),
+	camera.Transform = NewViewTransform(
+		NewPoint(0, 2, -4),
+		NewPoint(0, 0, 0),
+		NewVector(0, 1, 0),
 	)
 
 	hexagonCorner := func() *Shape {
@@ -61,12 +60,12 @@ func RunDrawWorldWithHexagonGroup() {
 
 	hex := hexagon()
 
-	world := raytracer.NewWorld()
-	world.Objects = []raytracer.Shape{
+	world := NewWorld()
+	world.Objects = []Shape{
 		*hex,
 	}
-	world.Lights = []raytracer.PointLight{
-		raytracer.NewPointLight(raytracer.NewPoint(5, 8, -9), raytracer.NewColor(1, 1, 1)),
+	world.Lights = []PointLight{
+		NewPointLight(NewPoint(5, 8, -9), NewColor(1, 1, 1)),
 	}
 
 	canvas := camera.Render(world)

@@ -5,55 +5,55 @@ import (
 	"io/ioutil"
 	"math"
 
-	"github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
 func RunDrawWorldWithPlane() {
-	camera := raytracer.NewCamera(320, 200, math.Pi/3)
-	// camera := raytracer.NewCamera(640, 480, math.Pi/3)
-	// camera := raytracer.NewCamera(400, 200, math.Pi/3)
-	// camera := raytracer.NewCamera(1000, 500, math.Pi/3)
-	// camera := raytracer.NewCamera(1920, 1080, math.Pi/3)
+	camera := NewCamera(320, 200, math.Pi/3)
+	// camera := NewCamera(640, 480, math.Pi/3)
+	// camera := NewCamera(400, 200, math.Pi/3)
+	// camera := NewCamera(1000, 500, math.Pi/3)
+	// camera := NewCamera(1920, 1080, math.Pi/3)
 
-	camera.Transform = raytracer.NewViewTransform(
-		raytracer.NewPoint(0, 1.5, -5),
-		raytracer.NewPoint(0, 1, 0),
-		raytracer.NewVector(0, 1, 0),
+	camera.Transform = NewViewTransform(
+		NewPoint(0, 1.5, -5),
+		NewPoint(0, 1, 0),
+		NewVector(0, 1, 0),
 	)
 
-	floor := raytracer.NewPlane()
-	floor.Material.Color = raytracer.NewColor(1, 0.9, 0.9)
+	floor := NewPlane()
+	floor.Material.Color = NewColor(1, 0.9, 0.9)
 	floor.Material.Specular = 0
 
-	midSphere := raytracer.NewSphere()
-	midSphere.Transform = raytracer.NewTranslation(-0.5, 1, 0.5)
-	midSphere.Material.Color = raytracer.NewColor(0.1, 1, 0.5)
+	midSphere := NewSphere()
+	midSphere.Transform = NewTranslation(-0.5, 1, 0.5)
+	midSphere.Material.Color = NewColor(0.1, 1, 0.5)
 	midSphere.Material.Diffuse = 0.7
 	midSphere.Material.Specular = 0.3
 
-	rightSphere := raytracer.NewSphere()
-	rightSphere.Transform = raytracer.NewTranslation(1.5, 0.5, -0.5)
-	rightSphere.Transform = rightSphere.Transform.Multiply(raytracer.NewScale(0.5, 0.5, 0.5))
-	rightSphere.Material.Color = raytracer.NewColor(0.5, 1, 0.1)
+	rightSphere := NewSphere()
+	rightSphere.Transform = NewTranslation(1.5, 0.5, -0.5)
+	rightSphere.Transform = rightSphere.Transform.Multiply(NewScale(0.5, 0.5, 0.5))
+	rightSphere.Material.Color = NewColor(0.5, 1, 0.1)
 	rightSphere.Material.Diffuse = 0.7
 	rightSphere.Material.Specular = 0.3
 
-	leftSphere := raytracer.NewSphere()
-	leftSphere.Transform = raytracer.NewTranslation(-1.5, 0.33, -0.75)
-	leftSphere.Transform = leftSphere.Transform.Multiply(raytracer.NewScale(0.33, 0.33, 0.33))
-	leftSphere.Material.Color = raytracer.NewColor(1, 0.8, 0.1)
+	leftSphere := NewSphere()
+	leftSphere.Transform = NewTranslation(-1.5, 0.33, -0.75)
+	leftSphere.Transform = leftSphere.Transform.Multiply(NewScale(0.33, 0.33, 0.33))
+	leftSphere.Material.Color = NewColor(1, 0.8, 0.1)
 	leftSphere.Material.Diffuse = 0.7
 	leftSphere.Material.Specular = 0.3
 
-	world := raytracer.NewWorld()
-	world.Objects = []raytracer.Shape{
+	world := NewWorld()
+	world.Objects = []Shape{
 		floor,
 		midSphere,
 		leftSphere,
 		rightSphere,
 	}
-	world.Lights = []raytracer.PointLight{
-		raytracer.NewPointLight(raytracer.NewPoint(-10, 10, -10), raytracer.NewColor(1, 1, 1)),
+	world.Lights = []PointLight{
+		NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 	}
 
 	canvas := camera.Render(world)

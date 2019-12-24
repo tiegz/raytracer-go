@@ -3,17 +3,17 @@ package examples
 import (
 	"fmt"
 
-	"github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
 type projectile struct {
-	position raytracer.Tuple // Point
-	velocity raytracer.Tuple // Vector
+	position Tuple // Point
+	velocity Tuple // Vector
 }
 
 type environment struct {
-	gravity raytracer.Tuple // Vector
-	wind    raytracer.Tuple // Vector
+	gravity Tuple // Vector
+	wind    Tuple // Vector
 }
 
 func tick(env environment, proj projectile) projectile {
@@ -24,11 +24,11 @@ func tick(env environment, proj projectile) projectile {
 }
 
 func RunProjectileExample() {
-	initialPos := raytracer.NewPoint(0, 1, 0)
-	initialVel := raytracer.NewVector(1, 1, 0)
+	initialPos := NewPoint(0, 1, 0)
+	initialVel := NewVector(1, 1, 0)
 	initialVel = initialVel.Normalized()
-	initialGrav := raytracer.NewVector(0, -0.1, 0)
-	initialWind := raytracer.NewVector(-0.01, 0, 0)
+	initialGrav := NewVector(0, -0.1, 0)
+	initialWind := NewVector(-0.01, 0, 0)
 
 	proj := projectile{initialPos, initialVel}
 	env := environment{initialGrav, initialWind}

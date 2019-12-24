@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
 func RunDrawProjectileExample() {
-	initialPos := raytracer.NewPoint(0, 1, 0)
-	initialVel := raytracer.NewVector(1, 1.8, 0)
+	initialPos := NewPoint(0, 1, 0)
+	initialVel := NewVector(1, 1.8, 0)
 	initialVel = initialVel.Normalized()
 	initialVel = initialVel.Multiply(11.25)
-	initialGrav := raytracer.NewVector(0, -0.1, 0)
-	initialWind := raytracer.NewVector(-0.01, 0, 0)
+	initialGrav := NewVector(0, -0.1, 0)
+	initialWind := NewVector(-0.01, 0, 0)
 	proj := projectile{initialPos, initialVel}
 	env := environment{initialGrav, initialWind}
-	c := raytracer.NewCanvas(900, 550)
-	color := raytracer.NewColor(1, 0, 0)
+	c := NewCanvas(900, 550)
+	color := NewColor(1, 0, 0)
 
 	for proj.position.Y > 0 {
 		proj = tick(env, proj)

@@ -5,53 +5,53 @@ import (
 	"io/ioutil"
 	"math"
 
-	"github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
 func RunDrawWorldWithCube() {
-	camera := raytracer.NewCamera(320, 200, math.Pi/3)
-	// camera := raytracer.NewCamera(640, 480, math.Pi/3)
-	// camera := raytracer.NewCamera(400, 200, math.Pi/3)
-	// camera := raytracer.NewCamera(1000, 500, math.Pi/3)
-	// camera := raytracer.NewCamera(1920, 1080, math.Pi/3)
+	camera := NewCamera(320, 200, math.Pi/3)
+	// camera := NewCamera(640, 480, math.Pi/3)
+	// camera := NewCamera(400, 200, math.Pi/3)
+	// camera := NewCamera(1000, 500, math.Pi/3)
+	// camera := NewCamera(1920, 1080, math.Pi/3)
 
-	camera.Transform = raytracer.NewViewTransform(
-		raytracer.NewPoint(0, 3, -10),
-		raytracer.NewPoint(0, 2, 0),
-		raytracer.NewVector(0, 1, 0),
+	camera.Transform = NewViewTransform(
+		NewPoint(0, 3, -10),
+		NewPoint(0, 2, 0),
+		NewVector(0, 1, 0),
 	)
 
-	floor := raytracer.NewPlane()
-	floor.Material.Color = raytracer.NewColor(1, 0.9, 0.9)
+	floor := NewPlane()
+	floor.Material.Color = NewColor(1, 0.9, 0.9)
 	floor.Material.Specular = 0
 
-	cubeLeft := raytracer.NewCube()
-	cubeLeft.Transform = raytracer.NewTranslation(-2, 1, 1)
-	cubeLeft.Material.Color = raytracer.Colors["Red"]
+	cubeLeft := NewCube()
+	cubeLeft.Transform = NewTranslation(-2, 1, 1)
+	cubeLeft.Material.Color = Colors["Red"]
 	cubeLeft.Material.Diffuse = 0.7
 	cubeLeft.Material.Specular = 0.3
 
-	cubeMiddle := raytracer.NewCube()
-	cubeMiddle.Transform = raytracer.NewTranslation(-0.5, 3, 1)
-	cubeMiddle.Material.Color = raytracer.Colors["Green"]
+	cubeMiddle := NewCube()
+	cubeMiddle.Transform = NewTranslation(-0.5, 3, 1)
+	cubeMiddle.Material.Color = Colors["Green"]
 	cubeMiddle.Material.Diffuse = 0.7
 	cubeMiddle.Material.Specular = 0.3
 
-	cubeRight := raytracer.NewCube()
-	cubeRight.Material.Color = raytracer.Colors["Blue"]
-	cubeRight.Transform = raytracer.NewTranslation(1, 1, 1)
+	cubeRight := NewCube()
+	cubeRight.Material.Color = Colors["Blue"]
+	cubeRight.Transform = NewTranslation(1, 1, 1)
 	cubeRight.Material.Diffuse = 0.7
 	cubeRight.Material.Specular = 0.3
 
-	world := raytracer.NewWorld()
-	world.Objects = []raytracer.Shape{
+	world := NewWorld()
+	world.Objects = []Shape{
 		floor,
 		cubeLeft,
 		cubeMiddle,
 		cubeRight,
 	}
-	world.Lights = []raytracer.PointLight{
-		raytracer.NewPointLight(raytracer.NewPoint(-10, 10, -10), raytracer.NewColor(1, 1, 1)),
+	world.Lights = []PointLight{
+		NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 	}
 
 	canvas := camera.Render(world)
