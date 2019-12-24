@@ -159,3 +159,25 @@ func TestCheckersShouldRepeatInZ(t *testing.T) {
 	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0.99)))
 	assertEqualColor(t, Colors["Black"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 1.01)))
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkPatternMethodIsEqualTo(b *testing.B) {
+	pattern := NewTestPattern()
+	for i := 0; i < b.N; i++ {
+		pattern.IsEqualTo(pattern)
+	}
+}
+
+func BenchmarkPatternMethodPatternAtShape(b *testing.B) {
+	// Taken from TestStripesWithBothAnObjectAndAPatternTransformation
+	sphere := NewSphere()
+	sphere.Transform = sphere.Transform.Multiply(NewScale(2, 2, 2))
+	sphere.Material.Pattern = NewStripePattern(Colors["White"], Colors["Black"])
+	sphere.Material.Pattern.Transform = sphere.Material.Pattern.Transform.Multiply(NewTranslation(0.5, 0, 0))
+	for i := 0; i < b.N; i++ {
+		sphere.Material.Pattern.PatternAtShape(sphere, NewPoint(2.5, 0, 0))
+	}
+}

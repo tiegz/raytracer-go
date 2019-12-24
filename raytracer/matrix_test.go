@@ -386,3 +386,73 @@ func TestMultiplyingProductByInverse(t *testing.T) {
 	assertEqualMatrix(t, expected, actual)
 }
 
+func getTestMatrix() Matrix {
+	return NewMatrix(4, 4, []float64{
+		-5, 2, 6, -8,
+		1, -5, 1, 8,
+		7, 7, -6, -7,
+		1, -3, 7, 4,
+	})
+}
+
+func BenchmarkMatrixMethodIsEqualTo(b *testing.B) {
+	m1 := getTestMatrix()
+	m2 := NewMatrix(4, 4, []float64{
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 8, 7, 6,
+		5, 4, 3, 2,
+	})
+	for i := 0; i < b.N; i++ {
+		m1.IsEqualTo(m2)
+	}
+}
+
+func BenchmarkMatrixMethodTranspose(b *testing.B) {
+	m1 := getTestMatrix()
+	for i := 0; i < b.N; i++ {
+		m1.Transpose()
+	}
+}
+
+func BenchmarkMatrixMethodMultiply(b *testing.B) {
+	m1 := getTestMatrix()
+	m2 := NewMatrix(4, 4, []float64{
+		9, 8, 7, 6,
+		5, 6, 7, 8,
+		1, 2, 3, 4,
+		5, 4, 3, 1,
+	})
+	for i := 0; i < b.N; i++ {
+		m1.Multiply(m2)
+	}
+}
+
+func BenchmarkMatrixMethodMultiplyByTuple(b *testing.B) {
+	m1 := getTestMatrix()
+	t1 := Tuple{1, 2, 3, 1}
+	for i := 0; i < b.N; i++ {
+		m1.MultiplyByTuple(t1)
+	}
+}
+
+func BenchmarkMatrixMethodInverse(b *testing.B) {
+	m1 := getTestMatrix()
+	for i := 0; i < b.N; i++ {
+		m1.Inverse()
+	}
+}
+
+func BenchmarkMatrixMethodDeterminant(b *testing.B) {
+	m1 := getTestMatrix()
+	for i := 0; i < b.N; i++ {
+		m1.Determinant()
+	}
+}
+
+func BenchmarkMatrixMethodSubmatrix(b *testing.B) {
+	m1 := getTestMatrix()
+	for i := 0; i < b.N; i++ {
+		m1.Submatrix(2, 2)
+	}
+}

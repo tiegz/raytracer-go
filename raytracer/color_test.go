@@ -46,3 +46,14 @@ func TestMultiplyingColors(t *testing.T) {
 
 	assertEqualColor(t, expected, actual)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkColorMethodIsEqualTo(b *testing.B) {
+	c1 := NewColor(0.8, 0.1, 0.3)
+	for i := 0; i < b.N; i++ {
+		c1.IsEqualTo(c1)
+	}
+}

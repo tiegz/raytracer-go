@@ -181,3 +181,64 @@ func TestQueryingAShapesBoundingBoxInItsParentsSpace(t *testing.T) {
 	assertEqualTuple(t, NewPoint(0.5, -5, 1), b.MinPoint)
 	assertEqualTuple(t, NewPoint(1.5, -1, 9), b.MaxPoint)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkShapeMethodIsEqualTo(b *testing.B) {
+	s := NewTestShape()
+	for i := 0; i < b.N; i++ {
+		s.IsEqualTo(s)
+	}
+}
+
+func BenchmarkShapeMethodIntersect(b *testing.B) {
+	// Taken from TestIntersectingAScaledShapeWithARay().
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	s := NewTestShape()
+	s.Transform = NewScale(2, 2, 2)
+	for i := 0; i < b.N; i++ {
+		s.Intersect(r)
+	}
+}
+
+func BenchmarkShapeMethodNormalAt(b *testing.B) {
+	// Taken from TestComputingTheNormalOnATranslatedShape().
+	s := NewTestShape()
+	s.Transform = NewTranslation(0, 1, 0)
+	for i := 0; i < b.N; i++ {
+		s.NormalAt(NewPoint(0, 1.70711, -0.70711), NewIntersection(0, s))
+	}
+}
+
+func BenchmarkShapeMethodWorldToObject(b *testing.B) {
+	// Taken from TestConvertingAPointFromWorldToObjectSpace().
+	g1 := NewGroup()
+	g1.Transform = NewRotateY(math.Pi / 2)
+	g2 := NewGroup()
+	g2.Transform = NewScale(2, 2, 2)
+	g1.AddChildren(&g2)
+	s := NewSphere()
+	s.Transform = NewTranslation(5, 0, 0)
+	g2.AddChildren(&s)
+	for i := 0; i < b.N; i++ {
+		s.WorldToObject(NewPoint(-2, 0, -10))
+	}
+}
+
+func BenchmarkShapeMethodNormalToWorld(b *testing.B) {
+	// Taken from TestConvertingANormalFromObjectToWorldSpace().
+	g1 := NewGroup()
+	g1.Transform = NewRotateY(math.Pi / 2)
+	g2 := NewGroup()
+	g2.Transform = NewScale(1, 2, 3)
+	g1.AddChildren(&g2)
+	s := NewSphere()
+	s.Transform = NewTranslation(5, 0, 0)
+	g2.AddChildren(&s)
+
+	for i := 0; i < b.N; i++ {
+		s.NormalToWorld(NewVector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
+	}
+}

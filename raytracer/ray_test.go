@@ -37,3 +37,29 @@ func TestScalingRay(t *testing.T) {
 	assertEqualTuple(t, NewPoint(2, 6, 12), r2.Origin)
 	assertEqualTuple(t, NewVector(0, 3, 0), r2.Direction)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkRayMethodIsEqualTo(b *testing.B) {
+	ray := NewRay(NewPoint(2, 3, 4), NewVector(1, 0, 0))
+	for i := 0; i < b.N; i++ {
+		ray.IsEqualTo(ray)
+	}
+}
+
+func BenchmarkRayMethodPosition(b *testing.B) {
+	ray := NewRay(NewPoint(2, 3, 4), NewVector(1, 0, 0))
+	for i := 0; i < b.N; i++ {
+		ray.Position(2.5)
+	}
+}
+
+func BenchmarkRayMethodTransform(b *testing.B) {
+	r := NewRay(NewPoint(1, 2, 3), NewVector(0, 1, 0))
+	translation := NewTranslation(3, 4, 5)
+	for i := 0; i < b.N; i++ {
+		r.Transform(translation)
+	}
+}

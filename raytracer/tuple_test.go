@@ -190,3 +190,37 @@ func TestReflectVectorAtSlantedSurface(t *testing.T) {
 
 	assertEqualTuple(t, expected, actual)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkTupleMethodIsEqualTo(b *testing.B) {
+	t1 := NewVector(1, 2, 3)
+	t2 := NewVector(0, 1, 2)
+	for i := 0; i < b.N; i++ {
+		t1.IsEqualTo(t2)
+	}
+}
+
+func BenchmarkTupleMethodReflect(b *testing.B) {
+	t1 := NewVector(1, 2, 3)
+	normal := NewVector(0, 1, 2)
+	for i := 0; i < b.N; i++ {
+		t1.Reflect(normal)
+	}
+}
+
+func BenchmarkTupleMethodMagnitude(b *testing.B) {
+	t1 := NewVector(1, 2, 3)
+	for i := 0; i < b.N; i++ {
+		t1.Magnitude()
+	}
+}
+
+func BenchmarkTupleMethodNormalized(b *testing.B) {
+	t1 := NewVector(1, 2, 3)
+	for i := 0; i < b.N; i++ {
+		t1.Normalized()
+	}
+}

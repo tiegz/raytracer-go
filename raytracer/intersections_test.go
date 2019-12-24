@@ -299,3 +299,49 @@ func TestAnIntersectionCanEncapsulateUAndV(t *testing.T) {
 	assertEqualFloat64(t, 0.2, i.U)
 	assertEqualFloat64(t, 0.4, i.V)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkIntersectionMethodIsEqualTo(b *testing.B) {
+	sphere := NewSphere()
+	i1 := NewIntersection(1, sphere)
+	for i := 0; i < b.N; i++ {
+		i1.IsEqualTo(i1)
+	}
+}
+
+func BenchmarkIntersectionMethodHit(b *testing.B) {
+	sphere := NewSphere()
+	i1 := NewIntersection(1, sphere)
+	i2 := NewIntersection(2, sphere)
+	intersections := Intersections{i1, i2}
+	for i := 0; i < b.N; i++ {
+		intersections.Hit(false)
+	}
+}
+
+func BenchmarkIntersectionMethodPrepareComputations(b *testing.B) {
+	// Taken from TestPrecomputingStateOfIntersection().
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	s := NewSphere()
+	x := NewIntersection(4, s)
+	for i := 0; i < b.N; i++ {
+		x.PrepareComputations(r)
+	}
+}
+
+func BenchmarkIntersectionMethodShlick(b *testing.B) {
+	// Taken from TestTheSchlickApproximationUnderTotalInternalReflection().
+	shape := NewGlassSphere()
+	r := NewRay(NewPoint(0, 0, math.Sqrt(2)/2), NewVector(0, 1, 0))
+	xs := Intersections{
+		NewIntersection(-math.Sqrt(2)/2, shape),
+		NewIntersection(math.Sqrt(2)/2, shape),
+	}
+	comps := xs[1].PrepareComputations(r, xs...)
+	for i := 0; i < b.N; i++ {
+		comps.Schlick()
+	}
+}

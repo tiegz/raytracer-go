@@ -180,3 +180,27 @@ func TestTransparencyAndRefractiveIndexForTheDefaultMaterial(t *testing.T) {
 	assertEqualFloat64(t, 0.0, m.Transparency)
 	assertEqualFloat64(t, 1.0, m.RefractiveIndex)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkMaterialMethodIsEqualTo(b *testing.B) {
+	mat := DefaultMaterial()
+	for i := 0; i < b.N; i++ {
+		mat.IsEqualTo(mat)
+	}
+}
+
+func BenchmarkMaterialMethodLighting(b *testing.B) {
+	// Taken from TestLightingWithEyeBetweenLightAndSurface()
+	obj := NewSphere()
+	mat := DefaultMaterial()
+	pos := NewPoint(0, 0, 0)
+	eyeV := NewVector(0, 0, -1)
+	normalV := NewVector(0, 0, -1)
+	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
+	for i := 0; i < b.N; i++ {
+		mat.Lighting(obj, light, pos, eyeV, normalV, false)
+	}
+}

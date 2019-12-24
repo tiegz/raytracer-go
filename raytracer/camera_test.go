@@ -67,3 +67,28 @@ func TestRenderingWorldWithCamera(t *testing.T) {
 	actual := image.PixelAt(5, 5)
 	assertEqualColor(t, expected, actual)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkCameraMethodRayForPixel(b *testing.B) {
+	// Taken from TestConstructingARayThroughCenterOfTheCanvas.
+	c := NewCamera(201, 101, math.Pi/2)
+	for i := 0; i < b.N; i++ {
+		c.RayForPixel(100, 50)
+	}
+}
+
+func BenchmarkCameraMethodRender(b *testing.B) {
+	// Taken from TestRenderingWorldWithCamera.
+	w := DefaultWorld()
+	c := NewCamera(11, 11, math.Pi/2)
+	from := NewPoint(0, 0, -5)
+	to := NewPoint(0, 0, 0)
+	up := NewVector(0, 1, 0)
+	c.Transform = NewViewTransform(from, to, up)
+	for i := 0; i < b.N; i++ {
+		c.Render(w)
+	}
+}

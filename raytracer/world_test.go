@@ -286,3 +286,66 @@ func TestShadeHitWithAReflectiveTransparentMaterial(t *testing.T) {
 
 	assertEqualColor(t, NewColor(0.93391, 0.69643, 0.69243), color)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkWorldMethodIntersect(b *testing.B) {
+	w := DefaultWorld()
+	r := NewRay(NewPoint(0, 0, 0), NewVector(1, 1, 1))
+	for i := 0; i < b.N; i++ {
+		w.Intersect(r)
+	}
+}
+
+func BenchmarkWorldMethodShadeHit(b *testing.B) {
+	// Taken from TestShadingAnIntersection(), so this does calculate a color.
+	w := DefaultWorld()
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	s1 := w.Objects[0]
+	i := NewIntersection(4, s1)
+	c := i.PrepareComputations(r)
+
+	for i := 0; i < b.N; i++ {
+		w.ShadeHit(c, DefaultMaximumReflections)
+	}
+}
+func BenchmarkWorldMethodColorAt(b *testing.B) {
+	// Taken from TestColorAtWhenRayHitsOuterSphere, so this does return a color.
+	w := DefaultWorld()
+	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
+	for i := 0; i < b.N; i++ {
+		w.ColorAt(r, DefaultMaximumReflections)
+	}
+}
+
+func BenchmarkWorldMethodRefractedColor(b *testing.B) {
+	// Taken from TestTheRefractedColorWithARefractedRay, so this does return a color.
+	w := DefaultWorld()
+	w.Objects[0].Material.Ambient = 1.0
+	w.Objects[0].Material.Pattern = NewTestPattern()
+	w.Objects[1].Material.Transparency = 1.0
+	w.Objects[1].Material.RefractiveIndex = 1.5
+	r := NewRay(NewPoint(0, 0, 0.1), NewVector(0, 1, 0))
+	xs := Intersections{
+		NewIntersection(-0.9899, w.Objects[0]),
+		NewIntersection(-0.4899, w.Objects[1]),
+		NewIntersection(0.4899, w.Objects[1]),
+		NewIntersection(0.9899, w.Objects[0]),
+	}
+	// NOTE: this time you're inside the sphere, so you need to look at the second intersection, xs[1], not xs[0]
+	comps := xs[2].PrepareComputations(r, xs...)
+	for i := 0; i < b.N; i++ {
+		w.RefractedColor(comps, 5)
+	}
+}
+
+func BenchmarkWorldMethodIsShadowed(b *testing.B) {
+	// Taken from TestTheShadowWhenObjectIsBetweenPointAndLight, so this does return true.
+	w := DefaultWorld()
+	p := NewPoint(10, -10, 10)
+	for i := 0; i < b.N; i++ {
+		w.IsShadowed(p, w.Lights[0])
+	}
+}

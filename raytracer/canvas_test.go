@@ -70,3 +70,26 @@ func TestCanvasToPpmWithTrailingNewline(t *testing.T) {
 
 	assertEqualString(t, expected, actual)
 }
+
+/////////////
+// Benchmarks
+/////////////
+
+func BenchmarkCanvasMethodIsEqualTo(b *testing.B) {
+	c1 := NewCanvas(100, 100)
+	for i := 0; i < b.N; i++ {
+		c1.IsEqualTo(c1)
+	}
+}
+
+func BenchmarkCanvasMethodToPpm(b *testing.B) {
+	c1 := NewCanvas(10, 10)
+	for x := 0; x < 10; x++ {
+		for y := 0; y < 10; y++ {
+			c1.WritePixel(x, y, Color{1, 1, 1})
+		}
+	}
+	for i := 0; i < b.N; i++ {
+		c1.ToPpm()
+	}
+}

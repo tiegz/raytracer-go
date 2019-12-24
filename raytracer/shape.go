@@ -100,10 +100,6 @@ func (s *Shape) Divide(threshhold int) {
 
 // Adds a child that is a Group containing the given Shapes.
 func (s *Shape) MakeSubGroup(shapes ...*Shape) {
-	fmt.Printf("  MakeSubGroup():\n")
-	for _, c := range shapes {
-		fmt.Printf("    AddChildren with %v\n", c)
-	}
 	if s.LocalShape.localType() != "Group" {
 		// TODO: can we move this to just Group logic instead of all Shape logic?
 		// TODO: return error

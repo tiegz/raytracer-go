@@ -70,7 +70,7 @@ func (c *Camera) RayForPixel(pixelX, pixelY int) Ray {
 	return NewRay(origin, direction)
 }
 
-// Render returns a canvas that renders the world from the given camera.
+// Returns a canvas that renders the world from the given camera.
 func (c *Camera) Render(w World) Canvas {
 	canvas := NewCanvas(c.HSize, c.VSize)
 
@@ -85,6 +85,7 @@ func (c *Camera) Render(w World) Canvas {
 	return canvas
 }
 
+// Same as Render(), while also outputting the current number of pixels rendered to stdout.
 func (c *Camera) RenderWithProgress(w World) Canvas {
 	canvas := NewCanvas(c.HSize, c.VSize)
 
