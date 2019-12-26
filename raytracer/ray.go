@@ -21,11 +21,11 @@ func (r Ray) String() string {
 	return fmt.Sprintf("Ray( %v, %v)", r.Origin, r.Direction)
 }
 
-func (r *Ray) Position(time float64) Tuple {
+func (r Ray) Position(time float64) Tuple {
 	return r.Origin.Add(r.Direction.Multiply(time))
 }
 
-func (r *Ray) Transform(t Matrix) Ray {
+func (r Ray) Transform(t Matrix) Ray {
 	r2 := Ray{}
 
 	r2.Origin = t.MultiplyByTuple(r.Origin)
