@@ -77,8 +77,7 @@ func (m Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, 
 	effectiveColor := baseColor.MultiplyColor(light.Intensity)
 
 	// find the direction to the light source
-	lightVector := light.Position.Subtract(point)
-	lightVector = lightVector.Normalized()
+	lightVector := light.Position.Subtract(point).Normalized()
 
 	// compute the ambient contribution
 	ambient = effectiveColor.Multiply(m.Ambient)
@@ -97,13 +96,11 @@ func (m Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, 
 		specular = Colors["Black"]
 	} else {
 		// compute the diffuse contribution
-		diffuse = effectiveColor.Multiply(m.Diffuse)
-		diffuse = diffuse.Multiply(lightDotNormal)
+		diffuse = effectiveColor.Multiply(m.Diffuse).Multiply(lightDotNormal)
 		// reflect_dot_eye represents the cosine of the angle between the
 		// reflection vector and the eye vector. A negative number means the
 		// light reflects away from the eye.
-		reflectVector := lightVector.Negate()
-		reflectVector = reflectVector.Reflect(normalVector)
+		reflectVector := lightVector.Negate().Reflect(normalVector)
 		reflectDotEye := reflectVector.Dot(eyeVector)
 
 		if reflectDotEye <= 0 {
@@ -111,14 +108,12 @@ func (m Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, 
 		} else {
 			// compute the specular contribution
 			factor := math.Pow(reflectDotEye, m.Shininess)
-			specular = light.Intensity.Multiply(m.Specular)
-			specular = specular.Multiply(factor)
+			specular = light.Intensity.Multiply(m.Specular).Multiply(factor)
 		}
 	}
 
 	// add the three contributions together to get the final shading
-	shading := ambient.Add(diffuse)
-	shading = shading.Add(specular)
+	shading := ambient.Add(diffuse).Add(specular)
 
 	return shading
 }

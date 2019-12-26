@@ -78,13 +78,15 @@ func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 		refractedColor := w.RefractedColor(c, remainingReflections)
 		if c.Object.Material.Reflective > 0 && c.Object.Material.Transparency > 0 {
 			reflectance := c.Schlick()
-			color = color.Add(surfaceColor)
-			color = color.Add(reflectedColor.Multiply(reflectance))
-			color = color.Add(refractedColor.Multiply(1 - reflectance))
+			color = color.
+				Add(surfaceColor).
+				Add(reflectedColor.Multiply(reflectance)).
+				Add(refractedColor.Multiply(1 - reflectance))
 		} else {
-			color = color.Add(surfaceColor)
-			color = color.Add(reflectedColor)
-			color = color.Add(refractedColor)
+			color = color.
+				Add(surfaceColor).
+				Add(reflectedColor).
+				Add(refractedColor)
 		}
 	}
 
@@ -98,8 +100,8 @@ func (w *World) ReflectedColor(c Computation, remainingReflections int) Color {
 		return Colors["Black"]
 	} else {
 		reflectionRay := NewRay(c.OverPoint, c.ReflectV)
-		color := w.ColorAt(reflectionRay, remainingReflections-1)
-		return color.Multiply(c.Object.Material.Reflective)
+		return w.ColorAt(reflectionRay, remainingReflections-1).
+			Multiply(c.Object.Material.Reflective)
 	}
 }
 
@@ -148,8 +150,9 @@ func (w *World) RefractedColor(c Computation, remaining int) Color { // remainin
 	direction := normalScaled.Subtract(eyeScaled)   // Compute the direction of the refracted ray
 	refractedRay := NewRay(c.UnderPoint, direction) // The refracted ray
 
-	color := w.ColorAt(refractedRay, remaining-1.0)
-	color = color.Multiply(c.Object.Material.Transparency) // Find the color of the refracted ray, making sure to multiply # by the transparency value to account for any opacity
+	// Find the color of the refracted ray, making sure to multiply # by the transparency value to account for any opacity
+	color := w.ColorAt(refractedRay, remaining-1.0).
+		Multiply(c.Object.Material.Transparency)
 
 	return color
 }
