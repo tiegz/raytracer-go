@@ -32,7 +32,7 @@ func DefaultMaterial() Material {
 	}
 }
 
-func (m *Material) IsEqualTo(m2 Material) bool {
+func (m Material) IsEqualTo(m2 Material) bool {
 	// TODO add check for Pattern equality too
 	if !m.Color.IsEqualTo(m2.Color) {
 		return false
@@ -64,7 +64,7 @@ func (m Material) String() string {
 //   * Diffuse reflection:  reflection from matte surface; depends on angle btwn light and surface.
 //   * Specular reflection: reflection of the light source; depends on angle btwn the reflection
 //      										and eye vectors. Intensity is controlled by "shininess".
-func (m *Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, normalVector Tuple, inShadow bool) Color {
+func (m Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, normalVector Tuple, inShadow bool) Color {
 	var baseColor, ambient, specular, diffuse Color
 
 	if !m.Pattern.IsEqualTo(NewNullPattern()) {
