@@ -74,12 +74,9 @@ func (t SmoothTriangle) LocalIntersect(r Ray, shape *Shape) Intersections {
 }
 
 func (t SmoothTriangle) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
-	// TODO: simplify this to one-liner once we convert Tuple return values from pointers to values: tri.n2 * hit.u + tri.n3 * hit.v + tri.n1 * (1 - hit.u - hit.v)
-	n2U := t.N2.Multiply(hit.U)
-	n3V := t.N3.Multiply(hit.V)
-	n1UV := t.N1.Multiply(1 - hit.U - hit.V)
-	n2UN3V := n2U.Add(n3V)
-	return n2UN3V.Add(n1UV)
+	return t.N2.Multiply(hit.U).
+		Add(t.N3.Multiply(hit.V)).
+		Add(t.N1.Multiply(1 - hit.U - hit.V))
 }
 
 func (t SmoothTriangle) localIsEqualTo(t2 ShapeInterface) bool {
