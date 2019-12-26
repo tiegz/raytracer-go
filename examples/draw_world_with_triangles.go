@@ -45,15 +45,15 @@ func RunDrawWorldWithTriangles() {
 
 	pyramid1 := pyramid()
 	pyramid2 := pyramid()
-	pyramid2.Transform = pyramid2.Transform.Compose(
+	pyramid2.SetTransform(pyramid2.Transform.Compose(
 		NewTranslation(-1.5, 0, -1.5),
 		NewRotateY(math.Pi),
-	)
+	))
 	pyramid3 := pyramid()
-	pyramid3.Transform = pyramid3.Transform.Compose(
+	pyramid3.SetTransform(pyramid3.Transform.Compose(
 		NewTranslation(2, 0, 0),
 		NewRotateY(math.Pi/2),
-	)
+	))
 
 	world := NewWorld()
 	world.Objects = []Shape{

@@ -35,9 +35,9 @@ func TestIntersectingARayWithANonemptyGroup(t *testing.T) {
 	g := NewGroup()
 	s1 := NewSphere()
 	s2 := NewSphere()
-	s2.Transform = NewTranslation(0, 0, -3)
+	s2.SetTransform(NewTranslation(0, 0, -3))
 	s3 := NewSphere()
-	s3.Transform = NewTranslation(5, 0, 0)
+	s3.SetTransform(NewTranslation(5, 0, 0))
 
 	g.AddChildren(&s1, &s2, &s3)
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
@@ -53,9 +53,9 @@ func TestIntersectingARayWithANonemptyGroup(t *testing.T) {
 
 func TestIntersectingATransformedGroup(t *testing.T) {
 	g := NewGroup()
-	g.Transform = NewScale(2, 2, 2)
+	g.SetTransform(NewScale(2, 2, 2))
 	s := NewSphere()
-	s.Transform = NewTranslation(5, 0, 0)
+	s.SetTransform(NewTranslation(5, 0, 0))
 	g.AddChildren(&s)
 	r := NewRay(NewPoint(10, 0, -10), NewVector(0, 0, 1))
 	xs := g.Intersect(r)
@@ -65,14 +65,14 @@ func TestIntersectingATransformedGroup(t *testing.T) {
 
 func TestAGroupHasABoundingBoxThatContainsItsChildren(t *testing.T) {
 	s := NewSphere()
-	s.Transform = NewTranslation(2, 5, -3)
-	s.Transform = s.Transform.Multiply(NewScale(2, 2, 2))
+	s.SetTransform(NewTranslation(2, 5, -3))
+	s.SetTransform(s.Transform.Multiply(NewScale(2, 2, 2)))
 	c := NewCylinder()
 	cc := c.LocalShape.(*Cylinder)
 	cc.Minimum = -2
 	cc.Maximum = 2
-	c.Transform = NewTranslation(-4, -1, 4)
-	c.Transform = c.Transform.Multiply(NewScale(0.5, 1, 0.5))
+	c.SetTransform(NewTranslation(-4, -1, 4))
+	c.SetTransform(c.Transform.Multiply(NewScale(0.5, 1, 0.5)))
 	g := NewGroup()
 	g.AddChildren(&s, &c)
 
@@ -126,11 +126,11 @@ func TestSubdividingAPrimitiveDoesNothing(t *testing.T) {
 
 func TestSubdividingAGroupPartitionsItsChildren(t *testing.T) {
 	s1 := NewSphere()
-	s1.Transform = NewTranslation(-2, -2, 0)
+	s1.SetTransform(NewTranslation(-2, -2, 0))
 	s2 := NewSphere()
-	s2.Transform = NewTranslation(-2, 2, 0)
+	s2.SetTransform(NewTranslation(-2, 2, 0))
 	s3 := NewSphere()
-	s3.Transform = NewScale(4, 4, 4)
+	s3.SetTransform(NewScale(4, 4, 4))
 	g := NewGroup()
 	g.AddChildren(&s1, &s2, &s3)
 	g.Divide(1)
@@ -154,11 +154,11 @@ func TestSubdividingAGroupPartitionsItsChildren(t *testing.T) {
 // Scenario: Subdividing a group with too few children
 func TestSubdividingAGroupWithTooFewChildren(t *testing.T) {
 	s1 := NewSphere()
-	s1.Transform = NewTranslation(-2, 0, 0)
+	s1.SetTransform(NewTranslation(-2, 0, 0))
 	s2 := NewSphere()
-	s2.Transform = NewTranslation(2, 1, 0)
+	s2.SetTransform(NewTranslation(2, 1, 0))
 	s3 := NewSphere()
-	s3.Transform = NewTranslation(2, -1, 0)
+	s3.SetTransform(NewTranslation(2, -1, 0))
 	sg := NewGroup()
 	sg.AddChildren(&s1, &s2, &s3)
 	s4 := NewSphere()
@@ -179,19 +179,19 @@ func TestSubdividingAGroupWithTooFewChildren(t *testing.T) {
 
 func TestSubdividingACsgShapeSubdividesItsChildren(t *testing.T) {
 	s1 := NewSphere()
-	s1.Transform = NewTranslation(-1.5, 0, 0)
+	s1.SetTransform(NewTranslation(-1.5, 0, 0))
 	s1.Label = "s1"
 	s2 := NewSphere()
-	s2.Transform = NewTranslation(1.5, 0, 0)
+	s2.SetTransform(NewTranslation(1.5, 0, 0))
 	s2.Label = "s2"
 	l := NewGroup()
 	l.AddChildren(&s1, &s2)
 
 	s3 := NewSphere()
-	s3.Transform = NewTranslation(0, 0, -1.5)
+	s3.SetTransform(NewTranslation(0, 0, -1.5))
 	s3.Label = "s3"
 	s4 := NewSphere()
-	s4.Transform = NewTranslation(0, 0, 1.5)
+	s4.SetTransform(NewTranslation(0, 0, 1.5))
 	s4.Label = "s4"
 	r := NewGroup()
 	r.AddChildren(&s3, &s4)

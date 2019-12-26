@@ -27,15 +27,15 @@ func RunDrawWorldWithPatterns() {
 	floor.Material.Pattern = NewStripePattern(Colors["White"], Colors["Red"])
 
 	midSphere := NewSphere()
-	midSphere.Transform = NewTranslation(-0.5, 1, 0.5)
+	midSphere.SetTransform(NewTranslation(-0.5, 1, 0.5))
 	midSphere.Material.Color = NewColor(0.1, 1, 0.5)
 	midSphere.Material.Diffuse = 0.7
 	midSphere.Material.Specular = 0.3
 	midSphere.Material.Pattern = NewStripePattern(Colors["Green"], Colors["Purple"])
 
 	rightSphere := NewSphere()
-	rightSphere.Transform = NewTranslation(1.5, 0.5, -0.5)
-	rightSphere.Transform = rightSphere.Transform.Multiply(NewScale(0.5, 0.5, 0.5))
+	rightSphere.SetTransform(NewTranslation(1.5, 0.5, -0.5))
+	rightSphere.SetTransform(rightSphere.Transform.Multiply(NewScale(0.5, 0.5, 0.5)))
 	rightSphere.Material.Color = NewColor(0.5, 1, 0.1)
 	rightSphere.Material.Diffuse = 0.7
 	rightSphere.Material.Specular = 0.3
@@ -43,8 +43,8 @@ func RunDrawWorldWithPatterns() {
 	rightSphere.Material.Pattern.Transform = NewScale(0.33, 0.33, 0.33)
 
 	leftSphere := NewSphere()
-	leftSphere.Transform = NewTranslation(-1.5, 0.33, -0.75)
-	leftSphere.Transform = leftSphere.Transform.Multiply(NewScale(0.33, 0.33, 0.33))
+	leftSphere.SetTransform(NewTranslation(-1.5, 0.33, -0.75))
+	leftSphere.SetTransform(leftSphere.Transform.Multiply(NewScale(0.33, 0.33, 0.33)))
 	leftSphere.Material.Pattern = NewStripePattern(Colors["White"], Colors["Black"])
 	leftSphere.Material.Pattern.Transform = NewScale(0.01, 0.01, 0.01)
 	leftSphere.Material.Color = NewColor(1, 0.8, 0.1)

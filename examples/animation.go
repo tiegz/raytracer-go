@@ -29,34 +29,34 @@ func RunAnimation() {
 	rightWall := NewPlane()
 	rightWall.Material.Ambient = 0.5
 	rightWall.Material.Reflective = 0.5
-	rightWall.Transform = rightWall.Transform.Multiply(NewTranslation(0, 0, 5))
-	rightWall.Transform = rightWall.Transform.Multiply(NewRotateY(math.Pi / 4))
-	rightWall.Transform = rightWall.Transform.Multiply(NewRotateX(math.Pi / 2))
+	rightWall.SetTransform(rightWall.Transform.Multiply(NewTranslation(0, 0, 5)))
+	rightWall.SetTransform(rightWall.Transform.Multiply(NewRotateY(math.Pi / 4)))
+	rightWall.SetTransform(rightWall.Transform.Multiply(NewRotateX(math.Pi / 2)))
 	rightWall.Material.Pattern = NewCheckerPattern(Colors["Blue"], Colors["Green"])
 
 	leftWall := NewPlane()
 	leftWall.Material.Ambient = 0.5
 	leftWall.Material.Reflective = 0.2
-	leftWall.Transform = leftWall.Transform.Multiply(NewTranslation(0, 0, 5))
-	leftWall.Transform = leftWall.Transform.Multiply(NewRotateY(-math.Pi / 4))
-	leftWall.Transform = leftWall.Transform.Multiply(NewRotateX(math.Pi / 2))
+	leftWall.SetTransform(leftWall.Transform.Multiply(NewTranslation(0, 0, 5)))
+	leftWall.SetTransform(leftWall.Transform.Multiply(NewRotateY(-math.Pi / 4)))
+	leftWall.SetTransform(leftWall.Transform.Multiply(NewRotateX(math.Pi / 2)))
 	leftWall.Material.Pattern = NewCheckerPattern(Colors["Purple"], Colors["Yellow"])
 
 	midSphere := NewSphere()
-	midSphere.Transform = NewTranslation(-0.5, 1, 0.5)
+	midSphere.SetTransform(NewTranslation(-0.5, 1, 0.5))
 	midSphere.Material.Reflective = 1.0
 	midSphere.Material.Diffuse = 0.1
 	midSphere.Material.Color = NewColor(0.75, 0.75, 0.75)
 
 	rightSphere := NewSphere()
-	rightSphere.Transform = NewTranslation(1.5, 0.5, -1.5)
-	rightSphere.Transform = rightSphere.Transform.Multiply(NewScale(0.5, 0.5, 0.5))
+	rightSphere.SetTransform(NewTranslation(1.5, 0.5, -1.5))
+	rightSphere.SetTransform(rightSphere.Transform.Multiply(NewScale(0.5, 0.5, 0.5)))
 	rightSphere.Material.Pattern = NewRingPattern(Colors["Red"], Colors["White"])
 	rightSphere.Material.Pattern.Transform = NewScale(0.23, 0.1, 0.23)
 
 	leftSphere := NewSphere()
-	leftSphere.Transform = NewTranslation(-1.5, 0.33, -0.75)
-	leftSphere.Transform = leftSphere.Transform.Multiply(NewScale(0.33, 0.33, 0.33))
+	leftSphere.SetTransform(NewTranslation(-1.5, 0.33, -0.75))
+	leftSphere.SetTransform(leftSphere.Transform.Multiply(NewScale(0.33, 0.33, 0.33)))
 	leftSphere.Material.Pattern = NewRingPattern(Colors["Blue"], Colors["White"])
 	leftSphere.Material.Pattern.Transform = NewScale(0.23, 0.23, 0.23)
 	leftSphere.Material.Color = NewColor(1, 0.8, 0.1)
@@ -85,9 +85,9 @@ func RunAnimation() {
 	for i := 0; i < frameCount; i++ {
 		canvas := camera.Render(world)
 
-		world.Objects[3].Transform = midSphereTranslation.Multiply(world.Objects[3].Transform)
-		world.Objects[4].Transform = leftSphereTranslation.Multiply(world.Objects[4].Transform)
-		world.Objects[5].Transform = rightSphereTranslation.Multiply(world.Objects[5].Transform)
+		world.Objects[3].SetTransform(midSphereTranslation.Multiply(world.Objects[3].Transform))
+		world.Objects[4].SetTransform(leftSphereTranslation.Multiply(world.Objects[4].Transform))
+		world.Objects[5].SetTransform(rightSphereTranslation.Multiply(world.Objects[5].Transform))
 
 		fmt.Println("Generating PPM...")
 		ppm := canvas.ToPpm()

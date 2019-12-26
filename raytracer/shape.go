@@ -16,29 +16,36 @@ type ShapeInterface interface {
 // Shape is a general shape (Transform+Material), with the specific type of shape stored as a ShapeInterface in LocalShape.
 // LocaleShape-specific functions are prefixed with "local", e.g. localFoo().
 type Shape struct {
-	LocalShape ShapeInterface // not using anonymous embedded field mostly bc of IsEqualTo()... we have to pass the LocalShape, not the Shape
-	Transform  Matrix
-	Material   Material
-	SavedRay   Ray // TODO replace this later, it's only for testing purposes with TestShape
-	Parent     *Shape
-	Label      string
-	Shadows    bool
+	LocalShape       ShapeInterface // not using anonymous embedded field mostly bc of IsEqualTo()... we have to pass the LocalShape, not the Shape
+	Transform        Matrix         // WARNING: don't set Transform directly, use SetTransform()
+	InverseTransform Matrix
+	Material         Material
+	SavedRay         Ray // TODO replace this later, it's only for testing purposes with TestShape
+	Parent           *Shape
+	Label            string
+	Shadows          bool
 }
 
 func NewShape(si ShapeInterface) Shape {
-	return Shape{
+	s := Shape{
 		LocalShape: si,
-		Transform:  IdentityMatrix(),
 		Material:   DefaultMaterial(),
 		SavedRay:   NullRay(),
 		Shadows:    true, // does this shape cast shadows?
 	}
+	s.SetTransform(IdentityMatrix())
+	return s
+}
+
+func (s *Shape) SetTransform(m Matrix) {
+	s.Transform = m
+	s.InverseTransform = m.Inverse()
 }
 
 func (s *Shape) Intersect(r Ray) Intersections {
 	// Instead of applying object's transformation to object, we can just apply
 	// the inverse of the transformation to the ray.
-	r = r.Transform(s.Transform.Inverse())
+	r = r.Transform(s.InverseTransform)
 	return s.LocalShape.LocalIntersect(r, s)
 }
 
@@ -53,14 +60,12 @@ func (s *Shape) WorldToObject(worldPoint Tuple) Tuple {
 	if s.Parent != nil {
 		worldPoint = s.Parent.WorldToObject(worldPoint)
 	}
-	inverseTransform := s.Transform.Inverse()
-	return inverseTransform.MultiplyByTuple(worldPoint)
+	return s.InverseTransform.MultiplyByTuple(worldPoint)
 }
 
 // Transforms a vector in object space to world space, accounting for the chain of parents in between.
 func (s *Shape) NormalToWorld(normal Tuple) Tuple {
-	inverseTransform := s.Transform.Inverse()
-	tranposedInverseTranform := inverseTransform.Transpose()
+	tranposedInverseTranform := s.InverseTransform.Transpose()
 
 	normal = tranposedInverseTranform.MultiplyByTuple(normal)
 	normal.W = 0 // HACK: " ... should be finding submatrix(transform, 3, 3) first, and multiplying by the inverse and trans- pose of that."

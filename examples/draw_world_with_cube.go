@@ -26,20 +26,20 @@ func RunDrawWorldWithCube() {
 	floor.Material.Specular = 0
 
 	cubeLeft := NewCube()
-	cubeLeft.Transform = NewTranslation(-2, 1, 1)
+	cubeLeft.SetTransform(NewTranslation(-2, 1, 1))
 	cubeLeft.Material.Color = Colors["Red"]
 	cubeLeft.Material.Diffuse = 0.7
 	cubeLeft.Material.Specular = 0.3
 
 	cubeMiddle := NewCube()
-	cubeMiddle.Transform = NewTranslation(-0.5, 3, 1)
+	cubeMiddle.SetTransform(NewTranslation(-0.5, 3, 1))
 	cubeMiddle.Material.Color = Colors["Green"]
 	cubeMiddle.Material.Diffuse = 0.7
 	cubeMiddle.Material.Specular = 0.3
 
 	cubeRight := NewCube()
 	cubeRight.Material.Color = Colors["Blue"]
-	cubeRight.Transform = NewTranslation(1, 1, 1)
+	cubeRight.SetTransform(NewTranslation(1, 1, 1))
 	cubeRight.Material.Diffuse = 0.7
 	cubeRight.Material.Specular = 0.3
 

@@ -13,7 +13,7 @@ func TestDefaultTransformation(t *testing.T) {
 
 func TestAssigningATransformation(t *testing.T) {
 	s := NewTestShape()
-	s.Transform = NewTranslation(2, 3, 4)
+	s.SetTransform(NewTranslation(2, 3, 4))
 
 	assertEqualMatrix(t, NewTranslation(2, 3, 4), s.Transform)
 }
@@ -38,7 +38,7 @@ func TestAssigningAMaterial(t *testing.T) {
 func TestIntersectingAScaledShapeWithARay(t *testing.T) {
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
 	s := NewTestShape()
-	s.Transform = NewScale(2, 2, 2)
+	s.SetTransform(NewScale(2, 2, 2))
 	s.Intersect(r)
 
 	assertEqualTuple(t, NewPoint(0, 0, -2.5), s.SavedRay.Origin)
@@ -48,7 +48,7 @@ func TestIntersectingAScaledShapeWithARay(t *testing.T) {
 func TestIntersectingATranslatedShapeWithARay(t *testing.T) {
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
 	s := NewTestShape()
-	s.Transform = NewTranslation(5, 0, 0)
+	s.SetTransform(NewTranslation(5, 0, 0))
 	s.Intersect(r)
 
 	assertEqualTuple(t, NewPoint(-5, 0, -5), s.SavedRay.Origin)
@@ -58,7 +58,7 @@ func TestIntersectingATranslatedShapeWithARay(t *testing.T) {
 // The following two tests replace the ones called “Computing the normal on a translated sphere” and “Computing the normal on a transformed sphere”
 func TestComputingTheNormalOnATranslatedShape(t *testing.T) {
 	s := NewTestShape()
-	s.Transform = NewTranslation(0, 1, 0)
+	s.SetTransform(NewTranslation(0, 1, 0))
 	n := s.NormalAt(NewPoint(0, 1.70711, -0.70711), NewIntersection(0, s))
 
 	assertEqualTuple(t, NewVector(0, 0.70711, -0.70711), n)
@@ -68,7 +68,7 @@ func TestComputingTheNormalOnATransformedShape(t *testing.T) {
 	s := NewTestShape()
 	transform := NewScale(1, 0.5, 1)
 	transform = transform.Multiply(NewRotateZ(math.Pi / 5))
-	s.Transform = transform
+	s.SetTransform(transform)
 	n := s.NormalAt(NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2), NewIntersection(0, s))
 
 	assertEqualTuple(t, NewVector(0, 0.97014, -0.24254), n)
@@ -82,13 +82,13 @@ func TestAShapeHasAParentAttribute(t *testing.T) {
 
 func TestConvertingAPointFromWorldToObjectSpace(t *testing.T) {
 	g1 := NewGroup()
-	g1.Transform = NewRotateY(math.Pi / 2)
+	g1.SetTransform(NewRotateY(math.Pi / 2))
 	g2 := NewGroup()
-	g2.Transform = NewScale(2, 2, 2)
+	g2.SetTransform(NewScale(2, 2, 2))
 	g1.AddChildren(&g2)
 
 	s := NewSphere()
-	s.Transform = NewTranslation(5, 0, 0)
+	s.SetTransform(NewTranslation(5, 0, 0))
 	g2.AddChildren(&s)
 
 	p := s.WorldToObject(NewPoint(-2, 0, -10))
@@ -98,14 +98,14 @@ func TestConvertingAPointFromWorldToObjectSpace(t *testing.T) {
 
 func TestConvertingANormalFromObjectToWorldSpace(t *testing.T) {
 	g1 := NewGroup()
-	g1.Transform = NewRotateY(math.Pi / 2)
+	g1.SetTransform(NewRotateY(math.Pi / 2))
 
 	g2 := NewGroup()
-	g2.Transform = NewScale(1, 2, 3)
+	g2.SetTransform(NewScale(1, 2, 3))
 	g1.AddChildren(&g2)
 
 	s := NewSphere()
-	s.Transform = NewTranslation(5, 0, 0)
+	s.SetTransform(NewTranslation(5, 0, 0))
 	g2.AddChildren(&s)
 
 	n := s.NormalToWorld(NewVector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
@@ -116,14 +116,14 @@ func TestConvertingANormalFromObjectToWorldSpace(t *testing.T) {
 
 func TestFindingTheNormalOnAChildObject(t *testing.T) {
 	g1 := NewGroup()
-	g1.Transform = NewRotateY(math.Pi / 2)
+	g1.SetTransform(NewRotateY(math.Pi / 2))
 
 	g2 := NewGroup()
-	g2.Transform = NewScale(1, 2, 3)
+	g2.SetTransform(NewScale(1, 2, 3))
 	g1.AddChildren(&g2)
 
 	s := NewSphere()
-	s.Transform = NewTranslation(5, 0, 0)
+	s.SetTransform(NewTranslation(5, 0, 0))
 	g2.AddChildren(&s)
 
 	n := s.NormalAt(NewPoint(1.7321, 1.1547, -5.5774), NewIntersection(0, s))
@@ -173,8 +173,8 @@ func TestTestShapeHasArbitraryBounds(t *testing.T) {
 
 func TestQueryingAShapesBoundingBoxInItsParentsSpace(t *testing.T) {
 	s := NewSphere()
-	s.Transform = NewTranslation(1, -3, 5)
-	s.Transform = s.Transform.Multiply(NewScale(0.5, 2, 4))
+	s.SetTransform(NewTranslation(1, -3, 5))
+	s.SetTransform(s.Transform.Multiply(NewScale(0.5, 2, 4)))
 
 	b := s.ParentSpaceBounds()
 
@@ -197,7 +197,7 @@ func BenchmarkShapeMethodIntersect(b *testing.B) {
 	// Taken from TestIntersectingAScaledShapeWithARay().
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
 	s := NewTestShape()
-	s.Transform = NewScale(2, 2, 2)
+	s.SetTransform(NewScale(2, 2, 2))
 	for i := 0; i < b.N; i++ {
 		s.Intersect(r)
 	}
@@ -206,7 +206,7 @@ func BenchmarkShapeMethodIntersect(b *testing.B) {
 func BenchmarkShapeMethodNormalAt(b *testing.B) {
 	// Taken from TestComputingTheNormalOnATranslatedShape().
 	s := NewTestShape()
-	s.Transform = NewTranslation(0, 1, 0)
+	s.SetTransform(NewTranslation(0, 1, 0))
 	for i := 0; i < b.N; i++ {
 		s.NormalAt(NewPoint(0, 1.70711, -0.70711), NewIntersection(0, s))
 	}
@@ -215,12 +215,12 @@ func BenchmarkShapeMethodNormalAt(b *testing.B) {
 func BenchmarkShapeMethodWorldToObject(b *testing.B) {
 	// Taken from TestConvertingAPointFromWorldToObjectSpace().
 	g1 := NewGroup()
-	g1.Transform = NewRotateY(math.Pi / 2)
+	g1.SetTransform(NewRotateY(math.Pi / 2))
 	g2 := NewGroup()
-	g2.Transform = NewScale(2, 2, 2)
+	g2.SetTransform(NewScale(2, 2, 2))
 	g1.AddChildren(&g2)
 	s := NewSphere()
-	s.Transform = NewTranslation(5, 0, 0)
+	s.SetTransform(NewTranslation(5, 0, 0))
 	g2.AddChildren(&s)
 	for i := 0; i < b.N; i++ {
 		s.WorldToObject(NewPoint(-2, 0, -10))
@@ -230,12 +230,12 @@ func BenchmarkShapeMethodWorldToObject(b *testing.B) {
 func BenchmarkShapeMethodNormalToWorld(b *testing.B) {
 	// Taken from TestConvertingANormalFromObjectToWorldSpace().
 	g1 := NewGroup()
-	g1.Transform = NewRotateY(math.Pi / 2)
+	g1.SetTransform(NewRotateY(math.Pi / 2))
 	g2 := NewGroup()
-	g2.Transform = NewScale(1, 2, 3)
+	g2.SetTransform(NewScale(1, 2, 3))
 	g1.AddChildren(&g2)
 	s := NewSphere()
-	s.Transform = NewTranslation(5, 0, 0)
+	s.SetTransform(NewTranslation(5, 0, 0))
 	g2.AddChildren(&s)
 
 	for i := 0; i < b.N; i++ {

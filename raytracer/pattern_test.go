@@ -42,7 +42,7 @@ func TestAStripePatternAlternatesInX(t *testing.T) {
 
 func TestStripesWithAnObjectTransformation(t *testing.T) {
 	sphere := NewSphere()
-	sphere.Transform = NewScale(2, 2, 2)
+	sphere.SetTransform(NewScale(2, 2, 2))
 	sphere.Material.Pattern = NewStripePattern(Colors["White"], Colors["Black"])
 
 	assertEqualColor(t, Colors["White"], sphere.Material.Pattern.PatternAtShape(sphere, NewPoint(1.5, 0, 0)))
@@ -58,7 +58,7 @@ func TestStripesWithAPatternTransformation(t *testing.T) {
 
 func TestStripesWithBothAnObjectAndAPatternTransformation(t *testing.T) {
 	sphere := NewSphere()
-	sphere.Transform = sphere.Transform.Multiply(NewScale(2, 2, 2))
+	sphere.SetTransform(sphere.Transform.Multiply(NewScale(2, 2, 2)))
 	sphere.Material.Pattern = NewStripePattern(Colors["White"], Colors["Black"])
 	sphere.Material.Pattern.Transform = sphere.Material.Pattern.Transform.Multiply(NewTranslation(0.5, 0, 0))
 
@@ -81,7 +81,7 @@ func TestAssigningATransformationToPattern(t *testing.T) {
 // The following tests replace the ones you wrote earlier in the chapter, testing the stripe pattern’s transformations.
 func TestAPatternWithAnObjectTransformation(t *testing.T) {
 	shape := NewSphere()
-	shape.Transform = NewScale(2, 2, 2)
+	shape.SetTransform(NewScale(2, 2, 2))
 	pattern := NewTestPattern()
 
 	assertEqualColor(t, NewColor(1, 1.5, 2), pattern.PatternAtShape(shape, NewPoint(2, 3, 4)))
@@ -97,7 +97,7 @@ func TestAPatternWithAPatternTransformation(t *testing.T) {
 
 func TestAPatternWithBothAnObjectAndAPatternTransformation(t *testing.T) {
 	shape := NewSphere()
-	shape.Transform = NewScale(2, 2, 2)
+	shape.SetTransform(NewScale(2, 2, 2))
 	pattern := NewTestPattern()
 	pattern.Transform = NewTranslation(0.5, 1, 1.5)
 
@@ -106,10 +106,10 @@ func TestAPatternWithBothAnObjectAndAPatternTransformation(t *testing.T) {
 
 func TestAPatternInAGroup(t *testing.T) {
 	g1 := NewGroup()
-	g1.Transform = NewRotateY(math.Pi / 2)
+	g1.SetTransform(NewRotateY(math.Pi / 2))
 
 	g2 := NewGroup()
-	g2.Transform = NewScale(2, 2, 2)
+	g2.SetTransform(NewScale(2, 2, 2))
 
 	shape := NewSphere()
 	pattern := NewTestPattern()
@@ -174,7 +174,7 @@ func BenchmarkPatternMethodIsEqualTo(b *testing.B) {
 func BenchmarkPatternMethodPatternAtShape(b *testing.B) {
 	// Taken from TestStripesWithBothAnObjectAndAPatternTransformation
 	sphere := NewSphere()
-	sphere.Transform = sphere.Transform.Multiply(NewScale(2, 2, 2))
+	sphere.SetTransform(sphere.Transform.Multiply(NewScale(2, 2, 2)))
 	sphere.Material.Pattern = NewStripePattern(Colors["White"], Colors["Black"])
 	sphere.Material.Pattern.Transform = sphere.Material.Pattern.Transform.Multiply(NewTranslation(0.5, 0, 0))
 	for i := 0; i < b.N; i++ {

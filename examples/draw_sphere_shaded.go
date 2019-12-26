@@ -40,7 +40,7 @@ func RunDrawSphereShaded(scaleX, scaleY, rotateZ, skew bool) {
 		shear := NewShear(1, 0, 0, 0, 0, 0)
 		transform = shear.Multiply(transform)
 	}
-	sphere.Transform = transform
+	sphere.SetTransform(transform)
 
 	// for each row of pixels in the canvas
 	for y := 0; y < canvasSize; y++ {

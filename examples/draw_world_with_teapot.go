@@ -22,10 +22,10 @@ func RunDrawWorldWithTeapot() {
 	floor.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Gray"])
 
 	backWall := NewPlane()
-	backWall.Transform = backWall.Transform.Compose(
+	backWall.SetTransform(backWall.Transform.Compose(
 		NewRotateX(math.Pi/2),
 		NewTranslation(0, 0, 20),
-	)
+	))
 	backWall.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Gray"])
 
 	dat, err := ioutil.ReadFile("raytracer/files/utah_teapot_hires.obj") // ("raytracer/files/mit_teapot.obj")
@@ -35,10 +35,10 @@ func RunDrawWorldWithTeapot() {
 
 	objFile := ParseObjFile(string(dat))
 	group := objFile.ToGroup()
-	group.Transform = group.Transform.Compose(
+	group.SetTransform(group.Transform.Compose(
 		NewRotateX(-math.Pi/2),
 		NewUScale(0.75),
-	)
+	))
 	// TODO: color on group not working?
 	// group.Material.Color = Colors["Red"]
 

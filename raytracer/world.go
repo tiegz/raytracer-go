@@ -33,7 +33,7 @@ func DefaultWorld() World {
 	defaultObj1.Material.Specular = 0.2
 
 	defaultObj2 := NewSphere()
-	defaultObj2.Transform = NewScale(0.5, 0.5, 0.5)
+	defaultObj2.SetTransform(NewScale(0.5, 0.5, 0.5))
 
 	w.Objects = append(w.Objects, defaultObj1, defaultObj2)
 	w.Lights = []PointLight{defaultPointLight}
