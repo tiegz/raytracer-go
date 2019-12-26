@@ -34,7 +34,7 @@ var Colors = map[string]Color{
 	"DarkPurple": NewColor(0.5, 0, 0.5),
 }
 
-func (c *Color) IsEqualTo(c2 Color) bool {
+func (c Color) IsEqualTo(c2 Color) bool {
 	return equalFloat64s(c.Red, c2.Red) && equalFloat64s(c.Green, c2.Green) && equalFloat64s(c.Blue, c2.Blue)
 }
 
@@ -42,19 +42,19 @@ func (c Color) String() string {
 	return fmt.Sprintf("Color( %v %v %v )", c.Red, c.Green, c.Blue)
 }
 
-func (c *Color) Add(c2 Color) Color {
+func (c Color) Add(c2 Color) Color {
 	return Color{c.Red + c2.Red, c.Green + c2.Green, c.Blue + c2.Blue}
 }
 
-func (c *Color) Subtract(c2 Color) Color {
+func (c Color) Subtract(c2 Color) Color {
 	return Color{c.Red - c2.Red, c.Green - c2.Green, c.Blue - c2.Blue}
 }
 
-func (c *Color) Multiply(scalar float64) Color {
+func (c Color) Multiply(scalar float64) Color {
 	return Color{c.Red * scalar, c.Green * scalar, c.Blue * scalar}
 }
 
 // Returns the Hadamard product (or Schur product) of two colors.
-func (c *Color) MultiplyColor(c2 Color) Color {
+func (c Color) MultiplyColor(c2 Color) Color {
 	return NewColor(c.Red*c2.Red, c.Green*c2.Green, c.Blue*c2.Blue)
 }
