@@ -39,13 +39,13 @@ func RunDrawWorldWithMultiplePatterns() {
 	// rightSphere.Material.Diffuse = 0.7
 	// rightSphere.Material.Specular = 0.3
 	rightSphere.Material.Pattern = NewRingPattern(Colors["Red"], Colors["White"])
-	rightSphere.Material.Pattern.Transform = NewScale(0.23, 0.23, 0.23)
+	rightSphere.Material.Pattern.SetTransform(NewScale(0.23, 0.23, 0.23))
 
 	leftSphere := NewSphere()
 	leftSphere.SetTransform(NewTranslation(-1.5, 0.33, -0.75))
 	leftSphere.SetTransform(leftSphere.Transform.Multiply(NewScale(0.33, 0.33, 0.33)))
 	leftSphere.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Black"])
-	// leftSphere.Material.Pattern.Transform = NewScale(0.01, 0.01, 0.01)
+	// leftSphere.Material.Pattern.SetTransform(NewScale(0.01, 0.01, 0.01))
 	leftSphere.Material.Color = NewColor(1, 0.8, 0.1)
 	leftSphere.Material.Diffuse = 0.7
 	leftSphere.Material.Specular = 0.3

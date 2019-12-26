@@ -24,7 +24,7 @@ func RunDrawWorldWithDice() {
 		NewUScale(10),
 	))
 	room.Material.Pattern = NewCheckerPattern(NewColor(1, 1, 1), NewColor(0.9, 0.9, 0.9))
-	room.Material.Pattern.Transform = NewUScale(0.05)
+	room.Material.Pattern.SetTransform(NewUScale(0.05))
 	room.Material.Ambient = 0.1
 	room.Material.Diffuse = 0.7
 	room.Material.Reflective = 0.5

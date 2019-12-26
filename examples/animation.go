@@ -52,13 +52,13 @@ func RunAnimation() {
 	rightSphere.SetTransform(NewTranslation(1.5, 0.5, -1.5))
 	rightSphere.SetTransform(rightSphere.Transform.Multiply(NewScale(0.5, 0.5, 0.5)))
 	rightSphere.Material.Pattern = NewRingPattern(Colors["Red"], Colors["White"])
-	rightSphere.Material.Pattern.Transform = NewScale(0.23, 0.1, 0.23)
+	rightSphere.Material.Pattern.SetTransform(NewScale(0.23, 0.1, 0.23))
 
 	leftSphere := NewSphere()
 	leftSphere.SetTransform(NewTranslation(-1.5, 0.33, -0.75))
 	leftSphere.SetTransform(leftSphere.Transform.Multiply(NewScale(0.33, 0.33, 0.33)))
 	leftSphere.Material.Pattern = NewRingPattern(Colors["Blue"], Colors["White"])
-	leftSphere.Material.Pattern.Transform = NewScale(0.23, 0.23, 0.23)
+	leftSphere.Material.Pattern.SetTransform(NewScale(0.23, 0.23, 0.23))
 	leftSphere.Material.Color = NewColor(1, 0.8, 0.1)
 
 	world := NewWorld()

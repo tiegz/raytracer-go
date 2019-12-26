@@ -32,7 +32,7 @@ func RunDrawWorldWithTable() {
 		NewColor(0, 0, 0),
 		NewColor(0.25, 0.25, 0.25),
 	)
-	floorCeiling.Material.Pattern.Transform = floorCeiling.Material.Pattern.Transform.Multiply(NewUScale(0.07))
+	floorCeiling.Material.Pattern.SetTransform(floorCeiling.Material.Pattern.Transform.Multiply(NewUScale(0.07)))
 	floorCeiling.Material.Ambient = 0.25
 	floorCeiling.Material.Diffuse = 0.7
 	floorCeiling.Material.Specular = 0.9
@@ -45,18 +45,18 @@ func RunDrawWorldWithTable() {
 		NewColor(0.4863, 0.3765, 0.2941),
 		NewColor(0.3725, 0.2902, 0.2275),
 	)
-	walls.Material.Pattern.Transform = walls.Material.Pattern.Transform.Multiply(NewScale(0.05, 20, 0.05))
+	walls.Material.Pattern.SetTransform(walls.Material.Pattern.Transform.Multiply(NewScale(0.05, 20, 0.05)))
 	walls.Material.Ambient = 0.1
 	walls.Material.Diffuse = 0.7
 	walls.Material.Specular = 0.9
 	walls.Material.Shininess = 300
 	walls.Material.Reflective = 0.1
-	walls.Material.Pattern.Transform = NewScale(0.05, 20, 0.05)
+	walls.Material.Pattern.SetTransform(NewScale(0.05, 20, 0.05))
 
 	tabletop := NewCube()
 	tabletop.SetTransform(tabletop.Transform.Compose(NewScale(3, 0.1, 2), NewTranslation(0, 3.1, 0)))
 	tabletop.Material.Pattern = NewStripePattern(NewColor(0.5529, 0.4235, 0.3255), NewColor(0.6588, 0.5098, 0.4000))
-	tabletop.Material.Pattern.Transform = tabletop.Material.Pattern.Transform.Compose(NewRotateY(0.1), NewScale(0.05, 0.05, 0.05))
+	tabletop.Material.Pattern.SetTransform(tabletop.Material.Pattern.Transform.Compose(NewRotateY(0.1), NewScale(0.05, 0.05, 0.05)))
 	tabletop.Material.Ambient = 0.1
 	tabletop.Material.Diffuse = 0.7
 	tabletop.Material.Specular = 0.9
