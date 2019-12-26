@@ -106,7 +106,7 @@ func TestARayHitsACsgObject(t *testing.T) {
 	s1.Label = "s1"
 	s2 := NewSphere()
 	s2.Label = "s2"
-	s2.Transform = NewTranslation(0, 0, 0.5)
+	s2.SetTransform(NewTranslation(0, 0, 0.5))
 	c := NewCsg("union", &s1, &s2)
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
 	xs := c.LocalShape.LocalIntersect(r, &c)
@@ -134,7 +134,7 @@ func TestCreatingANewCsg(t *testing.T) {
 func TestACsgShapeHasABoundingBoxThatContainsItseChildren(t *testing.T) {
 	left := NewSphere()
 	right := NewSphere()
-	right.Transform = NewTranslation(2, 3, 4)
+	right.SetTransform(NewTranslation(2, 3, 4))
 
 	csg := NewCsg("difference", &left, &right)
 	box := csg.Bounds()

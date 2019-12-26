@@ -12,29 +12,29 @@ func RunDrawWorldWithDice() {
 	// camera := NewCamera(150, 150, 0.9)
 	camera := NewCamera(600, 600, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(2, 3, -2), // NewPoint(0, 3, -4),
 		NewPoint(0, 1, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	room := NewCube()
-	room.Transform = room.Transform.Compose(
+	room.SetTransform(room.Transform.Compose(
 		NewTranslation(0, 1, 0),
 		NewUScale(10),
-	)
+	))
 	room.Material.Pattern = NewCheckerPattern(NewColor(1, 1, 1), NewColor(0.9, 0.9, 0.9))
-	room.Material.Pattern.Transform = NewUScale(0.05)
+	room.Material.Pattern.SetTransform(NewUScale(0.05))
 	room.Material.Ambient = 0.1
 	room.Material.Diffuse = 0.7
 	room.Material.Reflective = 0.5
 
 	createDice := func(c Color) *Shape {
 		cube := NewCube()
-		cube.Transform = cube.Transform.Compose(
+		cube.SetTransform(cube.Transform.Compose(
 			NewTranslation(0, 1, 0),
 			NewUScale(1),
-		)
+		))
 		cube.Material.Color = c
 		cube.Material.Diffuse = 0.7
 		// cube.Material.Ambient = 0
@@ -81,34 +81,34 @@ func RunDrawWorldWithDice() {
 		for _, face := range dots {
 			for _, location := range face.locations {
 				dot := NewSphere()
-				dot.Transform = dot.Transform.Compose(
+				dot.SetTransform(dot.Transform.Compose(
 					NewTranslation(location.X, location.Y, location.Z),
 					NewUScale(0.2),
 					NewTranslation(0, 1, -0.9),
 					face.rotation,
-				)
+				))
 				dot.Shadows = false
 				dot.Material.Color = Colors["White"]
-				dot.Transform = dot.Transform.Multiply(face.rotation)
+				dot.SetTransform(dot.Transform.Multiply(face.rotation))
 				dotGroup.AddChildren(&dot)
 			}
 		}
 
 		dice := NewCsg("difference", &cube, &dotGroup)
 		// To flip the dice over
-		// dice.Transform = dice.Transform.Compose(
+		// dice..SetTransform(dice.Transform.Compose(
 		// 	NewRotateX(math.Pi),
 		// 	NewTranslation(0, 2, 0),
-		// )
+		// ))
 
 		return &dice
 	}
 
 	d1 := createDice(NewColor(0.2, 0.9, 0.4))
 	d2 := createDice(NewColor(0.9, 0.2, 0.4))
-	d2.Transform = d2.Transform.Multiply(NewTranslation(-4, 0, 0))
+	d2.SetTransform(d2.Transform.Multiply(NewTranslation(-4, 0, 0)))
 	d3 := createDice(NewColor(0.2, 0.2, 0.9))
-	d3.Transform = d3.Transform.Multiply(NewTranslation(0, 0, 4))
+	d3.SetTransform(d3.Transform.Multiply(NewTranslation(0, 0, 4)))
 
 	world := NewWorld()
 	world.Objects = []Shape{

@@ -31,7 +31,7 @@ func TestDefaultWorld(t *testing.T) {
 	}
 
 	s2 := NewSphere()
-	s2.Transform = NewScale(0.5, 0.5, 0.5)
+	s2.SetTransform(NewScale(0.5, 0.5, 0.5))
 
 	assertEqualPointLight(t, l, world.Lights[0])
 	assert(t, world.Contains(s1))
@@ -83,7 +83,7 @@ func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 	w := NewWorld()
 	s1 := NewSphere()
 	s2 := NewSphere()
-	s2.Transform = NewTranslation(0, 0, 10)
+	s2.SetTransform(NewTranslation(0, 0, 10))
 
 	w.Lights = []PointLight{
 		NewPointLight(NewPoint(0, 0, -10), Colors["White"]),
@@ -250,11 +250,11 @@ func TestTheRefractedColorWithARefractedRay(t *testing.T) {
 func TestShadeHitWithATransparentMaterial(t *testing.T) {
 	w := DefaultWorld()
 	floor := NewPlane()
-	floor.Transform = NewTranslation(0, -1, 0)
+	floor.SetTransform(NewTranslation(0, -1, 0))
 	floor.Material.Transparency = 0.5
 	floor.Material.RefractiveIndex = 1.5
 	ball := NewSphere()
-	ball.Transform = NewTranslation(0, -3.5, -0.5)
+	ball.SetTransform(NewTranslation(0, -3.5, -0.5))
 	ball.Material.Color = NewColor(1, 0, 0)
 	ball.Material.Ambient = 0.5
 	w.Objects = append(w.Objects, floor, ball)
@@ -270,12 +270,12 @@ func TestShadeHitWithATransparentMaterial(t *testing.T) {
 func TestShadeHitWithAReflectiveTransparentMaterial(t *testing.T) {
 	w := DefaultWorld()
 	floor := NewPlane()
-	floor.Transform = NewTranslation(0, -1, 0)
+	floor.SetTransform(NewTranslation(0, -1, 0))
 	floor.Material.Reflective = 0.5
 	floor.Material.Transparency = 0.5
 	floor.Material.RefractiveIndex = 1.5
 	ball := NewSphere()
-	ball.Transform = NewTranslation(0, -3.5, -0.5)
+	ball.SetTransform(NewTranslation(0, -3.5, -0.5))
 	ball.Material.Color = NewColor(1, 0, 0)
 	ball.Material.Ambient = 0.5
 	w.Objects = append(w.Objects, floor, ball)

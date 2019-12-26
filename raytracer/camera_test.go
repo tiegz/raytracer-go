@@ -47,7 +47,7 @@ func TestConstructingARayWhenCameraIsTransformed(t *testing.T) {
 	c := NewCamera(201, 101, math.Pi/2)
 	transform := NewRotateY(math.Pi / 4)
 	transform = transform.Multiply(NewTranslation(0, -2, 5))
-	c.Transform = transform
+	c.SetTransform(transform)
 	r := c.RayForPixel(100, 50)
 
 	assertEqualTuple(t, NewPoint(0, 2, -5), r.Origin)
@@ -60,7 +60,7 @@ func TestRenderingWorldWithCamera(t *testing.T) {
 	from := NewPoint(0, 0, -5)
 	to := NewPoint(0, 0, 0)
 	up := NewVector(0, 1, 0)
-	c.Transform = NewViewTransform(from, to, up)
+	c.SetTransform(NewViewTransform(from, to, up))
 	image := c.Render(w)
 
 	expected := NewColor(0.38066, 0.47583, 0.2855)
@@ -87,7 +87,7 @@ func BenchmarkCameraMethodRender(b *testing.B) {
 	from := NewPoint(0, 0, -5)
 	to := NewPoint(0, 0, 0)
 	up := NewVector(0, 1, 0)
-	c.Transform = NewViewTransform(from, to, up)
+	c.SetTransform(NewViewTransform(from, to, up))
 	for i := 0; i < b.N; i++ {
 		c.Render(w)
 	}

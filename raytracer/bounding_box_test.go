@@ -204,9 +204,9 @@ func TestSplittingAZWideBox(t *testing.T) {
 
 func TestPartitioningAGroupsChildren(t *testing.T) {
 	s1 := NewSphere()
-	s1.Transform = NewTranslation(-2, 0, 0)
+	s1.SetTransform(NewTranslation(-2, 0, 0))
 	s2 := NewSphere()
-	s2.Transform = NewTranslation(2, 0, 0)
+	s2.SetTransform(NewTranslation(2, 0, 0))
 	s3 := NewSphere()
 	g := NewGroup()
 	g.AddChildren(&s1, &s2, &s3)

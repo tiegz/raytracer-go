@@ -11,18 +11,18 @@ import (
 func RunDrawWorldWithHexagonGroup() {
 	camera := NewCamera(320, 200, math.Pi/3)
 
-	camera.Transform = NewViewTransform(
+	camera.SetTransform(NewViewTransform(
 		NewPoint(0, 2, -4),
 		NewPoint(0, 0, 0),
 		NewVector(0, 1, 0),
-	)
+	))
 
 	hexagonCorner := func() *Shape {
 		corner := NewSphere()
-		corner.Transform = corner.Transform.Compose(
+		corner.SetTransform(corner.Transform.Compose(
 			NewUScale(0.25),
 			NewTranslation(0, 0, -1),
-		)
+		))
 		return &corner
 	}
 
@@ -31,12 +31,12 @@ func RunDrawWorldWithHexagonGroup() {
 		cyl := edge.LocalShape.(*Cylinder)
 		cyl.Minimum = 0
 		cyl.Maximum = 1
-		edge.Transform = edge.Transform.Compose(
+		edge.SetTransform(edge.Transform.Compose(
 			NewScale(0.25, 1, 0.25),
 			NewRotateZ(-math.Pi/2),
 			NewRotateY(-math.Pi/6),
 			NewTranslation(0, 0, -1),
-		)
+		))
 		return &edge
 	}
 
@@ -52,7 +52,7 @@ func RunDrawWorldWithHexagonGroup() {
 		hex := hexagonSide()
 		for i := 0; i <= 5; i++ {
 			side := hexagonSide()
-			side.Transform = NewRotateY(float64(i) * math.Pi / 3.0)
+			side.SetTransform(NewRotateY(float64(i) * math.Pi / 3.0))
 			hex.AddChildren(side)
 		}
 		return hex

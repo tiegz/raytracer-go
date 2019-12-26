@@ -6,12 +6,13 @@ import (
 )
 
 type Camera struct {
-	HSize       int
-	VSize       int
-	HalfWidth   float64
-	HalfHeight  float64
-	FieldOfView float64
-	Transform   Matrix
+	HSize            int
+	VSize            int
+	HalfWidth        float64
+	HalfHeight       float64
+	FieldOfView      float64
+	Transform        Matrix // WARNING: don't set Transform directly, use SetTransform()
+	InverseTransform Matrix
 }
 
 // NewCamera returns a Camera, which renders a canvas 1 unit in front of it.
@@ -22,12 +23,13 @@ type Camera struct {
 //
 // The Camera also has a Transform attribute, describing the world's orientation relative to the camera.
 func NewCamera(h, v int, f float64) Camera {
-	return Camera{
+	c := Camera{
 		HSize:       h,
 		VSize:       v,
 		FieldOfView: f,
-		Transform:   IdentityMatrix(),
 	}
+	c.SetTransform(IdentityMatrix())
+	return c
 }
 
 func (c *Camera) PixelSize() float64 {
@@ -46,6 +48,11 @@ func (c *Camera) PixelSize() float64 {
 	return (c.HalfWidth * 2) / float64(c.HSize)
 }
 
+func (c *Camera) SetTransform(m Matrix) {
+	c.Transform = m
+	c.InverseTransform = m.Inverse()
+}
+
 // TODO memoize PixelSize() for this func?
 // RayForPixel returns a ray, from the camera through the point indicated.
 func (c *Camera) RayForPixel(pixelX, pixelY int) Ray {
@@ -60,9 +67,8 @@ func (c *Camera) RayForPixel(pixelX, pixelY int) Ray {
 
 	// ... transform the canvas point and the origin, and then compute the ray's direction vector. ...
 	// ... (remember that the canvas is at z=-1) ...
-	inverseCameraTransform := c.Transform.Inverse()
-	pixel := inverseCameraTransform.MultiplyByTuple(NewPoint(worldX, worldY, -1))
-	origin := inverseCameraTransform.MultiplyByTuple(NewPoint(0, 0, 0))
+	pixel := c.InverseTransform.MultiplyByTuple(NewPoint(worldX, worldY, -1))
+	origin := c.InverseTransform.MultiplyByTuple(NewPoint(0, 0, 0))
 
 	direction := pixel.Subtract(origin)
 	direction = direction.Normalized()

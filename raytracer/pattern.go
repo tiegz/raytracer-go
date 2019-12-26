@@ -12,12 +12,20 @@ type PatternInterface interface {
 
 // Pattern is a general pattern (Transform), with the specific type of pattern stored as a PatternInterface in LocalPattern.
 type Pattern struct {
-	LocalPattern PatternInterface
-	Transform    Matrix
+	LocalPattern     PatternInterface
+	Transform        Matrix // WARNING: don't set Transform directly, use SetTransform()
+	InverseTransform Matrix
 }
 
 func NewPattern(pi PatternInterface) Pattern {
-	return Pattern{LocalPattern: pi, Transform: IdentityMatrix()}
+	p := Pattern{LocalPattern: pi}
+	p.SetTransform(IdentityMatrix())
+	return p
+}
+
+func (p *Pattern) SetTransform(m Matrix) {
+	p.Transform = m
+	p.InverseTransform = m.Inverse()
 }
 
 func (p Pattern) String() string {
@@ -39,9 +47,7 @@ func (p Pattern) IsEqualTo(p2 Pattern) bool {
 
 func (p Pattern) PatternAtShape(s Shape, worldPoint Tuple) Color {
 	objectPoint := s.WorldToObject(worldPoint)
-
-	inversePatternTransform := p.Transform.Inverse()
-	patternPoint := inversePatternTransform.MultiplyByTuple(objectPoint)
+	patternPoint := p.InverseTransform.MultiplyByTuple(objectPoint)
 
 	return p.LocalPattern.LocalPatternAt(patternPoint)
 }

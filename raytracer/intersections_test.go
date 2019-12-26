@@ -105,7 +105,7 @@ func TestHitWhenIntersectionOccursOnInside(t *testing.T) {
 func TestHitShouldOffsetPoint(t *testing.T) {
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
 	s := NewSphere()
-	s.Transform = NewTranslation(0, 0, 1)
+	s.SetTransform(NewTranslation(0, 0, 1))
 	i := NewIntersection(5, s)
 	c := i.PrepareComputations(r)
 
@@ -136,7 +136,7 @@ func TestTheReflectedColorForAReflectiveMaterial(t *testing.T) {
 	w := DefaultWorld()
 	shape := NewPlane()
 	shape.Material.Reflective = 0.5
-	shape.Transform = NewTranslation(0, -1, 0)
+	shape.SetTransform(NewTranslation(0, -1, 0))
 	w.Objects = append(w.Objects, shape)
 
 	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
@@ -151,7 +151,7 @@ func TestShadeHitWithAReflectiveMaterial(t *testing.T) {
 	w := DefaultWorld()
 	shape := NewPlane()
 	shape.Material.Reflective = 0.5
-	shape.Transform = NewTranslation(0, -1, -0)
+	shape.SetTransform(NewTranslation(0, -1, -0))
 	w.Objects = append(w.Objects, shape)
 	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
 	i := NewIntersection(math.Sqrt(2), shape)
@@ -171,11 +171,11 @@ func TestColorAtWithMutuallyReflectiveSurfaces(t *testing.T) {
 
 	lower := NewPlane()
 	lower.Material.Reflective = 1
-	lower.Transform = NewTranslation(0, -1, 0)
+	lower.SetTransform(NewTranslation(0, -1, 0))
 
 	upper := NewPlane()
 	upper.Material.Reflective = 1
-	upper.Transform = NewTranslation(0, 1, 0)
+	upper.SetTransform(NewTranslation(0, 1, 0))
 
 	w.Objects = []Shape{lower, upper}
 
@@ -190,7 +190,7 @@ func TestTheReflectedColorAtTheMaximumRecursiveDepth(t *testing.T) {
 	w := DefaultWorld()
 	shape := NewPlane()
 	shape.Material.Reflective = 0.5
-	shape.Transform = NewTranslation(0, -1, 0)
+	shape.SetTransform(NewTranslation(0, -1, 0))
 	w.Objects = append(w.Objects, shape)
 	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
 	i := NewIntersection(math.Sqrt(2), shape)
@@ -201,15 +201,15 @@ func TestTheReflectedColorAtTheMaximumRecursiveDepth(t *testing.T) {
 
 func TestFindingN1AndN2AtVariousIntersections(t *testing.T) {
 	a := NewGlassSphere()
-	a.Transform = NewScale(2, 2, 2)
+	a.SetTransform(NewScale(2, 2, 2))
 	a.Material.RefractiveIndex = 1.5
 
 	b := NewGlassSphere()
-	b.Transform = NewTranslation(0, 0, -0.25)
+	b.SetTransform(NewTranslation(0, 0, -0.25))
 	b.Material.RefractiveIndex = 2.0
 
 	c := NewGlassSphere()
-	c.Transform = NewTranslation(0, 0, 0.25)
+	c.SetTransform(NewTranslation(0, 0, 0.25))
 	c.Material.RefractiveIndex = 2.5
 
 	r := NewRay(NewPoint(0, 0, -4), NewVector(0, 0, 1))
@@ -243,7 +243,7 @@ func TestFindingN1AndN2AtVariousIntersections(t *testing.T) {
 
 func TestTheUnderPointIsOffsetBelowTheSurface(t *testing.T) {
 	shape := NewGlassSphere()
-	shape.Transform = NewTranslation(0, 0, 1)
+	shape.SetTransform(NewTranslation(0, 0, 1))
 	i := NewIntersection(5, shape)
 	xs := Intersections{i}
 	ray := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
