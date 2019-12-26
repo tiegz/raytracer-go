@@ -44,7 +44,7 @@ func (b *BoundingBox) AddBoundingBoxes(boundingBoxes ...BoundingBox) {
 }
 
 // Divide a bounding box into two sub-boxes.
-func (b *BoundingBox) SplitBounds() (BoundingBox, BoundingBox) {
+func (b BoundingBox) SplitBounds() (BoundingBox, BoundingBox) {
 	dx := b.MaxPoint.X - b.MinPoint.X
 	dy := b.MaxPoint.Y - b.MinPoint.Y
 	dz := b.MaxPoint.Z - b.MinPoint.Z
@@ -72,20 +72,20 @@ func (b *BoundingBox) SplitBounds() (BoundingBox, BoundingBox) {
 	return NewBoundingBox(b.MinPoint, midMax), NewBoundingBox(midMin, b.MaxPoint)
 }
 
-func (b *BoundingBox) ContainsPoint(point Tuple) bool {
+func (b BoundingBox) ContainsPoint(point Tuple) bool {
 	return (point.X >= b.MinPoint.X && point.X <= b.MaxPoint.X) &&
 		(point.Y >= b.MinPoint.Y && point.Y <= b.MaxPoint.Y) &&
 		(point.Z >= b.MinPoint.Z && point.Z <= b.MaxPoint.Z)
 }
 
-func (b *BoundingBox) ContainsBox(b2 BoundingBox) bool {
+func (b BoundingBox) ContainsBox(b2 BoundingBox) bool {
 	return b.ContainsPoint(b2.MinPoint) && b.ContainsPoint(b2.MaxPoint)
 }
 
 // Transforms a BoundingBox according to a Matrix. To work for scaling,
 // translation and rotation, we need to get all the points from the
 // box, transform each by the matrix, and then find the new min/max.
-func (b *BoundingBox) Transform(m Matrix) BoundingBox {
+func (b BoundingBox) Transform(m Matrix) BoundingBox {
 	p1 := b.MinPoint
 	p2 := NewPoint(b.MinPoint.X, b.MinPoint.Y, b.MaxPoint.Z)
 	p3 := NewPoint(b.MinPoint.X, b.MaxPoint.Y, b.MinPoint.Z)

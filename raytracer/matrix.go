@@ -16,15 +16,15 @@ func NewMatrix(rows, cols int, data []float64) Matrix {
 // 	return Matrix{}
 // }
 
-func (m *Matrix) At(row, col int) float64 {
+func (m Matrix) At(row, col int) float64 {
 	return m.Data[row*m.Cols+col]
 }
 
-func (m *Matrix) Set(row, col int, val float64) {
+func (m Matrix) Set(row, col int, val float64) {
 	m.Data[row*m.Cols+col] = val
 }
 
-func (m *Matrix) IsEqualTo(m2 Matrix) bool {
+func (m Matrix) IsEqualTo(m2 Matrix) bool {
 	if m.Cols != m2.Cols || m.Rows != m2.Rows {
 		return false
 	}
@@ -60,7 +60,7 @@ func IdentityMatrix() Matrix {
 	})
 }
 
-func (m *Matrix) Transpose() Matrix {
+func (m Matrix) Transpose() Matrix {
 	m2 := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols, m.Rows*m.Cols))
 
 	for r := 0; r < m.Rows; r += 1 {
@@ -79,7 +79,7 @@ func (m Matrix) Compose(transformations ...Matrix) Matrix {
 	return m
 }
 
-func (m *Matrix) Multiply(m2 Matrix) Matrix {
+func (m Matrix) Multiply(m2 Matrix) Matrix {
 	m3 := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols, m.Rows*m.Cols))
 
 	for row := 0; row < m.Rows; row += 1 {
@@ -98,7 +98,7 @@ func (m *Matrix) Multiply(m2 Matrix) Matrix {
 	return m3
 }
 
-func (m *Matrix) MultiplyByTuple(t Tuple) Tuple {
+func (m Matrix) MultiplyByTuple(t Tuple) Tuple {
 	// Similar to mulitplying matrices, except there's only one col in a Tuple.
 	x := m.At(0, 0)*t.X +
 		m.At(0, 1)*t.Y +
@@ -123,7 +123,7 @@ func (m *Matrix) MultiplyByTuple(t Tuple) Tuple {
 	return Tuple{x, y, z, w}
 }
 
-func (m *Matrix) Inverse() Matrix {
+func (m Matrix) Inverse() Matrix {
 	if !m.IsInvertible() {
 		panic(fmt.Sprintf("Matrix is not invertible! (determinant was %f on matrix %v)", m.Determinant(), m))
 	}
@@ -141,7 +141,7 @@ func (m *Matrix) Inverse() Matrix {
 }
 
 // .. If the determinant is zero, then the corresponding system of equations has no solution...
-func (m *Matrix) Determinant() float64 {
+func (m Matrix) Determinant() float64 {
 	if m.Rows == 2 {
 		return (m.At(0, 0) * m.At(1, 1)) - (m.At(1, 0) * m.At(0, 1))
 	} else {
@@ -154,18 +154,18 @@ func (m *Matrix) Determinant() float64 {
 	}
 }
 
-func (m *Matrix) IsInvertible() bool {
+func (m Matrix) IsInvertible() bool {
 	return m.Determinant() != 0
 }
 
 // Returns the determinant of a submatrix.
-func (m *Matrix) Minor(rowToRemove, colToRemove int) float64 {
+func (m Matrix) Minor(rowToRemove, colToRemove int) float64 {
 	sub := m.Submatrix(rowToRemove, colToRemove)
 	return sub.Determinant()
 }
 
 // ...Cofactors are minors that have (possibly) had their sign changed...
-func (m *Matrix) Cofactor(rowToRemove, colToRemove int) float64 {
+func (m Matrix) Cofactor(rowToRemove, colToRemove int) float64 {
 	minor := m.Minor(rowToRemove, colToRemove)
 	if (rowToRemove+colToRemove)%2 == 0 {
 		return minor
@@ -174,7 +174,7 @@ func (m *Matrix) Cofactor(rowToRemove, colToRemove int) float64 {
 	}
 }
 
-func (m *Matrix) Submatrix(rowToRemove, colToRemove int) Matrix {
+func (m Matrix) Submatrix(rowToRemove, colToRemove int) Matrix {
 	r, c := m.Rows-1, m.Cols-1
 	m2 := NewMatrix(r, c, make([]float64, r*c))
 
