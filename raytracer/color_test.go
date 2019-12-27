@@ -47,6 +47,14 @@ func TestMultiplyingColors(t *testing.T) {
 	assertEqualColor(t, expected, actual)
 }
 
+func TestDividingColorByScalar(t *testing.T) {
+	c1 := NewColor(0.2, 0.3, 0.4)
+	expected := NewColor(0.1, 0.15, 0.2)
+	actual := c1.Divide(2)
+
+	assertEqualColor(t, expected, actual)
+}
+
 /////////////
 // Benchmarks
 /////////////

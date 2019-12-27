@@ -40,7 +40,7 @@ func RunDrawWorldWithCubeOfSpheres() {
 	world.Objects = []Shape{
 		group,
 	}
-	world.Lights = []PointLight{
+	world.Lights = []AreaLight{
 		NewPointLight(NewPoint(0, -10, -5), NewColor(1, 1, 1)),
 		NewPointLight(NewPoint(0, 10, -5), NewColor(1, 1, 1)),
 	}

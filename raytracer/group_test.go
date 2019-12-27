@@ -151,7 +151,6 @@ func TestSubdividingAGroupPartitionsItsChildren(t *testing.T) {
 	assertEqualShape(t, s2, *subSubGroup2.Children[0])
 }
 
-// Scenario: Subdividing a group with too few children
 func TestSubdividingAGroupWithTooFewChildren(t *testing.T) {
 	s1 := NewSphere()
 	s1.SetTransform(NewTranslation(-2, 0, 0))

@@ -64,7 +64,7 @@ func RunDrawWorldWithHexagonGroup() {
 	world.Objects = []Shape{
 		*hex,
 	}
-	world.Lights = []PointLight{
+	world.Lights = []AreaLight{
 		NewPointLight(NewPoint(5, 8, -9), NewColor(1, 1, 1)),
 	}
 

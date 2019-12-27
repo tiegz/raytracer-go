@@ -54,6 +54,10 @@ func (c Color) Multiply(scalar float64) Color {
 	return Color{c.Red * scalar, c.Green * scalar, c.Blue * scalar}
 }
 
+func (c Color) Divide(scalar float64) Color {
+	return Color{c.Red / scalar, c.Green / scalar, c.Blue / scalar}
+}
+
 // Returns the Hadamard product (or Schur product) of two colors.
 func (c Color) MultiplyColor(c2 Color) Color {
 	return NewColor(c.Red*c2.Red, c.Green*c2.Green, c.Blue*c2.Blue)

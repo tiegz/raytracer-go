@@ -64,7 +64,8 @@ func (m Material) String() string {
 //   * Diffuse reflection:  reflection from matte surface; depends on angle btwn light and surface.
 //   * Specular reflection: reflection of the light source; depends on angle btwn the reflection
 //      										and eye vectors. Intensity is controlled by "shininess".
-func (m Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, normalVector Tuple, inShadow bool) Color {
+// Inensity: 0.0 = in shadow, 1.0 = not in shadow.
+func (m Material) Lighting(obj Shape, light AreaLight, point Tuple, eyeVector, normalVector Tuple, intensity float64) Color {
 	var baseColor, ambient, specular, diffuse Color
 
 	if !m.Pattern.IsEqualTo(NewNullPattern()) {
@@ -73,47 +74,43 @@ func (m Material) Lighting(obj Shape, light PointLight, point Tuple, eyeVector, 
 		baseColor = m.Color
 	}
 
-	// combine the surface color with the light's color/intensity
-	effectiveColor := baseColor.MultiplyColor(light.Intensity)
+	effectiveColor := baseColor.MultiplyColor(light.GetIntensity()) // Combine the surface color with the light's color/intensity
+	ambient = effectiveColor.Multiply(m.Ambient)                    // Compute the ambient contribution
 
-	// find the direction to the light source
-	lightVector := light.Position.Subtract(point).Normalized()
-
-	// compute the ambient contribution
-	ambient = effectiveColor.Multiply(m.Ambient)
-
-	if inShadow {
-		// when in a shadow, you only need ambient, not duffse & specular.
-		return ambient
-	}
-
-	// light_dot_normal represents the cosine of the angle between the
-	// light vector and the normal vector. A negative number means the
-	// light is on the other side of the surface.
-	lightDotNormal := lightVector.Dot(normalVector)
-	if lightDotNormal < 0 {
-		diffuse = Colors["Black"]
-		specular = Colors["Black"]
-	} else {
-		// compute the diffuse contribution
-		diffuse = effectiveColor.Multiply(m.Diffuse).Multiply(lightDotNormal)
-		// reflect_dot_eye represents the cosine of the angle between the
-		// reflection vector and the eye vector. A negative number means the
-		// light reflects away from the eye.
-		reflectVector := lightVector.Negate().Reflect(normalVector)
-		reflectDotEye := reflectVector.Dot(eyeVector)
-
-		if reflectDotEye <= 0 {
-			specular = Colors["Black"]
-		} else {
-			// compute the specular contribution
-			factor := math.Pow(reflectDotEye, m.Shininess)
-			specular = light.Intensity.Multiply(m.Specular).Multiply(factor)
+	samples := []Tuple{}
+	// TODO: can we memoize and abstract this out, with the shared code in IntensityAt()?
+	for v := 0.0; v < light.VSteps; v++ {
+		for u := 0.0; u < light.USteps; u++ {
+			samples = append(samples, light.PointOnLight(u, v))
 		}
 	}
 
-	// add the three contributions together to get the final shading
-	shading := ambient.Add(diffuse).Add(specular)
+	sum := Colors["Black"]
 
-	return shading
+	// Loop through each of the points in the area light
+	for _, sample := range samples {
+		// The direction to the light source
+		lightVector := sample.Subtract(point).Normalized()
+		// The cosine of the angle between the light vector and the normal vector. Negative means light is on other side of surface.
+		lightDotNormal := lightVector.Dot(normalVector)
+		if lightDotNormal < EPSILON || intensity < EPSILON {
+			// When inside a shadow, you only need ambient, not diffuse & specular.
+			continue
+		}
+
+		// Compute the diffuse contribution
+		diffuse = effectiveColor.Multiply(m.Diffuse).Multiply(lightDotNormal)
+		sum = sum.Add(diffuse)
+
+		// Compute the specular contribution
+		reflectVector := lightVector.Negate().Reflect(normalVector)
+		reflectDotEye := reflectVector.Dot(eyeVector) // The cosine of angle between reflection vector + eye vector (nenative means light reflects away from eye)
+		if reflectDotEye > 0 {
+			factor := math.Pow(reflectDotEye, m.Shininess)
+			specular = light.GetIntensity().Multiply(m.Specular).Multiply(factor)
+			sum = sum.Add(specular)
+		}
+	}
+
+	return ambient.Add(sum.Divide(light.Samples).Multiply(intensity))
 }

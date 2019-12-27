@@ -16,6 +16,18 @@ func equalFloat64s(x, y float64) bool {
 	}
 }
 
+func equalFloat64Slices(x, y []float64) bool {
+	if len(x) != len(y) {
+		return false
+	}
+	for idx, item := range x {
+		if item != y[idx] {
+			return false
+		}
+	}
+	return true
+}
+
 func minFloat64(floats ...float64) float64 {
 	min := floats[0]
 	for _, f := range floats {

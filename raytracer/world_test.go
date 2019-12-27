@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"fmt"
 	"math"
 	"testing"
 )
@@ -33,7 +34,7 @@ func TestDefaultWorld(t *testing.T) {
 	s2 := NewSphere()
 	s2.SetTransform(NewScale(0.5, 0.5, 0.5))
 
-	assertEqualPointLight(t, l, world.Lights[0])
+	assertEqualLight(t, l, world.Lights[0])
 	assert(t, world.Contains(s1))
 	assert(t, world.Contains(s2))
 }
@@ -64,7 +65,7 @@ func TestShadingAnIntersection(t *testing.T) {
 
 func TestShadingAnIntersectionFromInside(t *testing.T) {
 	w := DefaultWorld()
-	w.Lights = []PointLight{
+	w.Lights = []AreaLight{
 		NewPointLight(NewPoint(0, 0.25, 0), Colors["White"]),
 	}
 
@@ -85,7 +86,7 @@ func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 	s2 := NewSphere()
 	s2.SetTransform(NewTranslation(0, 0, 10))
 
-	w.Lights = []PointLight{
+	w.Lights = []AreaLight{
 		NewPointLight(NewPoint(0, 0, -10), Colors["White"]),
 	}
 	w.Objects = []Shape{
@@ -132,62 +133,6 @@ func TestColorAtWithAnIntersectionBehindRay(t *testing.T) {
 	expected := w.Objects[1].Material.Color
 
 	assertEqualColor(t, expected, actual)
-}
-
-// 	 				 	   |
-// 💡				   👉X
-//  			 			 |
-//  				 		 |
-//--------------⚪️ ----
-//  				 		 |
-func TestThereIsNoShadowWhenNothingIsCollinearWithPointAndLight(t *testing.T) {
-	w := DefaultWorld()
-	p := NewPoint(0, 10, 0)
-
-	assert(t, !w.IsShadowed(p, w.Lights[0]))
-}
-
-// 	 	     |
-// 💡	     |
-//  	     |
-//--------⚪️ ----
-//    		 |
-//  	  	 |   👉X
-//  			 |
-
-func TestTheShadowWhenObjectIsBetweenPointAndLight(t *testing.T) {
-	w := DefaultWorld()
-	p := NewPoint(10, -10, 10)
-
-	assert(t, w.IsShadowed(p, w.Lights[0]))
-}
-
-// 	 				   |
-// 👉X		     |
-//  				 	 |
-//   	  💡	 	 |
-//  					 |
-//-------------⚪️--
-//  				 	 |
-func TestTheShadowWhenObjectIsBehindLight(t *testing.T) {
-	w := DefaultWorld()
-	p := NewPoint(-20, 20, -20)
-
-	assert(t, !w.IsShadowed(p, w.Lights[0]))
-}
-
-// 	 				   |
-// 💡				   |
-//  			 		 |
-//  		👉X	 	 |
-//  			 		 |
-//------------⚪️---
-//  				 	 |
-func TestThereIsNoShadowWhenObjectIsBehindThePoint(t *testing.T) {
-	w := DefaultWorld()
-	p := NewPoint(-2, 2, -2)
-
-	assert(t, !w.IsShadowed(p, w.Lights[0]))
 }
 
 func TestTheRefractedColorWithAnOpaqueSurface(t *testing.T) {
@@ -287,6 +232,28 @@ func TestShadeHitWithAReflectiveTransparentMaterial(t *testing.T) {
 	assertEqualColor(t, NewColor(0.93391, 0.69643, 0.69243), color)
 }
 
+func TestIsShadowTestsForOcclusionBetweenTwoPoints(t *testing.T) {
+	w := DefaultWorld()
+	lightPosition := NewPoint(-10, -10, -10)
+
+	testCases := []struct {
+		Point  Tuple
+		Result bool
+	}{
+		// These replaced the 4 old IsShadowed() tests from 5bfe2037
+		{NewPoint(-10, -10, 10), false},
+		{NewPoint(10, 10, 10), true},
+		{NewPoint(-20, -20, -20), false},
+		{NewPoint(-5, -5, -5), false},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("IsShadow tests for occlusion between two points #%v", idx), func(t *testing.T) {
+			result := w.IsShadowed(lightPosition, tc.Point)
+			assertEqualBool(t, tc.Result, result)
+		})
+	}
+}
+
 /////////////
 // Benchmarks
 /////////////
@@ -346,6 +313,6 @@ func BenchmarkWorldMethodIsShadowed(b *testing.B) {
 	w := DefaultWorld()
 	p := NewPoint(10, -10, 10)
 	for i := 0; i < b.N; i++ {
-		w.IsShadowed(p, w.Lights[0])
+		w.IsShadowed(p, w.Lights[0].PointOnLight(0, 0))
 	}
 }

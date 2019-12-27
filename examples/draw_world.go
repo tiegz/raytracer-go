@@ -69,7 +69,7 @@ func RunDrawWorld() {
 		leftSphere,
 		rightSphere,
 	}
-	world.Lights = []PointLight{
+	world.Lights = []AreaLight{
 		NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 	}
 

@@ -63,7 +63,7 @@ func RunDrawSphereShaded(scaleX, scaleY, rotateZ, skew bool) {
 				point := r.Position(hit.Time)
 				normal := hit.Object.NormalAt(point, hit)
 				eye := r.Direction.Negate()
-				color := hit.Object.Material.Lighting(hit.Object, light, point, eye, normal, false)
+				color := hit.Object.Material.Lighting(hit.Object, light, point, eye, normal, 1.0)
 
 				canvas.WritePixel(int(x), int(y), color)
 			}

@@ -11,7 +11,7 @@ const DefaultMaximumReflections int = 4 // recommended on page 148
 
 type World struct {
 	Objects []Shape
-	Lights  []PointLight
+	Lights  []AreaLight
 }
 
 // NewWorld instantiates a new World object.
@@ -36,7 +36,7 @@ func DefaultWorld() World {
 	defaultObj2.SetTransform(NewScale(0.5, 0.5, 0.5))
 
 	w.Objects = append(w.Objects, defaultObj1, defaultObj2)
-	w.Lights = []PointLight{defaultPointLight}
+	w.Lights = []AreaLight{defaultPointLight}
 	return w
 }
 
@@ -71,8 +71,10 @@ func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 	color := NewColor(0, 0, 0)
 
 	for _, light := range w.Lights {
-		isShadowed := w.IsShadowed(c.OverPoint, light)
-		surfaceColor := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, isShadowed)
+		// isShadowed := w.IsShadowed(c.OverPoint, light)
+		// TODO: try passing world as a pointer instead, and see if it's any faster?
+		intensity := light.IntensityAt(c.OverPoint, *w)
+		surfaceColor := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, intensity)
 
 		reflectedColor := w.ReflectedColor(c, remainingReflections)
 		refractedColor := w.RefractedColor(c, remainingReflections)
@@ -157,9 +159,9 @@ func (w *World) RefractedColor(c Computation, remaining int) Color { // remainin
 	return color
 }
 
-func (w *World) IsShadowed(p Tuple, l PointLight) bool {
-	// TODO enable for more than 1 world light
-	v := l.Position.Subtract(p)
+func (w *World) IsShadowed(p Tuple, lightPosition Tuple) bool {
+	// TODO: do this for multiple light sources?
+	v := lightPosition.Subtract(p)
 	distance := v.Magnitude()
 	direction := v.Normalized()
 	r := NewRay(p, direction)
