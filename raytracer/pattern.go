@@ -2,6 +2,7 @@ package raytracer
 
 import (
 	"fmt"
+	"math"
 )
 
 type PatternInterface interface {
@@ -55,4 +56,75 @@ func (p Pattern) PatternAtShape(s Shape, worldPoint Tuple) Color {
 
 func (p Pattern) UVPatternAt(u, v float64) Color {
 	return p.LocalPattern.LocalUVPatternAt(u, v)
+}
+
+// TODO: is there a better value to return than string? Maybe enum/iota?
+// Returns which face a given point on a unit cube is on.
+func FaceFromPoint(p Tuple) string {
+	absX := math.Abs(p.X)
+	absY := math.Abs(p.Y)
+	absZ := math.Abs(p.Z)
+	coord := maxFloat64(absX, absY, absZ)
+
+	switch coord {
+	case p.X:
+		return "right"
+	case -p.X:
+		return "left"
+	case p.Y:
+		return "up"
+	case -p.Y:
+		return "down"
+	case p.Z:
+		return "front"
+	default:
+		return "back"
+	}
+}
+
+// Maps a point on the front face of a cube to its uv values.
+func CubeUVFront(p Tuple) (float64, float64) {
+	u := math.Mod((p.X+1), 2.0) / 2.0
+	v := math.Mod((p.Y+1), 2.0) / 2.0
+
+	return u, v
+}
+
+// Maps a point on the back face of a cube to its uv values.
+func CubeUVBack(p Tuple) (float64, float64) {
+	u := math.Mod((1-p.X), 2.0) / 2.0
+	v := math.Mod((p.Y+1), 2.0) / 2.0
+
+	return u, v
+}
+
+// Maps a point on the left face of a cube to its uv values.
+func CubeUVLeft(p Tuple) (float64, float64) {
+	u := math.Mod((p.Z+1), 2.0) / 2.0
+	v := math.Mod((p.Y+1), 2.0) / 2.0
+
+	return u, v
+}
+
+// Maps a point on the right face of a cube to its uv values.
+func CubeUVRight(p Tuple) (float64, float64) {
+	u := math.Mod((1-p.Z), 2.0) / 2.0
+	v := math.Mod((p.Y+1), 2.0) / 2.0
+
+	return u, v
+}
+
+// Maps a point on the upper face of a cube to its uv values.
+func CubeUVUpper(p Tuple) (float64, float64) {
+	u := math.Mod((p.X+1), 2.0) / 2.0
+	v := math.Mod((1-p.Z), 2.0) / 2.0
+
+	return u, v
+}
+
+func CubeUVLower(p Tuple) (float64, float64) {
+	u := math.Mod((p.X+1), 2.0) / 2.0
+	v := math.Mod((p.Z+1), 2.0) / 2.0
+
+	return u, v
 }

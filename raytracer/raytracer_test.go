@@ -5,6 +5,11 @@ import (
 	"testing"
 )
 
+func TestAltMod(t *testing.T) {
+	assertEqualFloat64(t, 0.75, altMod(-0.25, 1.0))
+	assertEqualFloat64(t, 2.0, altMod(5.0, 3.0))
+}
+
 // Helpers
 
 func expectationFailure(t *testing.T, expected interface{}, actual interface{}) {

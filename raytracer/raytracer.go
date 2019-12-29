@@ -1,6 +1,8 @@
 package raytracer
 
-import "math"
+import (
+	"math"
+)
 
 const EPSILON = 0.00001 // TODO: rename? this is the difference btwn floats less thanw which we'd conisder them the same
 
@@ -46,4 +48,13 @@ func maxFloat64(floats ...float64) float64 {
 		}
 	}
 	return max
+}
+
+// Alternative to go's math.Mod function.
+// Doesn't require result to be same sign as x.
+// Platform-specific example of float modulus:
+//   Go/JS/Java/Swift:   -0.25 % 1 == -0.25
+//   altMod/Python/Ruby: -0.25 % 1 == 0.75
+func altMod(x, y float64) float64 {
+	return x - y*math.Floor(x/y)
 }

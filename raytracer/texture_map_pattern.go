@@ -20,7 +20,7 @@ func (p TextureMapPattern) String() string {
 
 // Converts a point to spherical coordinates. (u = horizontal, v = vertical)
 func SphericalMap(p Tuple) (float64, float64) {
-	// compute the azimuthal angle (-π < theta <= π)
+	// the azimuthal angle (-π < theta <= π)
 	// angle increases clockwise as viewed from above,
 	// which is opposite of what we want, but we'll fix it later.
 	theta := math.Atan2(p.X, p.Z)
@@ -50,14 +50,31 @@ func SphericalMap(p Tuple) (float64, float64) {
 	return u, v
 }
 
+// Converts a point to planar coordinates. (u = horizontal, v = vertical)
+func PlanarMap(p Tuple) (float64, float64) {
+	u := altMod(p.X, 1)
+	v := altMod(p.Z, 1)
+
+	return u, v
+}
+
+// Converts a point to planar coordinates. (u = horizontal, v = vertical)
+// TODO solve problem of top/bottom being rendered based on y component
+func CylindricalMap(p Tuple) (float64, float64) {
+	// ... compute the azimuthal angle, same as with spherical_map() ...
+	theta := math.Atan2(p.X, p.Z) // should be p.Y?
+	rawU := theta / (2 * math.Pi)
+	u := 1 - (rawU + 0.5)
+
+	// let v go from 0 to 1 between whole units of y
+	v := altMod(p.Y, 1)
+
+	return u, v
+}
+
 /////////////////////////
 // PatternInterface methods
 /////////////////////////
-
-// function pattern_at(texture_map, point)
-//   let (u, v) ← texture_map.uv_map(point)
-//   return uv_pattern_at(texture_map.uv_pattern, u, v)
-// end function
 
 func (p TextureMapPattern) LocalPatternAt(point Tuple) Color {
 	u, v := p.UVMap(point)
@@ -68,9 +85,9 @@ func (p TextureMapPattern) LocalUVPatternAt(u, v float64) Color {
 	return Colors["Black"]
 }
 
-func (cp TextureMapPattern) localIsEqualTo(cp2 PatternInterface) bool {
-	// cp2Pattern := cp2.(*CheckerPattern)
-	// if !cp.A.IsEqualTo(cp2Pattern.A) || !cp.B.IsEqualTo(cp2Pattern.B) {
+func (p TextureMapPattern) localIsEqualTo(cp2 PatternInterface) bool {
+	// p2Pattern := p2.(*CheckerPattern)
+	// if !p.A.IsEqualTo(p2Pattern.A) || !cp.B.IsEqualTo(p2Pattern.B) {
 	// 	return false
 	// }
 	return true

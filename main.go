@@ -26,7 +26,10 @@ func main() {
 	// examples.RunDrawWorldWithDice()
 	// examples.RunDrawWorldWithCubeOfSpheres()
 	// examples.RunDrawWorldWithSphereAndAreaLight()
-	examples.RunDrawWorldWithSnowman()
+	// examples.RunDrawWorldWithSnowman()
+	// examples.RunDrawWorldWithUVPattern()
+	// examples.RunDrawUVAlignCheck()
+	examples.RunDrawUVAlignCheckCubes()
 
 	// // my own experiments
 	// examples.RunAnimation()

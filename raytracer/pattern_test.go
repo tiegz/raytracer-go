@@ -198,8 +198,8 @@ func TestUsingASphericalMappingOnA3DPoint(t *testing.T) {
 	for idx, tc := range testCases {
 		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
 			u, v := SphericalMap(tc.point)
-			assertEqualFloat64(t, u, tc.u)
-			assertEqualFloat64(t, v, tc.v)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
 		})
 	}
 }
@@ -226,6 +226,272 @@ func TestUsingATextureMapPatternWithASphericalMap(t *testing.T) {
 			pattern := NewTextureMapPattern(checkers, SphericalMap)
 			p := pattern.LocalPattern.(TextureMapPattern)
 			assertEqualColor(t, tc.color, p.LocalPatternAt(tc.point))
+		})
+	}
+}
+
+func TestUsingAPlanarMappingOnA3DPoint(t *testing.T) {
+	fmt.Printf("-0.25 mod 1 is %v\n", math.Mod(-0.25, -1.0))
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(0.25, 0, 0.5), 0.25, 0.5},
+		{NewPoint(0.25, 0, -0.25), 0.25, 0.75},
+		{NewPoint(0.25, 0.5, -0.25), 0.25, 0.75},
+		{NewPoint(1.25, 0, 0.5), 0.25, 0.5},
+		{NewPoint(0.25, 0, -1.75), 0.25, 0.25},
+		{NewPoint(1, 0, -1), 0.0, 0.0},
+		{NewPoint(0, 0, 0), 0.0, 0.0},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := PlanarMap(tc.point)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
+		})
+	}
+}
+
+func TestUsingACylindricalMappingOnA3DPoint(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(0, 0, -1), 0.0, 0.0},
+		{NewPoint(0, 0.5, -1), 0.0, 0.5},
+		{NewPoint(0, 1, -1), 0.0, 0.0},
+		{NewPoint(0.70711, 0.5, -0.70711), 0.125, 0.5},
+		{NewPoint(1, 0.5, 0), 0.25, 0.5},
+		{NewPoint(0.70711, 0.5, 0.70711), 0.375, 0.5},
+		{NewPoint(0, -0.25, 1), 0.5, 0.75},
+		{NewPoint(-0.70711, 0.5, 0.70711), 0.625, 0.5},
+		{NewPoint(-1, 1.25, 0), 0.75, 0.25},
+		{NewPoint(-0.70711, 0.5, -0.70711), 0.875, 0.5},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := CylindricalMap(tc.point)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
+		})
+	}
+}
+
+func TestLayoutOfTheAlignCheckPattern(t *testing.T) {
+	main := NewColor(1, 1, 1)
+	ul := NewColor(1, 0, 0)
+	ur := NewColor(1, 1, 0)
+	bl := NewColor(0, 1, 0)
+	br := NewColor(0, 1, 1)
+	pattern := NewUVAlignCheckPattern(main, ul, ur, bl, br)
+
+	testCases := []struct {
+		u        float64
+		v        float64
+		expected Color
+	}{
+		{0.5, 0.5, main},
+		{0.1, 0.9, ul},
+		{0.9, 0.9, ur},
+		{0.1, 0.1, bl},
+		{0.9, 0.1, br},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			assertEqualColor(t, tc.expected, pattern.UVPatternAt(tc.u, tc.v))
+		})
+	}
+}
+
+func TestIdentifyingTheFaceOfACubeFromAPoint(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		face  string
+	}{
+		{NewPoint(-1, 0.5, -0.25), "left"},
+		{NewPoint(1.1, -0.75, 0.8), "right"},
+		{NewPoint(0.1, 0.6, 0.9), "front"},
+		{NewPoint(-0.7, 0, -2), "back"},
+		{NewPoint(0.5, 1, 0.9), "up"},
+		{NewPoint(-0.2, -1.3, 1.1), "down"},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			face := FaceFromPoint(tc.point)
+			assertEqualString(t, tc.face, face)
+		})
+	}
+}
+
+func TestUVMappingTheFrontFaceOfACube(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(-0.5, 0.5, 1), 0.25, 0.75},
+		{NewPoint(0.5, -0.5, 1), 0.75, 0.25},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := CubeUVFront(tc.point)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
+		})
+	}
+}
+
+func TestUVMappingTheBackFaceOfACube(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(0.5, 0.5, -1), 0.25, 0.75},
+		{NewPoint(-0.5, -0.5, -1), 0.75, 0.25},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := CubeUVBack(tc.point)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
+		})
+	}
+}
+
+func TestUVMappingTheLeftFaceOfACube(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(-1, 0.5, -0.5), 0.25, 0.75},
+		{NewPoint(-1, -0.5, 0.5), 0.75, 0.25},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := CubeUVLeft(tc.point)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
+		})
+	}
+}
+
+func TestUVMappingTheRightFaceOfACube(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(1, 0.5, 0.5), 0.25, 0.75},
+		{NewPoint(1, -0.5, -0.5), 0.75, 0.25},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := CubeUVRight(tc.point)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
+		})
+	}
+}
+
+func TestUVMappingTheUpperFaceOfACube(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(-0.5, 1, -0.5), 0.25, 0.75},
+		{NewPoint(0.5, 1, 0.5), 0.75, 0.25},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := CubeUVUpper(tc.point)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
+		})
+	}
+}
+
+func TestUVMappingTheLowerFaceOfACube(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(-0.5, -1, 0.5), 0.25, 0.75},
+		{NewPoint(0.5, -1, -0.5), 0.75, 0.25},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := CubeUVLower(tc.point)
+			assertEqualFloat64(t, tc.u, u)
+			assertEqualFloat64(t, tc.v, v)
+		})
+	}
+}
+
+func TestFindingTheColorsOnAMappedCube(t *testing.T) {
+	red := Colors["Red"]
+	yellow := Colors["Yellow"]
+	brown := Colors["Brown"]
+	green := Colors["Green"]
+	cyan := Colors["Cyan"]
+	blue := Colors["Blue"]
+	purple := Colors["Purple"]
+	white := Colors["White"]
+
+	left := NewUVAlignCheckPattern(yellow, cyan, red, blue, brown)
+	front := NewUVAlignCheckPattern(cyan, red, yellow, brown, green)
+	right := NewUVAlignCheckPattern(red, yellow, purple, green, white)
+	back := NewUVAlignCheckPattern(green, purple, cyan, white, blue)
+	up := NewUVAlignCheckPattern(brown, cyan, purple, red, yellow)
+	down := NewUVAlignCheckPattern(purple, brown, green, blue, white)
+
+	pattern := NewCubeMapPattern(left, front, right, back, up, down)
+
+	testCases := []struct {
+		point Tuple
+		color Color
+	}{
+		{NewPoint(-1, 0, 0), yellow},     // L
+		{NewPoint(-1, 0.9, -0.9), cyan},  //
+		{NewPoint(-1, 0.9, 0.9), red},    //
+		{NewPoint(-1, -0.9, -0.9), blue}, //
+		{NewPoint(-1, -0.9, 0.9), brown}, //
+		{NewPoint(0, 0, 1), cyan},        // F
+		{NewPoint(-0.9, 0.9, 1), red},    //
+		{NewPoint(0.9, 0.9, 1), yellow},  //
+		{NewPoint(-0.9, -0.9, 1), brown}, //
+		{NewPoint(0.9, -0.9, 1), green},  //
+		{NewPoint(1, 0, 0), red},         // R
+		{NewPoint(1, 0.9, 0.9), yellow},  //
+		{NewPoint(1, 0.9, -0.9), purple}, //
+		{NewPoint(1, -0.9, 0.9), green},  //
+		{NewPoint(1, -0.9, -0.9), white}, //
+		{NewPoint(0, 0, -1), green},      // B
+		{NewPoint(0.9, 0.9, -1), purple}, //
+		{NewPoint(-0.9, 0.9, -1), cyan},  //
+		{NewPoint(0.9, -0.9, -1), white}, //
+		{NewPoint(-0.9, -0.9, -1), blue}, //
+		{NewPoint(0, 1, 0), brown},       // U
+		{NewPoint(-0.9, 1, -0.9), cyan},  //
+		{NewPoint(0.9, 1, -0.9), purple}, //
+		{NewPoint(-0.9, 1, 0.9), red},    //
+		{NewPoint(0.9, 1, 0.9), yellow},  //
+		{NewPoint(0, -1, 0), purple},     // L
+		{NewPoint(-0.9, -1, 0.9), brown}, //
+		{NewPoint(0.9, -1, 0.9), green},  //
+		{NewPoint(-0.9, -1, -0.9), blue}, //
+		{NewPoint(0.9, -1, -0.9), white}, //
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			color := pattern.LocalPattern.LocalPatternAt(tc.point)
+			assertEqualColor(t, tc.color, color)
 		})
 	}
 }
