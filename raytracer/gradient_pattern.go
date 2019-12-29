@@ -30,6 +30,10 @@ func (p GradientPattern) LocalPatternAt(point Tuple) Color {
 	return p.A.Add(distance.Multiply(fraction))
 }
 
+func (p GradientPattern) LocalUVPatternAt(u, v float64) Color {
+	return Colors["Black"]
+}
+
 func (gp GradientPattern) localIsEqualTo(gp2 PatternInterface) bool {
 	gp2Pattern := gp2.(*GradientPattern)
 	if !gp.A.IsEqualTo(gp2Pattern.A) || !gp.B.IsEqualTo(gp2Pattern.B) {

@@ -36,6 +36,10 @@ func (p CheckerPattern) LocalPatternAt(point Tuple) Color {
 	}
 }
 
+func (p CheckerPattern) LocalUVPatternAt(u, v float64) Color {
+	return Colors["Black"]
+}
+
 func (cp CheckerPattern) localIsEqualTo(cp2 PatternInterface) bool {
 	cp2Pattern := cp2.(*CheckerPattern)
 	if !cp.A.IsEqualTo(cp2Pattern.A) || !cp.B.IsEqualTo(cp2Pattern.B) {

@@ -24,6 +24,10 @@ func (np NullPattern) LocalPatternAt(point Tuple) Color {
 	return Colors["White"]
 }
 
+func (np NullPattern) LocalUVPatternAt(u, v float64) Color {
+	return Colors["Black"]
+}
+
 func (np NullPattern) localIsEqualTo(tp2 PatternInterface) bool {
 	return true
 }

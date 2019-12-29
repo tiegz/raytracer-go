@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"fmt"
 	"math"
 	"testing"
 )
@@ -158,6 +159,75 @@ func TestCheckersShouldRepeatInZ(t *testing.T) {
 	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0)))
 	assertEqualColor(t, Colors["White"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 0.99)))
 	assertEqualColor(t, Colors["Black"], p.LocalPattern.LocalPatternAt(NewPoint(0, 0, 1.01)))
+}
+
+func TestCheckerPatternIn2D(t *testing.T) {
+	checkers := NewUVCheckerPattern(2, 2, Colors["Black"], Colors["White"])
+	testCases := []struct {
+		u        float64
+		v        float64
+		expected Color
+	}{
+		{0.0, 0.0, Colors["Black"]},
+		{0.5, 0.0, Colors["White"]},
+		{0.0, 0.5, Colors["White"]},
+		{0.5, 0.5, Colors["Black"]},
+		{1.0, 1.0, Colors["Black"]},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			assertEqualColor(t, tc.expected, checkers.UVPatternAt(tc.u, tc.v))
+		})
+	}
+}
+
+func TestUsingASphericalMappingOnA3DPoint(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		u     float64
+		v     float64
+	}{
+		{NewPoint(0, 0, -1), 0.0, 0.5},
+		{NewPoint(1, 0, 0), 0.25, 0.5},
+		{NewPoint(0, 0, 1), 0.5, 0.5},
+		{NewPoint(-1, 0, 0), 0.75, 0.5},
+		{NewPoint(0, 1, 0), 0.5, 1.0},
+		{NewPoint(0, -1, 0), 0.5, 0.0},
+		{NewPoint(math.Sqrt(2)/2, math.Sqrt(2)/2, 0), 0.25, 0.75},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			u, v := SphericalMap(tc.point)
+			assertEqualFloat64(t, u, tc.u)
+			assertEqualFloat64(t, v, tc.v)
+		})
+	}
+}
+
+func TestUsingATextureMapPatternWithASphericalMap(t *testing.T) {
+	testCases := []struct {
+		point Tuple
+		color Color
+	}{
+		{NewPoint(0.4315, 0.4670, 0.7719), Colors["White"]},
+		{NewPoint(-0.9654, 0.2552, -0.0534), Colors["Black"]},
+		{NewPoint(0.1039, 0.7090, 0.6975), Colors["White"]},
+		{NewPoint(-0.4986, -0.7856, -0.3663), Colors["Black"]},
+		{NewPoint(-0.0317, -0.9395, 0.3411), Colors["Black"]},
+		{NewPoint(0.4809, -0.7721, 0.4154), Colors["Black"]},
+		{NewPoint(0.0285, -0.9612, -0.2745), Colors["Black"]},
+		{NewPoint(-0.5734, -0.2162, -0.7903), Colors["White"]},
+		{NewPoint(0.7688, -0.1470, 0.6223), Colors["Black"]},
+		{NewPoint(-0.7652, 0.2175, 0.6060), Colors["Black"]},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			checkers := NewUVCheckerPattern(16, 8, Colors["Black"], Colors["White"])
+			pattern := NewTextureMapPattern(checkers, SphericalMap)
+			p := pattern.LocalPattern.(TextureMapPattern)
+			assertEqualColor(t, tc.color, p.LocalPatternAt(tc.point))
+		})
+	}
 }
 
 /////////////

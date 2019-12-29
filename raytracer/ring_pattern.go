@@ -32,6 +32,10 @@ func (p RingPattern) LocalPatternAt(point Tuple) Color {
 	}
 }
 
+func (p RingPattern) LocalUVPatternAt(u, v float64) Color {
+	return Colors["Black"]
+}
+
 func (rp RingPattern) localIsEqualTo(rp2 PatternInterface) bool {
 	rp2Pattern := rp2.(*RingPattern)
 	if !rp.A.IsEqualTo(rp2Pattern.A) || !rp.B.IsEqualTo(rp2Pattern.B) {

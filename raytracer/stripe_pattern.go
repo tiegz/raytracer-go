@@ -30,6 +30,10 @@ func (s StripePattern) LocalPatternAt(point Tuple) Color {
 	}
 }
 
+func (sp StripePattern) LocalUVPatternAt(u, v float64) Color {
+	return Colors["Black"]
+}
+
 func (sp StripePattern) localIsEqualTo(sp2 PatternInterface) bool {
 	sp2StripePattern := sp2.(*StripePattern)
 	if !sp.A.IsEqualTo(sp2StripePattern.A) || !sp.B.IsEqualTo(sp2StripePattern.B) {

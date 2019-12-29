@@ -6,6 +6,7 @@ import (
 
 type PatternInterface interface {
 	LocalPatternAt(Tuple) Color
+	LocalUVPatternAt(float64, float64) Color // TODO: only used for uv patterns -- should this just be a different interface?
 	localIsEqualTo(PatternInterface) bool
 	localType() string
 }
@@ -50,4 +51,8 @@ func (p Pattern) PatternAtShape(s Shape, worldPoint Tuple) Color {
 	patternPoint := p.InverseTransform.MultiplyByTuple(objectPoint)
 
 	return p.LocalPattern.LocalPatternAt(patternPoint)
+}
+
+func (p Pattern) UVPatternAt(u, v float64) Color {
+	return p.LocalPattern.LocalUVPatternAt(u, v)
 }
