@@ -25,7 +25,8 @@ func main() {
 	// examples.RunDrawWorldWithTeapot()
 	// examples.RunDrawWorldWithDice()
 	// examples.RunDrawWorldWithCubeOfSpheres()
-	examples.RunDrawWorldWithSphereAndAreaLight()
+	// examples.RunDrawWorldWithSphereAndAreaLight()
+	examples.RunDrawWorldWithSnowman()
 
 	// // my own experiments
 	// examples.RunAnimation()
