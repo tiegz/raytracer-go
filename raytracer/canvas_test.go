@@ -1,6 +1,8 @@
 package raytracer
 
 import (
+	"errors"
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -69,6 +71,106 @@ func TestCanvasToPpmWithTrailingNewline(t *testing.T) {
 	expected := "\n"
 
 	assertEqualString(t, expected, actual)
+}
+
+func TestReadingAFileWithTheWrongMagicNumber(t *testing.T) {
+	ppm := `P32
+	1 1
+	255
+	0 0 0
+	`
+	_, err := NewCanvasFromPpm(ppm)
+
+	assertEqualError(t, errors.New("raytracer.NewCanvasFromPpm: invalid ppm file, started with P32 instead of P3."), err)
+}
+
+func TestReadingAPpmReturnsACanvasOfTheRightSize(t *testing.T) {
+	ppm := `P3
+	10 2
+	255
+	0 0 0  0 0 0  0 0 0  0 0 0  0 0 0
+	0 0 0  0 0 0  0 0 0  0 0 0  0 0 0
+	0 0 0  0 0 0  0 0 0  0 0 0  0 0 0
+	0 0 0  0 0 0  0 0 0  0 0 0  0 0 0
+	`
+	c, err := NewCanvasFromPpm(ppm)
+	assertNil(t, err)
+	assertEqualInt(t, 10, c.Width)
+	assertEqualInt(t, 2, c.Height)
+}
+
+func TestReadingPixelDataFromAPpmFile(t *testing.T) {
+	ppm := `P3
+	4 3
+	255
+	255 127 0  0 127 255  127 255 0  255 255 255
+	0 0 0  255 0 0  0 255 0  0 0 255
+	255 255 0  0 255 255  255 0 255  127 127 127
+	`
+	c, _ := NewCanvasFromPpm(ppm)
+	testCases := []struct {
+		x     int
+		y     int
+		color Color
+	}{
+		{0, 0, NewColor(1, 0.49803, 0)},
+		{1, 0, NewColor(0, 0.49803, 1)},
+		{2, 0, NewColor(0.49803, 1, 0)},
+		{3, 0, NewColor(1, 1, 1)},
+		{0, 1, NewColor(0, 0, 0)},
+		{1, 1, NewColor(1, 0, 0)},
+		{2, 1, NewColor(0, 1, 0)},
+		{3, 1, NewColor(0, 0, 1)},
+		{0, 2, NewColor(1, 1, 0)},
+		{1, 2, NewColor(0, 1, 1)},
+		{2, 2, NewColor(1, 0, 1)},
+		{3, 2, NewColor(0.49803, 0.49803, 0.49803)},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			assertEqualColor(t, tc.color, c.PixelAt(tc.x, tc.y))
+		})
+	}
+}
+
+func TestPpmParsingIgnoresCommentsLines(t *testing.T) {
+	ppm := `P3
+	# this is a comment
+	2 1
+	# this, too
+	255
+	# another comment
+	255 255 255
+	# oh, no, comments in the pixel data!
+	255 0 255
+	`
+	c, _ := NewCanvasFromPpm(ppm)
+	assertEqualColor(t, NewColor(1, 1, 1), c.PixelAt(0, 0))
+	assertEqualColor(t, NewColor(1, 0, 1), c.PixelAt(1, 0))
+}
+
+func TestPpmParsingAllowsAnRgbTripleToSpanLines(t *testing.T) {
+	ppm := `P3
+    1 1
+    255
+    51
+    153
+
+    204
+	`
+	c, _ := NewCanvasFromPpm(ppm)
+	assertEqualColor(t, NewColor(0.2, 0.6, 0.8), c.PixelAt(0, 0))
+}
+
+func TestPpmParsingRespectsTheScaleSetting(t *testing.T) {
+	ppm := `P3
+    2 2
+    100
+    100 100 100  50 50 50
+    75 50 25  0 0 0
+	`
+	c, _ := NewCanvasFromPpm(ppm)
+	assertEqualColor(t, NewColor(0.75, 0.5, 0.25), c.PixelAt(0, 1))
 }
 
 /////////////

@@ -496,6 +496,41 @@ func TestFindingTheColorsOnAMappedCube(t *testing.T) {
 	}
 }
 
+func TestCheckerPatternIn2d(t *testing.T) {
+	ppm := `P3
+    10 10
+    10
+    0 0 0  1 1 1  2 2 2  3 3 3  4 4 4  5 5 5  6 6 6  7 7 7  8 8 8  9 9 9
+    1 1 1  2 2 2  3 3 3  4 4 4  5 5 5  6 6 6  7 7 7  8 8 8  9 9 9  0 0 0
+    2 2 2  3 3 3  4 4 4  5 5 5  6 6 6  7 7 7  8 8 8  9 9 9  0 0 0  1 1 1
+    3 3 3  4 4 4  5 5 5  6 6 6  7 7 7  8 8 8  9 9 9  0 0 0  1 1 1  2 2 2
+    4 4 4  5 5 5  6 6 6  7 7 7  8 8 8  9 9 9  0 0 0  1 1 1  2 2 2  3 3 3
+    5 5 5  6 6 6  7 7 7  8 8 8  9 9 9  0 0 0  1 1 1  2 2 2  3 3 3  4 4 4
+    6 6 6  7 7 7  8 8 8  9 9 9  0 0 0  1 1 1  2 2 2  3 3 3  4 4 4  5 5 5
+    7 7 7  8 8 8  9 9 9  0 0 0  1 1 1  2 2 2  3 3 3  4 4 4  5 5 5  6 6 6
+    8 8 8  9 9 9  0 0 0  1 1 1  2 2 2  3 3 3  4 4 4  5 5 5  6 6 6  7 7 7
+		9 9 9  0 0 0  1 1 1  2 2 2  3 3 3  4 4 4  5 5 5  6 6 6  7 7 7  8 8 8
+	`
+	testCases := []struct {
+		u     float64
+		v     float64
+		color Color
+	}{
+		{0, 0, NewColor(0.9, 0.9, 0.9)},
+		{0.3, 0, NewColor(0.2, 0.2, 0.2)},
+		{0.6, 0.3, NewColor(0.1, 0.1, 0.1)},
+		{1, 1, NewColor(0.9, 0.9, 0.9)},
+	}
+	for idx, tc := range testCases {
+		t.Run(fmt.Sprintf("testCases[%d]", idx), func(t *testing.T) {
+			c, _ := NewCanvasFromPpm(ppm)
+			pattern := NewUVImagePattern(c)
+			color := pattern.UVPatternAt(tc.u, tc.v)
+			assertEqualColor(t, tc.color, color)
+		})
+	}
+}
+
 /////////////
 // Benchmarks
 /////////////

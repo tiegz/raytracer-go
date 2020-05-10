@@ -128,3 +128,11 @@ func assertNil(t *testing.T, object interface{}) {
 		}
 	}
 }
+
+func assertEqualError(t *testing.T, expected error, actual error) {
+	expectedStr := expected.Error()
+	actualStr := actual.Error()
+	if expectedStr != actualStr {
+		expectationFailure(t, expectedStr, actualStr)
+	}
+}

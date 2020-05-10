@@ -1,20 +1,23 @@
 package raytracer
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"math"
+	"strconv"
 	"strings"
 )
 
 type Canvas struct {
-	Width  int
-	Height int
-	Pixels []Color
+	Width      int
+	Height     int
+	ColorScale float64
+	Pixels     []Color
 }
 
 func NewCanvas(w, h int, defaultColor ...Color) Canvas {
-	c := Canvas{w, h, make([]Color, h*w)}
+	c := Canvas{w, h, 255, make([]Color, h*w)}
 
 	if len(defaultColor) > 0 {
 		for x := 0; x < c.Width; x += 1 {
@@ -25,6 +28,65 @@ func NewCanvas(w, h int, defaultColor ...Color) Canvas {
 	}
 
 	return c
+}
+
+func NewCanvasFromPpm(ppm string) (Canvas, error) {
+	var colorScale float64
+	var w, h int
+	var err error
+	var c Canvas
+	buf := bytes.NewBuffer([]byte(ppm))
+	scanner := bufio.NewScanner(bufio.NewReader(buf))
+	var lines []string
+
+	// Read lines first
+	for scanner.Scan() {
+		currentLine := strings.TrimSpace(string(scanner.Text()))
+		if !strings.HasPrefix(currentLine, "#") {
+			lines = append(lines, currentLine)
+		}
+	}
+
+	// Check magic number
+	magicNumber, lines := lines[0], lines[1:]
+	if magicNumber != "P3" {
+		return c, fmt.Errorf("raytracer.NewCanvasFromPpm: invalid ppm file, started with %s instead of P3.", magicNumber)
+	}
+
+	// Set dimensions
+	dimensions, lines := lines[0], lines[1:]
+	if _, err := fmt.Sscanf(dimensions, "%d %d", &w, &h); err != nil {
+		return c, err
+	}
+
+	// Set scale
+	scale, lines := lines[0], lines[1:]
+	if _, err := fmt.Sscanf(scale, "%f", &colorScale); err != nil {
+		return c, err
+	}
+
+	c = Canvas{w, h, colorScale, make([]Color, h*w)}
+	// Pixel triplets aren't necessarily grouped into rows by line, so we just have to take in a single-dimensional array instead and read that.
+	pixelData := strings.Fields(strings.Join(lines, " "))
+	pixelCount := c.Width * c.Height
+	// Reading pixels
+	var r, g, b int
+
+	for i := 0; i < pixelCount; i++ {
+		if r, err = strconv.Atoi(string(pixelData[(i * 3)])); err != nil {
+			return c, err
+		}
+		if g, err = strconv.Atoi(string(pixelData[(i*3)+1])); err != nil {
+			return c, err
+		}
+		if b, err = strconv.Atoi(string(pixelData[(i*3)+2])); err != nil {
+			return c, err
+		}
+		x, y := i%c.Width, i/c.Width
+		c.WritePixel(x, y, NewColor(float64(r)/c.ColorScale, float64(g)/c.ColorScale, float64(b)/c.ColorScale))
+	}
+
+	return c, nil
 }
 
 func (c *Canvas) IsEqualTo(c2 Canvas) bool {
@@ -59,14 +121,14 @@ func (c *Canvas) PixelAt(x, y int) Color {
 
 func (c *Canvas) ToPpm() string {
 	var buffer bytes.Buffer
-	buffer.WriteString(fmt.Sprintf("P3\n%d %d\n255\n", c.Width, c.Height))
+	buffer.WriteString(fmt.Sprintf("P3\n%d %d\n%d\n", c.Width, c.Height, int(c.ColorScale)))
 
 	for i, v := range c.Pixels {
 		buffer.WriteString(
 			fmt.Sprintf("%d %d %d",
-				int(math.Ceil(math.Min(255, math.Max(0, v.Red*255)))),
-				int(math.Ceil(math.Min(255, math.Max(0, v.Green*255)))),
-				int(math.Ceil(math.Min(255, math.Max(0, v.Blue*255)))),
+				int(math.Ceil(math.Min(c.ColorScale, math.Max(0, v.Red*c.ColorScale)))),
+				int(math.Ceil(math.Min(c.ColorScale, math.Max(0, v.Green*c.ColorScale)))),
+				int(math.Ceil(math.Min(c.ColorScale, math.Max(0, v.Blue*c.ColorScale)))),
 			))
 
 		if (i != 0) && (i+1)%(c.Width) == 0 {
