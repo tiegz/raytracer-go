@@ -56,5 +56,5 @@ func (acp UVAlignCheckPattern) localIsEqualTo(tp2 PatternInterface) bool {
 // Not returning reflect.TypeOf here because I suspect it
 // does the same thing under the hood and stores a string?
 func (acp UVAlignCheckPattern) localType() string {
-	return "AlignCheckPattern"
+	return "UVAlignCheckPattern"
 }
