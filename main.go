@@ -29,7 +29,8 @@ func main() {
 	// examples.RunDrawWorldWithSnowman()
 	// examples.RunDrawWorldWithUVPattern()
 	// examples.RunDrawUVAlignCheck()
-	examples.RunDrawUVAlignCheckCubes()
+	// examples.RunDrawUVAlignCheckCubes()
+	examples.RunDrawUVImage()
 
 	// // my own experiments
 	// examples.RunAnimation()
