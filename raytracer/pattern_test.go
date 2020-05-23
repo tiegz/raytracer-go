@@ -231,7 +231,6 @@ func TestUsingATextureMapPatternWithASphericalMap(t *testing.T) {
 }
 
 func TestUsingAPlanarMappingOnA3DPoint(t *testing.T) {
-	fmt.Printf("-0.25 mod 1 is %v\n", math.Mod(-0.25, -1.0))
 	testCases := []struct {
 		point Tuple
 		u     float64

@@ -55,11 +55,21 @@ func (p CubeMapPattern) LocalUVPatternAt(u, v float64) Color {
 	return Colors["Black"]
 }
 
-func (p CubeMapPattern) localIsEqualTo(cp2 PatternInterface) bool {
-	// cp2Pattern := cp2.(*CheckerPattern)
-	// if !cp.A.IsEqualTo(cp2Pattern.A) || !cp.B.IsEqualTo(cp2Pattern.B) {
-	// 	return false
-	// }
+func (p CubeMapPattern) localIsEqualTo(p2 PatternInterface) bool {
+	p2Pattern := p2.(*CubeMapPattern)
+	if !p.left.IsEqualTo(p2Pattern.left) {
+		return false
+	} else if !p.right.IsEqualTo(p2Pattern.right) {
+		return false
+	} else if !p.upper.IsEqualTo(p2Pattern.upper) {
+		return false
+	} else if !p.lower.IsEqualTo(p2Pattern.lower) {
+		return false
+	} else if !p.front.IsEqualTo(p2Pattern.front) {
+		return false
+	} else if !p.back.IsEqualTo(p2Pattern.back) {
+		return false
+	}
 	return true
 }
 

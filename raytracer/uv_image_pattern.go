@@ -35,8 +35,9 @@ func (ip UVImagePattern) LocalUVPatternAt(u, v float64) Color {
 	return ip.Canvas.PixelAt(int(math.Round(x)), int(math.Round(y)))
 }
 
-func (ip UVImagePattern) localIsEqualTo(tp2 PatternInterface) bool {
-	return true
+func (ip UVImagePattern) localIsEqualTo(ip2 PatternInterface) bool {
+	ip2Pattern := ip2.(*UVImagePattern)
+	return ip.Canvas.IsEqualTo(ip2Pattern.Canvas)
 }
 
 // Not returning reflect.TypeOf here because I suspect it

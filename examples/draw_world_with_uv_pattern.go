@@ -20,7 +20,6 @@ func RunDrawWorldWithUVPattern() {
 	))
 
 	floor := NewPlane()
-	// floor.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Gray"])
 	floor.Material.Pattern = NewTextureMapPattern(
 		NewUVCheckerPattern(1, 1, Colors["White"], Colors["Gray"]),
 		PlanarMap,
@@ -45,7 +44,6 @@ func RunDrawWorldWithUVPattern() {
 
 	cube := NewCube()
 	cube.SetTransform(NewTranslation(0, 1, 0))
-	// sphere.Material.Color = NewColor(0.1, 1, 0.5)
 	cube.Material.Diffuse = 0.7
 	cube.Material.Specular = 0.3
 	cube.Material.Pattern = NewTextureMapPattern(
@@ -62,7 +60,6 @@ func RunDrawWorldWithUVPattern() {
 		NewTranslation(5, 1, 0),
 		NewScale(1, 2, 1),
 	))
-	// sphere.Material.Color = NewColor(0.1, 1, 0.5)
 	cone.Material.Diffuse = 0.7
 	cone.Material.Specular = 0.3
 	cone.Material.Pattern = NewTextureMapPattern(
@@ -74,7 +71,6 @@ func RunDrawWorldWithUVPattern() {
 	cyl.LocalShape.(*Cylinder).Closed = true
 	cyl.LocalShape.(*Cylinder).Minimum = 0
 	cyl.LocalShape.(*Cylinder).Maximum = 1
-	// sphere.Material.Color = NewColor(0.1, 1, 0.5)
 	cyl.Material.Diffuse = 0.7
 	cyl.Material.Specular = 0.3
 	cyl.Material.Pattern = NewTextureMapPattern(

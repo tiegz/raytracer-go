@@ -109,6 +109,7 @@ func (c *Camera) RenderWithProgress(w World) Canvas {
 			fmt.Printf("\rProgress: %6.02f%%", progress)
 		}
 	}
+	fmt.Println()
 
 	return canvas
 }

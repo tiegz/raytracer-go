@@ -69,7 +69,6 @@ func NewCanvasFromPpm(ppm string) (Canvas, error) {
 	// Pixel triplets aren't necessarily grouped into rows by line, so we just have to take in a single-dimensional array instead and read that.
 	pixelData := strings.Fields(strings.Join(lines, " "))
 	pixelCount := c.Width * c.Height
-	// Reading pixels
 	var r, g, b int
 
 	for i := 0; i < pixelCount; i++ {

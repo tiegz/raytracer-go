@@ -30,7 +30,8 @@ func main() {
 	// examples.RunDrawWorldWithUVPattern()
 	// examples.RunDrawUVAlignCheck()
 	// examples.RunDrawUVAlignCheckCubes()
-	examples.RunDrawUVImage()
+	// examples.RunDrawUVImage()
+	examples.RunDrawSkybox()
 
 	// // my own experiments
 	// examples.RunAnimation()

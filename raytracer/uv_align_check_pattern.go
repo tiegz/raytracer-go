@@ -18,7 +18,14 @@ func NewUVAlignCheckPattern(main, ul, ur, bl, br Color) Pattern {
 }
 
 func (acp UVAlignCheckPattern) String() string {
-	return fmt.Sprintf("AlignCheckPattern( )")
+	return fmt.Sprintf(
+		"AlignCheckPattern( %s %s %s %s %s )",
+		acp.main,
+		acp.ul,
+		acp.ur,
+		acp.bl,
+		acp.br,
+	)
 }
 
 /////////////////////////
@@ -49,7 +56,19 @@ func (acp UVAlignCheckPattern) LocalUVPatternAt(u, v float64) Color {
 	return acp.main
 }
 
-func (acp UVAlignCheckPattern) localIsEqualTo(tp2 PatternInterface) bool {
+func (acp UVAlignCheckPattern) localIsEqualTo(acp2 PatternInterface) bool {
+	acp2Pattern := acp2.(*UVAlignCheckPattern)
+	if !acp.main.IsEqualTo(acp2Pattern.main) {
+		return false
+	} else if !acp.ul.IsEqualTo(acp2Pattern.ul) {
+		return false
+	} else if !acp.ur.IsEqualTo(acp2Pattern.ur) {
+		return false
+	} else if !acp.bl.IsEqualTo(acp2Pattern.bl) {
+		return false
+	} else if !acp.br.IsEqualTo(acp2Pattern.br) {
+		return false
+	}
 	return true
 }
 

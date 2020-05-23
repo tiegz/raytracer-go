@@ -35,7 +35,9 @@ func RunDrawUVImage() {
 	platform.Material.Reflective = 0.1
 
 	sphere := NewSphere()
-	image, err := ioutil.ReadFile("raytracer/files/earthmap1k.ppm")
+	// This cubemap can be found at http://planetpixelemporium.com/earth.html > cube map
+	// Fetch the files, save to tmp, and convert to PPM: convert earthmap1k.jpg -compress none earthmap1k.ppm
+	image, err := ioutil.ReadFile("tmp/earthmap1k.ppm")
 	if err != nil {
 		panic(err)
 	}

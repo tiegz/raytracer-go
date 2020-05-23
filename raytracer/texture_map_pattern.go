@@ -77,24 +77,28 @@ func CylindricalMap(p Tuple) (float64, float64) {
 /////////////////////////
 
 func (p TextureMapPattern) LocalPatternAt(point Tuple) Color {
+	// TODO: is this right?
 	u, v := p.UVMap(point)
 	return p.Pattern.UVPatternAt(u, v)
 }
 
 func (p TextureMapPattern) LocalUVPatternAt(u, v float64) Color {
-	return Colors["Black"]
+	return p.Pattern.UVPatternAt(u, v)
 }
 
-func (p TextureMapPattern) localIsEqualTo(cp2 PatternInterface) bool {
-	// p2Pattern := p2.(*CheckerPattern)
-	// if !p.A.IsEqualTo(p2Pattern.A) || !cp.B.IsEqualTo(p2Pattern.B) {
-	// 	return false
-	// }
+func (p TextureMapPattern) localIsEqualTo(p2 PatternInterface) bool {
+	p2Pattern := p2.(*TextureMapPattern)
+	if !p.Pattern.IsEqualTo(p2Pattern.Pattern) {
+		return false
+		// TODO: add IsEqualTo to UVMap
+		// } else if p.UVMap.IsEqualTo(p2Pattern.UVMap) {
+		// 	return false
+	}
 	return true
 }
 
 // Not returning reflect.TypeOf here because I suspect it
 // does the same thing under the hood and stores a string?
-func (cp TextureMapPattern) localType() string {
+func (p TextureMapPattern) localType() string {
 	return "TextureMapPattern"
 }
