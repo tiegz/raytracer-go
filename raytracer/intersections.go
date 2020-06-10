@@ -54,7 +54,13 @@ func (i Intersection) IsEqualTo(i2 Intersection) bool {
 }
 
 func (i Intersection) String() string {
-	return fmt.Sprintf("Intersection( %.3f, %v )", i.Time, i.Object)
+	return fmt.Sprintf(
+		"Intersection(\nTime: %.3f\nObject: %v\nU: %v, V: %v\n)",
+		i.Time,
+		i.Object,
+		i.U,
+		i.V,
+	)
 }
 
 func (xs Intersections) String() string {

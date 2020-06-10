@@ -22,7 +22,7 @@ func NewGlassSphere() Shape {
 }
 
 func (s Sphere) String() string {
-	return fmt.Sprintf("Sphere( %v, %.1f )", s.Origin, s.Radius)
+	return fmt.Sprintf("Sphere(\n  Origin: %v\n  Radius: %.1f\n)", s.Origin, s.Radius)
 }
 
 /////////////////////////

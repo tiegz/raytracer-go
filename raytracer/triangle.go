@@ -85,7 +85,17 @@ func (t Triangle) localIsEqualTo(t2 ShapeInterface) bool {
 }
 
 func (t Triangle) String() string {
-	return fmt.Sprintf("Triangle( %v %v %v )", t.P1, t.P2, t.P3)
+	return fmt.Sprintf(
+		"Triangle( P1: %v P2: %v P3: %v E1: %v E2: %v Normal: %v boundsMin: %v boundsMax: %v )",
+		t.P1,
+		t.P2,
+		t.P3,
+		t.E1,
+		t.E2,
+		t.Normal,
+		t.boundsMin,
+		t.boundsMax,
+	)
 }
 
 func (t Triangle) localString() string {

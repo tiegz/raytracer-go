@@ -88,6 +88,10 @@ func NewCanvasFromPpm(ppm string) (Canvas, error) {
 	return c, nil
 }
 
+func (c Canvas) String() string {
+	return fmt.Sprintf("Canvas(\nWidth: %v\nHeight: %v\nColorScale: %v\n)", c.Width, c.Height, c.ColorScale)
+}
+
 func (c *Canvas) IsEqualTo(c2 Canvas) bool {
 	if c.Width != c2.Width || c.Height != c2.Height {
 		return false

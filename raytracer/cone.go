@@ -17,7 +17,7 @@ func NewCone() Shape {
 }
 
 func (cone Cone) String() string {
-	return fmt.Sprintf("Cone( %v )", cone.Origin)
+	return fmt.Sprintf("Cone(\nOrigin: %v\nMinimum: %v\nMaximum: %v\nClosed: %v\n)", cone.Origin, cone.Minimum, cone.Maximum, cone.Closed)
 }
 
 func (cone Cone) intersectCaps(xs Intersections, r Ray, shape *Shape) Intersections {

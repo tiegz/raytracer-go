@@ -1,5 +1,7 @@
 package raytracer
 
+import "fmt"
+
 type AreaLight struct {
 	Corner    Tuple   // corner: position of one corner of the light source
 	UVec      Tuple   // direction+length of the u edge
@@ -45,6 +47,20 @@ func NewPointLight(position Tuple, intensity Color) AreaLight {
 	jitter := NewSequence(0.0) // PointLights are single points of light and don't need any jiter.
 	pl.Jitter = &jitter
 	return pl
+}
+
+func (al AreaLight) String() string {
+	return fmt.Sprintf(
+		"AreaLight(\nCorner: %v\nUVec: %v\nUSteps: %v\nVVec: %v\nVSteps: %v\nIntensity: %v\nSamples: %v\nJitter: %v\n)",
+		al.Corner,
+		al.UVec,
+		al.USteps,
+		al.VVec,
+		al.VSteps,
+		al.Intensity,
+		al.Samples,
+		al.Jitter,
+	)
 }
 
 func (l AreaLight) GetIntensity() Color {

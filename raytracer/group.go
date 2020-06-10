@@ -16,6 +16,10 @@ func NewGroup() Shape {
 	return NewShape(Group{Children: c})
 }
 
+func (g Group) String() string {
+	return fmt.Sprintf("Group(\nChildren: %d\n  LeftBounds: %v\nRightBounds: %v\n)", len(g.Children), g.LeftBounds, g.RightBounds)
+}
+
 /////////////////////////
 // ShapeInterface methods
 /////////////////////////
@@ -54,10 +58,6 @@ func (g Group) localIsEqualTo(s2 ShapeInterface) bool {
 		}
 	}
 	return true
-}
-
-func (g Group) String() string {
-	return fmt.Sprintf("Group( Children:%d )", len(g.Children))
 }
 
 func (g Group) LocalBounds() BoundingBox {

@@ -31,7 +31,7 @@ func (p *Pattern) SetTransform(m Matrix) {
 }
 
 func (p Pattern) String() string {
-	return fmt.Sprintf("Pattern( %v )", p.LocalPattern)
+	return fmt.Sprintf("Pattern(\n  LocalPattern: %v\n  Transform: %v\n)", p.LocalPattern, p.Transform)
 }
 
 func (p Pattern) IsEqualTo(p2 Pattern) bool {

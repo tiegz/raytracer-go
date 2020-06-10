@@ -27,7 +27,7 @@ func (of *ObjFile) ToGroup() Shape {
 
 func (o ObjFile) String() string {
 	return fmt.Sprintf(
-		"ObjFile( IgnoredLineCount:%d Vertices:%d DefaultGroup:%d Groups:%d CurrentGroupName:%s )",
+		"ObjFile(\n  IgnoredLineCount: %d\n  Vertices: %d\n  DefaultGroup: %d\n  Groups: %d\n  CurrentGroupName: %s\n)",
 		o.IgnoredLineCount,
 		len(o.Vertices),
 		len(o.DefaultGroup.LocalShape.(Group).Children),

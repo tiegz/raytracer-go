@@ -15,7 +15,7 @@ func NewStripePattern(a, b Color) Pattern {
 }
 
 func (s StripePattern) String() string {
-	return fmt.Sprintf("StripePattern( %v %v )", s.A, s.B)
+	return fmt.Sprintf("StripePattern( A: %v B: %v )", s.A, s.B)
 }
 
 /////////////////////////

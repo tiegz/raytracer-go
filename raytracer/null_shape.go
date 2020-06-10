@@ -33,7 +33,7 @@ func (ns NullShape) localIsEqualTo(s2 ShapeInterface) bool {
 }
 
 func (ns NullShape) String() string {
-	return fmt.Sprintf("TestShape( NULL )")
+	return fmt.Sprintf("NullShape( )")
 }
 
 func (ns NullShape) localString() string {

@@ -100,7 +100,20 @@ func (t SmoothTriangle) localIsEqualTo(t2 ShapeInterface) bool {
 }
 
 func (t SmoothTriangle) String() string {
-	return fmt.Sprintf("SmoothTriangle( %v %v %v %v %v %v )", t.P1, t.P2, t.P3, t.N1, t.N2, t.N3)
+	return fmt.Sprintf(
+		"SmoothTriangle( P1: %v P2: %v P3: %v N1: %v N2: %v N3: %v E1: %v E2: %v Norma: %v boundsMin: %v boundsMax: %v )",
+		t.P1,
+		t.P2,
+		t.P3,
+		t.N1,
+		t.N2,
+		t.N3,
+		t.E1,
+		t.E2,
+		t.Normal,
+		t.boundsMin,
+		t.boundsMax,
+	)
 }
 
 func (t SmoothTriangle) localString() string {

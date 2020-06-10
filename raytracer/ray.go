@@ -18,7 +18,7 @@ func NullRay() Ray {
 }
 
 func (r Ray) String() string {
-	return fmt.Sprintf("Ray( %v, %v)", r.Origin, r.Direction)
+	return fmt.Sprintf("Ray(\n  Origin: %v\n  Direction: %v\n)", r.Origin, r.Direction)
 }
 
 func (r Ray) Position(time float64) Tuple {

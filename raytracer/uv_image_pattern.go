@@ -15,7 +15,7 @@ func NewUVImagePattern(c Canvas) Pattern {
 }
 
 func (ip UVImagePattern) String() string {
-	return fmt.Sprintf("UVImagePattern( )")
+	return fmt.Sprintf("UVImagePattern(\n  %s\n)", ip.Canvas)
 }
 
 /////////////////////////

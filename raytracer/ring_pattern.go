@@ -15,7 +15,7 @@ func NewRingPattern(a, b Color) Pattern {
 }
 
 func (p RingPattern) String() string {
-	return fmt.Sprintf("RingPattern( %v %v )", p.A, p.B)
+	return fmt.Sprintf("RingPattern( A: %v B: %v )", p.A, p.B)
 }
 
 /////////////////////////
