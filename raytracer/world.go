@@ -41,7 +41,7 @@ func DefaultWorld() World {
 }
 
 func (w *World) String() string {
-	return fmt.Sprintf("World( %d Objects %d Lights )", len(w.Objects), len(w.Lights))
+	return fmt.Sprintf("World(\n  %d Objects\n  %d Lights\n)", len(w.Objects), len(w.Lights))
 }
 
 // Contains returns true if the world contains obj.

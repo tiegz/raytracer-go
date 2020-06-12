@@ -1,5 +1,7 @@
 package raytracer
 
+import "fmt"
+
 type Sequence struct {
 	Numbers      []float64
 	currentIndex int
@@ -9,6 +11,14 @@ type Sequence struct {
 // TODO: break out into a SequenceInterface, with DeterministicSequence and RandomSequence?
 func NewSequence(s ...float64) Sequence {
 	return Sequence{s, 0}
+}
+
+func (s Sequence) String() string {
+	return fmt.Sprintf(
+		"Shape(\n  Numbers: %v\n  currentIndex: %v\n)",
+		s.Numbers,
+		s.currentIndex,
+	)
 }
 
 func (s Sequence) IsEqualTo(s2 Sequence) bool {

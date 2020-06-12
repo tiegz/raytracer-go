@@ -15,7 +15,7 @@ func NewCheckerPattern(a, b Color) Pattern {
 }
 
 func (p CheckerPattern) String() string {
-	return fmt.Sprintf("CheckerPattern( %v %v )", p.A, p.B)
+	return fmt.Sprintf("CheckerPattern( A: %v, B: %v )", p.A, p.B)
 }
 
 /////////////////////////

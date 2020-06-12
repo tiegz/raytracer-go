@@ -37,7 +37,7 @@ func (s TestShape) localIsEqualTo(s2 ShapeInterface) bool {
 }
 
 func (s TestShape) String() string {
-	return fmt.Sprintf("TestShape( )") // , s.SavedRay)
+	return fmt.Sprintf("TestShape( )")
 }
 
 func (s TestShape) localString() string {

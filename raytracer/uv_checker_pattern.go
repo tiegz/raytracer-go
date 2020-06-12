@@ -26,7 +26,7 @@ func NewUVCheckerPattern(w, h float64, a, b Color) Pattern {
 }
 
 func (p UVCheckerPattern) String() string {
-	return fmt.Sprintf("UVCheckerPattern( Width: %v Height: %v %v %v )", p.Width, p.Height, p.A, p.B)
+	return fmt.Sprintf("UVCheckerPattern( Width: %v Height: %v A: %v B: %v )", p.Width, p.Height, p.A, p.B)
 }
 
 /////////////////////////

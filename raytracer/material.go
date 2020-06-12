@@ -6,6 +6,7 @@ import (
 )
 
 type Material struct {
+	Label           string
 	Color           Color
 	Ambient         float64
 	Diffuse         float64
@@ -20,6 +21,7 @@ type Material struct {
 // Beware: use this instead of Material{}, for Material{} without all the args will throw errors when rendering.
 func DefaultMaterial() Material {
 	return Material{
+		Label:           "default-material",
 		Color:           Colors["White"],
 		Ambient:         0.1,
 		Diffuse:         0.9,
@@ -55,7 +57,19 @@ func (m Material) IsEqualTo(m2 Material) bool {
 }
 
 func (m Material) String() string {
-	return fmt.Sprintf("Material( %v %v %v %v %v %v %v )", m.Color, m.Ambient, m.Diffuse, m.Specular, m.Shininess, m.Pattern, m.Reflective)
+	return fmt.Sprintf(
+		"Material(\n  Label: %v\n  Color: %v\n  Ambient: %v\n  Diffuse: %v\n  Specular: %v\n  Shininess: %v\n  Pattern: %v\n  Reflective: %v\n  Transparency: %v\n  ReflectiveIndex: %v\n)",
+		m.Label,
+		m.Color,
+		m.Ambient,
+		m.Diffuse,
+		m.Specular,
+		m.Shininess,
+		m.Pattern,
+		m.Reflective,
+		m.Transparency,
+		m.RefractiveIndex,
+	)
 }
 
 // Calculates the lighting for a given point and material, based on Phong reflection.

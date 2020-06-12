@@ -16,13 +16,13 @@ type ShapeInterface interface {
 // Shape is a general shape (Transform+Material), with the specific type of shape stored as a ShapeInterface in LocalShape.
 // LocaleShape-specific functions are prefixed with "local", e.g. localFoo().
 type Shape struct {
+	Label            string
 	LocalShape       ShapeInterface // not using anonymous embedded field mostly bc of IsEqualTo()... we have to pass the LocalShape, not the Shape
 	Transform        Matrix         // WARNING: don't set Transform directly, use SetTransform()
 	InverseTransform Matrix
 	Material         Material
 	SavedRay         Ray // TODO replace this later, it's only for testing purposes with TestShape
 	Parent           *Shape
-	Label            string
 	Shadows          bool
 }
 
@@ -200,8 +200,15 @@ func (s Shape) ParentSpaceBounds() BoundingBox {
 }
 
 func (s Shape) String() string {
-	// return fmt.Sprintf("Shape( \n  %v \n  %v \n  %v\n)", s.Material, s.Transform, s.LocalShape.localString())
-	return fmt.Sprintf("Shape( Label: %v LocalShape: %v )", s.Label, s.LocalShape.localString())
+	return fmt.Sprintf(
+		"Shape(\n  Label: %v\n  LocalShape: %v\n  Transform: %v\n  Material: %v\n  Parent: %T\n  Shadows: %v\n)",
+		s.Label,
+		s.LocalShape.localString(),
+		s.Transform,
+		s.Material,
+		s.Parent,
+		s.Shadows,
+	)
 }
 
 func (s *Shape) IsEqualTo(s2 Shape) bool {

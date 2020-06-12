@@ -15,7 +15,7 @@ func NewGradientPattern(a, b Color) Pattern {
 }
 
 func (p GradientPattern) String() string {
-	return fmt.Sprintf("GradientPattern( %v %v )", p.A, p.B)
+	return fmt.Sprintf("GradientPattern( A: %v B: %v )", p.A, p.B)
 }
 
 /////////////////////////

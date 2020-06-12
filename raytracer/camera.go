@@ -32,6 +32,10 @@ func NewCamera(h, v int, f float64) Camera {
 	return c
 }
 
+func (c Camera) String() string {
+	return fmt.Sprintf("Camera(\n  HSize: %d\n  Vsize: %d\n Field of View: %f\n  Transform: %v\n)", c.HSize, c.VSize, c.FieldOfView, c.Transform)
+}
+
 func (c *Camera) PixelSize() float64 {
 	halfView := math.Tan(c.FieldOfView / 2) // p 106 illustration
 	aspectRatio := float64(c.HSize) / float64(c.VSize)

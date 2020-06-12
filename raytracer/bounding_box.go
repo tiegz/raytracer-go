@@ -142,7 +142,7 @@ func (b BoundingBox) checkAxis(origin float64, direction float64, min float64, m
 }
 
 func (b BoundingBox) String() string {
-	return fmt.Sprintf("BoundingBox( MinPoint:%v MaxPoint:%v )", b.MinPoint, b.MaxPoint)
+	return fmt.Sprintf("BoundingBox( MinPoint: %v MaxPoint: %v )", b.MinPoint, b.MaxPoint)
 }
 
 func (b BoundingBox) IsEqualTo(b2 BoundingBox) bool {

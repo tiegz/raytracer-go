@@ -10,7 +10,6 @@ type Csg struct {
 	Operation string
 	Left      *Shape
 	Right     *Shape
-	// Children []*Shape
 }
 
 func NewCsg(t string, l, r *Shape) Shape {
@@ -106,19 +105,11 @@ func (c Csg) localIsEqualTo(c2 ShapeInterface) bool {
 	} else if !c.Right.IsEqualTo(*c2Csg.Right) {
 		return false
 	}
-	// } else {
-	// 	// TODO: test to confirm this works?
-	// 	for idx, childShape := range c.Children {
-	// 		if childShape != s2Csg.Children[idx] {
-	// 			return false
-	// 		}
-	// 	}
-	// }
 	return true
 }
 
 func (c Csg) String() string {
-	return fmt.Sprintf("Csg( Operation:%s Left:%v Right: %v )", c.Operation, c.Left, c.Right)
+	return fmt.Sprintf("Csg(\n  Operation: %s\n  Left: %v\n  Right: %v\n)", c.Operation, c.Left, c.Right)
 }
 
 func (c Csg) localString() string {

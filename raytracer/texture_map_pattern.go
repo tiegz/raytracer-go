@@ -15,7 +15,7 @@ func NewTextureMapPattern(p Pattern, f func(Tuple) (float64, float64)) Pattern {
 }
 
 func (p TextureMapPattern) String() string {
-	return fmt.Sprintf("TextureMapPattern( %v )", p.Pattern) // TODO: add UVMap in here somehow
+	return fmt.Sprintf("TextureMapPattern(\n  %v\n  %T\n)", p.Pattern, p.UVMap)
 }
 
 // Converts a point to spherical coordinates. (u = horizontal, v = vertical)

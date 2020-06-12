@@ -14,7 +14,7 @@ func NewCube() Shape {
 }
 
 func (c Cube) String() string {
-	return fmt.Sprintf("Cube( %v )", c.Origin)
+	return fmt.Sprintf("Cube( Origin: %v )", c.Origin)
 }
 
 /////////////////////////

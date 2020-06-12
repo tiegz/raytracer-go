@@ -31,7 +31,8 @@ func main() {
 	// examples.RunDrawUVAlignCheck()
 	// examples.RunDrawUVAlignCheckCubes()
 	// examples.RunDrawUVImage()
-	examples.RunDrawSkybox()
+	// examples.RunDrawSkybox()
+	examples.RunDrawCover()
 
 	// // my own experiments
 	// examples.RunAnimation()

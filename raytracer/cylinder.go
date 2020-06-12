@@ -17,7 +17,13 @@ func NewCylinder() Shape {
 }
 
 func (cyl Cylinder) String() string {
-	return fmt.Sprintf("Cylinder( %v )", cyl.Origin)
+	return fmt.Sprintf(
+		"Cylinder(\n  Origin: %v\n  Minimum: %v\nMaximum: %v\nClosed: %v\n)",
+		cyl.Origin,
+		cyl.Minimum,
+		cyl.Maximum,
+		cyl.Closed,
+	)
 }
 
 // Is the ray at time t within a radius of 1 in y axis
