@@ -41,7 +41,7 @@ func (c Color) IsEqualTo(c2 Color) bool {
 }
 
 func (c Color) String() string {
-	return fmt.Sprintf("Color( R: %v, G: %v, B: %v )", c.Red, c.Green, c.Blue)
+	return fmt.Sprintf("Color( %v, %v, %v )", c.Red, c.Green, c.Blue)
 }
 
 func (c Color) Add(c2 Color) Color {
