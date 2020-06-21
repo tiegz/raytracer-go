@@ -7,10 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 2
-
-      - name: Git log
-        run: git log
+          fetch-depth: 2 # we should only need current + parent commits
 
       - name: Set up Go 1.13
         uses: actions/setup-go@v1
