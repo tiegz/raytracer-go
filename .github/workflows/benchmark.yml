@@ -5,11 +5,41 @@ jobs:
     name: Benchmark
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2 # we should only need current + parent commits
+
       - name: Set up Go 1.13
         uses: actions/setup-go@v1
         with:
           go-version: 1.13
         id: go
+
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.BENCHMARKS_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.BENCHMARKS_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Run benchmarks
-        run: go test ./... -bench=.
+        run: go test ./... -bench=. | tee bench-$GITHUB_SHA.txt
+
+      - name: Convert benchmarks into json
+        run: ruby .github/workflows/convert_benchmarks_to_json.rb bench-$GITHUB_SHA.txt > bench-$GITHUB_SHA.json
+
+      - name: Upload bench to s3
+        run: aws s3 cp bench-$GITHUB_SHA.json s3://raytracer-go-benchmarks/bench-$GITHUB_SHA.json --region us-east-1
+
+      - name: Get parent bench from s3
+        run: aws s3 cp s3://raytracer-go-benchmarks/bench-$(git rev-parse $GITHUB_SHA^).json .
+
+      - name: Compare benches
+        run: ruby .github/workflows/compare_benchmarks.rb $GITHUB_SHA $(git rev-parse $GITHUB_SHA^)
+
+      - name: List files
+        run: ls -lart
