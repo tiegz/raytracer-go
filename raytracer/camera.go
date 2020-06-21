@@ -3,6 +3,7 @@ package raytracer
 import (
 	"fmt"
 	"math"
+	"time"
 )
 
 type Camera struct {
@@ -60,6 +61,8 @@ func (c *Camera) SetTransform(m Matrix) {
 // TODO memoize PixelSize() for this func?
 // RayForPixel returns a ray, from the camera through the point indicated.
 func (c *Camera) RayForPixel(pixelX, pixelY int) Ray {
+	time.Sleep(20 * time.Microsecond)
+
 	// ... the offset from the edge of the canvas to the pixel's center ...
 	xOffset := (float64(pixelX) + 0.5) * c.PixelSize()
 	yOffset := (float64(pixelY) + 0.5) * c.PixelSize()
