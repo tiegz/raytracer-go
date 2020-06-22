@@ -17,22 +17,29 @@ puts [
   "delta %".rjust(10),
 ].join('')
 
-def red(txt)
-  "\033[0;31m#{txt}\033[0m"
-end
-
-def green(txt)
-  "\033[0;32m#{txt}\033[0m"
-end
+def red(txt); "\033[0;31m#{txt}\033[0m"; end
+def green(txt); "\033[0;32m#{txt}\033[0m"; end
 
 keys.each do |key|
-  delta = ((parent[key].to_f - current[key].to_f)/parent[key].to_f).round(1) if parent[key]
-  delta_percentage = ((delta/parent[key].to_f) * 100).round(1) if delta
+  parent_ns_per_op, current_ns_per_op = parent[key].to_f, current[key].to_f
+  delta = 0, delta_text = "N/A"
+  if parent[key]
+    delta = (parent_ns_per_op - current_ns_per_op).round(3)
+    delta_percentage = ((delta/parent_ns_per_op) * 100).round(1)
+    # Highlight anything that's 50% slower or faster.
+    delta_text = if delta_percentage < -50
+      red("#{delta_percentage}%")
+    elsif delta_percentage > 50
+      green("#{delta_percentage}%")
+    else
+      "#{delta_percentage}%"
+    end
+  end
   puts [
     key.to_s.ljust(max_key_length),
-    parent[key].to_s.ljust(10),
-    current[key].to_s.ljust(10),
+    parent_ns_per_op.to_s.ljust(10),
+    current_ns_per_op.to_s.ljust(10),
     delta.to_s.ljust(10),
-    (delta_percentage < -1 ? red("#{delta_percentage}%") : (delta_percentage > 1 ? green("#{delta_percentage}%") : "#{delta_percentage}%")).rjust(10)
+    delta_text.rjust(10)
   ].join(" ")
 end
