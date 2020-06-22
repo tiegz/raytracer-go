@@ -15,3 +15,4 @@ Here are the types used in the raytracer (generated using github.com/tiegz/pkgvi
 - Run all tests: `go test ./...`
 - Run all benchmarks: `go test ./... -bench=.`
   - Benchmarking philosophy: focus on methods that are crucial to rendering and could possibly be affected by regressions. Avoid benchmarking things that are simple Go operations (+-/\*) and/or won't change much (e.g. `Tuple.Add()`).
+  - Benchmarks comparison are reported in the GitHub Action for each commit now.
