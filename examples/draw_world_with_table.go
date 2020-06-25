@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"math"
 
-	. "github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/pkg/raytracer"
 )
 
 // Adapted from https://github.com/jamis/rtc-ocaml/blob/master/progs/chap12.ml

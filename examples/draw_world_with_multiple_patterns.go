@@ -2,9 +2,10 @@ package examples
 
 import (
 	"fmt"
-	. "github.com/tiegz/raytracer-go/raytracer"
 	"io/ioutil"
 	"math"
+
+	. "github.com/tiegz/raytracer-go/pkg/raytracer"
 )
 
 func RunDrawWorldWithMultiplePatterns() {

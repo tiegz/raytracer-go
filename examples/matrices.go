@@ -3,7 +3,7 @@ package examples
 import (
 	"fmt"
 
-	. "github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/pkg/raytracer"
 )
 
 func RunMatrixExample() {

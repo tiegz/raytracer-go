@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	. "github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/pkg/raytracer"
 )
 
 func RunDrawCover() {

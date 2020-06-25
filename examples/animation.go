@@ -6,7 +6,7 @@ import (
 	"math"
 	"os/exec"
 
-	. "github.com/tiegz/raytracer-go/raytracer"
+	. "github.com/tiegz/raytracer-go/pkg/raytracer"
 )
 
 func RunAnimation() {
