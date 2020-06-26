@@ -71,12 +71,9 @@ func RunDrawUVImage() {
 
 	canvas := camera.RenderWithProgress(world)
 
-	fmt.Println("Generating PPM...")
-	ppm := canvas.ToPpm()
-	filename := "tmp/world.ppm"
-	ppmBytes := []byte(ppm)
-	fmt.Printf("Saving scene to %s...\n", filename)
-	if err := ioutil.WriteFile(filename, ppmBytes, 0644); err != nil {
-		panic(err)
+	if err := canvas.SavePpm("tmp/world.ppm"); err != nil {
+		fmt.Printf("Something went wrong! %s\n", err)
+	} else {
+		fmt.Println("Saved to tmp/world.ppm")
 	}
 }

@@ -2,7 +2,6 @@ package examples
 
 import (
 	"fmt"
-	"io/ioutil"
 	"math"
 	"os/exec"
 
@@ -90,16 +89,16 @@ func RunAnimation() {
 		world.Objects[5].SetTransform(rightSphereTranslation.Multiply(world.Objects[5].Transform))
 
 		fmt.Println("Generating PPM...")
-		ppm := canvas.ToPpm()
-		filename := fmt.Sprintf("tmp/sphere_silhouette_%03d.ppm", i)
-		ppmBytes := []byte(ppm)
-		fmt.Printf("Saving scene to %s...\n", filename)
-		if err := ioutil.WriteFile(filename, ppmBytes, 0644); err != nil {
-			panic(err)
+
+		filepath := fmt.Sprintf("tmp/world_%03d.ppm", i)
+		if err := canvas.SavePpm(filepath); err != nil {
+			fmt.Printf("Something went wrong! %s\n", err)
+		} else {
+			fmt.Printf("Saved to %s\n", filepath)
 		}
 	}
 
-	if _, err := exec.Command("convert -delay 5 tmp/sphere_silhouette*ppm movie.gif").Output(); err != nil {
+	if _, err := exec.Command("convert -delay 5 tmp/world*ppm movie.gif").Output(); err != nil {
 		fmt.Println("error occured")
 		fmt.Printf("%s", err)
 	}
