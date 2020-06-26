@@ -1,6 +1,7 @@
 package raytracer
 
 import (
+	"os"
 	"reflect"
 	"testing"
 )
@@ -134,5 +135,11 @@ func assertEqualError(t *testing.T, expected error, actual error) {
 	actualStr := actual.Error()
 	if expectedStr != actualStr {
 		expectationFailure(t, expectedStr, actualStr)
+	}
+}
+
+func assertFileExists(t *testing.T, filepath string) {
+	if _, err := os.Stat(filepath); os.IsNotExist(err) {
+		t.Errorf("\nExpected %s to exist, but it did not.\n", filepath)
 	}
 }

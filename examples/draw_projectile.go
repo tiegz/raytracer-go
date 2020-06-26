@@ -2,7 +2,6 @@ package examples
 
 import (
 	"fmt"
-	"io/ioutil"
 
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
@@ -27,12 +26,9 @@ func RunDrawProjectileExample() {
 		}
 	}
 
-	fmt.Println("Generating PPM...")
-	ppm := c.ToPpm()
-	filename := "tmp/projectile.ppm"
-	ppmBytes := []byte(ppm)
-	fmt.Printf("Saving projectile to %s...\n", filename)
-	if err := ioutil.WriteFile(filename, ppmBytes, 0644); err != nil {
-		panic(err)
+	if err := c.SavePpm("tmp/projectile.ppm"); err != nil {
+		fmt.Printf("Something went wrong! %s\n", err)
+	} else {
+		fmt.Println("Saved to tmp/projectile.ppm")
 	}
 }

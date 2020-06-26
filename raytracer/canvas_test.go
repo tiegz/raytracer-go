@@ -3,6 +3,7 @@ package raytracer
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 )
@@ -71,6 +72,16 @@ func TestCanvasToPpmWithTrailingNewline(t *testing.T) {
 	expected := "\n"
 
 	assertEqualString(t, expected, actual)
+}
+
+func TestCanvasSavePpm(t *testing.T) {
+	c := NewCanvas(5, 3)
+	filepath := "test_file_canvas_save_ppm.ppm"
+	err := c.SavePpm(filepath)
+	defer os.Remove(filepath)
+
+	assertNil(t, err)
+	assertFileExists(t, filepath)
 }
 
 func TestReadingAFileWithTheWrongMagicNumber(t *testing.T) {
