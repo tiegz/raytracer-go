@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
@@ -120,6 +121,13 @@ func (c *Canvas) WritePixel(x, y int, color Color) {
 func (c *Canvas) PixelAt(x, y int) Color {
 	index := (c.Width * y) + x
 	return c.Pixels[index]
+}
+
+func (c *Canvas) SavePpm(filepath string) error {
+	ppm := c.ToPpm()
+	ppmBytes := []byte(ppm)
+	err := ioutil.WriteFile(filepath, ppmBytes, 0644)
+	return err
 }
 
 func (c *Canvas) ToPpm() string {

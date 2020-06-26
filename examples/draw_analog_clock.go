@@ -2,7 +2,6 @@ package examples
 
 import (
 	"fmt"
-	"io/ioutil"
 	"math"
 
 	. "github.com/tiegz/raytracer-go/raytracer"
@@ -33,12 +32,9 @@ func RunDrawAnalogClockExample() {
 		canvas.WritePixel(x, y, NewColor(12-i/12, i/12+0.1, 0))
 	}
 
-	fmt.Println("Generating PPM...")
-	ppm := canvas.ToPpm()
-	filename := "tmp/analog_clock.ppm"
-	ppmBytes := []byte(ppm)
-	fmt.Printf("Saving scene to %s...\n", filename)
-	if err := ioutil.WriteFile(filename, ppmBytes, 0644); err != nil {
-		panic(err)
+	if err := canvas.SavePpm("tmp/world.ppm"); err != nil {
+		fmt.Printf("Something went wrong! %s\n", err)
+	} else {
+		fmt.Println("Saved to tmp/world.ppm")
 	}
 }
