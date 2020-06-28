@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"image"
 	"image/jpeg"
+	"image/png"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -125,20 +126,36 @@ func (c *Canvas) PixelAt(x, y int) Color {
 	return c.Pixels[index]
 }
 
-func (c *Canvas) SaveJPEG(filepath string) error {
+// Export canvas to an image from Go's std lib.
+func (c *Canvas) ToImage() image.Image {
 	target := image.NewRGBA(image.Rect(0, 0, c.Width, c.Height))
 	for x := 0; x < c.Width; x++ {
 		for y := 0; y < c.Height; y++ {
 			target.Set(x, y, c.PixelAt(x, y))
 		}
 	}
+	return target
+}
 
+func (c *Canvas) SaveJPEG(filepath string) error {
+	target := c.ToImage()
 	f, err := os.Create(filepath)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	err = jpeg.Encode(f, target, nil)
+	return err
+}
+
+func (c *Canvas) SavePNG(filepath string) error {
+	target := c.ToImage()
+	f, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	err = png.Encode(f, target)
 	return err
 }
 

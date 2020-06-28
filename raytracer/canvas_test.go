@@ -93,6 +93,17 @@ func TestCanvasSaveJPEG(t *testing.T) {
 	assertNil(t, err)
 	assertFileExists(t, filepath)
 }
+
+func TestCanvasSavePNG(t *testing.T) {
+	c := NewCanvas(5, 3)
+	filepath := "test_file_canvas_save_jpg.png"
+	err := c.SavePNG(filepath)
+	defer os.Remove(filepath)
+
+	assertNil(t, err)
+	assertFileExists(t, filepath)
+}
+
 func TestReadingAFileWithTheWrongMagicNumber(t *testing.T) {
 	ppm := `P32
 	1 1
