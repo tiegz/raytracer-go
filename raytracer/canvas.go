@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"image"
+	"image/jpeg"
 	"io/ioutil"
-	"math"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -123,6 +125,23 @@ func (c *Canvas) PixelAt(x, y int) Color {
 	return c.Pixels[index]
 }
 
+func (c *Canvas) SaveJPEG(filepath string) error {
+	target := image.NewRGBA(image.Rect(0, 0, c.Width, c.Height))
+	for x := 0; x < c.Width; x++ {
+		for y := 0; y < c.Height; y++ {
+			target.Set(x, y, c.PixelAt(x, y))
+		}
+	}
+
+	f, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	err = jpeg.Encode(f, target, nil)
+	return err
+}
+
 func (c *Canvas) SavePpm(filepath string) error {
 	ppm := c.ToPpm()
 	ppmBytes := []byte(ppm)
@@ -135,12 +154,8 @@ func (c *Canvas) ToPpm() string {
 	buffer.WriteString(fmt.Sprintf("P3\n%d %d\n%d\n", c.Width, c.Height, int(c.ColorScale)))
 
 	for i, v := range c.Pixels {
-		buffer.WriteString(
-			fmt.Sprintf("%d %d %d",
-				int(math.Ceil(math.Min(c.ColorScale, math.Max(0, v.Red*c.ColorScale)))),
-				int(math.Ceil(math.Min(c.ColorScale, math.Max(0, v.Green*c.ColorScale)))),
-				int(math.Ceil(math.Min(c.ColorScale, math.Max(0, v.Blue*c.ColorScale)))),
-			))
+		r, g, b := v.ScaledRGB(c.ColorScale)
+		buffer.WriteString(fmt.Sprintf("%d %d %d", r, g, b))
 
 		if (i != 0) && (i+1)%(c.Width) == 0 {
 			// NB this still happens on the last line, to ensure there's

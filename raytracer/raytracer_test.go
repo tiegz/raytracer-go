@@ -83,6 +83,12 @@ func assertEqualInt(t *testing.T, expected int, actual int) {
 	}
 }
 
+func assertEqualUInt(t *testing.T, expected uint, actual uint) {
+	if expected != actual {
+		expectationFailure(t, expected, actual)
+	}
+}
+
 func assertEqualString(t *testing.T, expected string, actual string) {
 	if expected != actual {
 		expectationFailure(t, expected, actual)

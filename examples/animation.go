@@ -90,15 +90,15 @@ func RunAnimation() {
 
 		fmt.Println("Generating PPM...")
 
-		filepath := fmt.Sprintf("tmp/world_%03d.ppm", i)
-		if err := canvas.SavePpm(filepath); err != nil {
+		filepath := fmt.Sprintf("tmp/world_%03d.jpg", i)
+		if err := canvas.SaveJPEG(filepath); err != nil {
 			fmt.Printf("Something went wrong! %s\n", err)
 		} else {
 			fmt.Printf("Saved to %s\n", filepath)
 		}
 	}
 
-	if _, err := exec.Command("convert -delay 5 tmp/world*ppm movie.gif").Output(); err != nil {
+	if _, err := exec.Command("convert -delay 5 tmp/world*jpg movie.gif").Output(); err != nil {
 		fmt.Println("error occured")
 		fmt.Printf("%s", err)
 	}

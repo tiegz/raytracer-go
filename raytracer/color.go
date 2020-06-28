@@ -2,6 +2,7 @@ package raytracer
 
 import (
 	"fmt"
+	"math"
 )
 
 type Color struct {
@@ -63,4 +64,16 @@ func (c Color) Divide(scalar float64) Color {
 // Returns the Hadamard product (or Schur product) of two colors.
 func (c Color) MultiplyColor(c2 Color) Color {
 	return NewColor(c.Red*c2.Red, c.Green*c2.Green, c.Blue*c2.Blue)
+}
+
+func (c Color) ScaledRGB(colorScale float64) (uint, uint, uint) {
+	return uint(math.Ceil(math.Min(colorScale, math.Max(0, c.Red*colorScale)))),
+		uint(math.Ceil(math.Min(colorScale, math.Max(0, c.Green*colorScale)))),
+		uint(math.Ceil(math.Min(colorScale, math.Max(0, c.Blue*colorScale))))
+}
+
+// Fulfills image.Color interface
+func (c Color) RGBA() (uint32, uint32, uint32, uint32) {
+	r, g, b := c.ScaledRGB(0xFFFF)
+	return uint32(r), uint32(g), uint32(b), 0xFFFF
 }

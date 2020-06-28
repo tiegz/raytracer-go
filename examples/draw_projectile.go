@@ -26,9 +26,9 @@ func RunDrawProjectileExample() {
 		}
 	}
 
-	if err := c.SavePpm("tmp/projectile.ppm"); err != nil {
+	if err := c.SaveJPEG("tmp/projectile.jpg"); err != nil {
 		fmt.Printf("Something went wrong! %s\n", err)
 	} else {
-		fmt.Println("Saved to tmp/projectile.ppm")
+		fmt.Println("Saved to tmp/projectile.jpg")
 	}
 }
