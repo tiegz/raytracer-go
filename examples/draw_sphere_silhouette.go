@@ -57,9 +57,9 @@ func RunDrawSphereSilhouette(scaleX, scaleY, rotateZ, skew bool) {
 		}
 	}
 
-	if err := canvas.SavePpm("tmp/world.ppm"); err != nil {
+	if err := canvas.SaveJPEG("tmp/world.jpg"); err != nil {
 		fmt.Printf("Something went wrong! %s\n", err)
 	} else {
-		fmt.Println("Saved to tmp/world.ppm")
+		fmt.Println("Saved to tmp/world.jpg")
 	}
 }
