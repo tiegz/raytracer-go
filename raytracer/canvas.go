@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"image"
+	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"io/ioutil"
@@ -156,6 +157,17 @@ func (c *Canvas) SavePNG(filepath string) error {
 	}
 	defer f.Close()
 	err = png.Encode(f, target)
+	return err
+}
+
+func (c *Canvas) SaveGIF(filepath string) error {
+	target := c.ToImage()
+	f, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	err = gif.Encode(f, target, nil)
 	return err
 }
 
