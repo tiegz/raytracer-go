@@ -1,77 +1,71 @@
 package examples
 
 import (
-	"fmt"
 	"math"
 
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
 func RunDrawWorldWithHexagonGroup() {
-	camera := NewCamera(320, 200, math.Pi/3)
+	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+		camera.HSize = 300
+		camera.VSize = 200
+		camera.FieldOfView = math.Pi / 3
 
-	camera.SetTransform(NewViewTransform(
-		NewPoint(0, 2, -4),
-		NewPoint(0, 0, 0),
-		NewVector(0, 1, 0),
-	))
-
-	hexagonCorner := func() *Shape {
-		corner := NewSphere()
-		corner.SetTransform(corner.Transform.Compose(
-			NewUScale(0.25),
-			NewTranslation(0, 0, -1),
+		camera.SetTransform(NewViewTransform(
+			NewPoint(0, 2, -4),
+			NewPoint(0, 0, 0),
+			NewVector(0, 1, 0),
 		))
-		return &corner
-	}
 
-	hexagonEdge := func() *Shape {
-		edge := NewCylinder()
-		cyl := edge.LocalShape.(*Cylinder)
-		cyl.Minimum = 0
-		cyl.Maximum = 1
-		edge.SetTransform(edge.Transform.Compose(
-			NewScale(0.25, 1, 0.25),
-			NewRotateZ(-math.Pi/2),
-			NewRotateY(-math.Pi/6),
-			NewTranslation(0, 0, -1),
-		))
-		return &edge
-	}
-
-	hexagonSide := func() *Shape {
-		side := NewGroup()
-		corner := hexagonCorner()
-		edge := hexagonEdge()
-		side.AddChildren(corner, edge)
-		return &side
-	}
-
-	hexagon := func() *Shape {
-		hex := hexagonSide()
-		for i := 0; i <= 5; i++ {
-			side := hexagonSide()
-			side.SetTransform(NewRotateY(float64(i) * math.Pi / 3.0))
-			hex.AddChildren(side)
+		hexagonCorner := func() *Shape {
+			corner := NewSphere()
+			corner.SetTransform(corner.Transform.Compose(
+				NewUScale(0.25),
+				NewTranslation(0, 0, -1),
+			))
+			return &corner
 		}
-		return hex
-	}
 
-	hex := hexagon()
+		hexagonEdge := func() *Shape {
+			edge := NewCylinder()
+			cyl := edge.LocalShape.(*Cylinder)
+			cyl.Minimum = 0
+			cyl.Maximum = 1
+			edge.SetTransform(edge.Transform.Compose(
+				NewScale(0.25, 1, 0.25),
+				NewRotateZ(-math.Pi/2),
+				NewRotateY(-math.Pi/6),
+				NewTranslation(0, 0, -1),
+			))
+			return &edge
+		}
 
-	world := NewWorld()
-	world.Objects = []Shape{
-		*hex,
-	}
-	world.Lights = []AreaLight{
-		NewPointLight(NewPoint(5, 8, -9), NewColor(1, 1, 1)),
-	}
+		hexagonSide := func() *Shape {
+			side := NewGroup()
+			corner := hexagonCorner()
+			edge := hexagonEdge()
+			side.AddChildren(corner, edge)
+			return &side
+		}
 
-	canvas := camera.Render(world)
+		hexagon := func() *Shape {
+			hex := hexagonSide()
+			for i := 0; i <= 5; i++ {
+				side := hexagonSide()
+				side.SetTransform(NewRotateY(float64(i) * math.Pi / 3.0))
+				hex.AddChildren(side)
+			}
+			return hex
+		}
 
-	if err := canvas.SaveJPEG("tmp/world.jpg"); err != nil {
-		fmt.Printf("Something went wrong! %s\n", err)
-	} else {
-		fmt.Println("Saved to tmp/world.jpg")
-	}
+		hex := hexagon()
+
+		world.Objects = []Shape{
+			*hex,
+		}
+		world.Lights = []AreaLight{
+			NewPointLight(NewPoint(5, 8, -9), NewColor(1, 1, 1)),
+		}
+	})
 }
