@@ -11,6 +11,7 @@ type Camera struct {
 	HalfWidth        float64
 	HalfHeight       float64
 	FieldOfView      float64
+	PixelSize        float64
 	Transform        Matrix // WARNING: don't set Transform directly, use SetTransform()
 	InverseTransform Matrix
 }
@@ -28,6 +29,7 @@ func NewCamera(h, v int, f float64) Camera {
 		VSize:       v,
 		FieldOfView: f,
 	}
+	c.SetPixelSize()
 	c.SetTransform(IdentityMatrix())
 	return c
 }
@@ -36,7 +38,7 @@ func (c Camera) String() string {
 	return fmt.Sprintf("Camera(\n  HSize: %d\n  Vsize: %d\n Field of View: %f\n  Transform: %v\n)", c.HSize, c.VSize, c.FieldOfView, c.Transform)
 }
 
-func (c *Camera) PixelSize() float64 {
+func (c *Camera) SetPixelSize() {
 	halfView := math.Tan(c.FieldOfView / 2) // p 106 illustration
 	aspectRatio := float64(c.HSize) / float64(c.VSize)
 
@@ -49,20 +51,20 @@ func (c *Camera) PixelSize() float64 {
 		c.HalfHeight = halfView
 	}
 
-	return (c.HalfWidth * 2) / float64(c.HSize)
+	c.PixelSize = (c.HalfWidth * 2) / float64(c.HSize)
 }
 
+// TODO: make transform private, to force usage of SetTransform() instead?
 func (c *Camera) SetTransform(m Matrix) {
 	c.Transform = m
 	c.InverseTransform = m.Inverse()
 }
 
-// TODO memoize PixelSize() for this func?
 // RayForPixel returns a ray, from the camera through the point indicated.
 func (c *Camera) RayForPixel(pixelX, pixelY int) Ray {
 	// ... the offset from the edge of the canvas to the pixel's center ...
-	xOffset := (float64(pixelX) + 0.5) * c.PixelSize()
-	yOffset := (float64(pixelY) + 0.5) * c.PixelSize()
+	xOffset := (float64(pixelX) + 0.5) * c.PixelSize
+	yOffset := (float64(pixelY) + 0.5) * c.PixelSize
 
 	// ... the untransformed coordinates of the pixel in world-space. ...
 	// ... (remember that the camera looks toward -z, so +x is to the *left*.) ...
