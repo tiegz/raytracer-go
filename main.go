@@ -104,10 +104,14 @@ func main() {
 }
 
 func printUsage() {
-	fmt.Println("raytracer-go is a tool for rendering 3d scenes using raytracing.\n")
-	fmt.Println("Usage:\n")
-	fmt.Println("\traytracer <command> [arguments]\n")
-	fmt.Println("The commands are:\n")
+	fmt.Println("raytracer-go is a tool for rendering 3d scenes using raytracing.")
+	fmt.Println()
+	fmt.Println("Usage:")
+	fmt.Println()
+	fmt.Println("\traytracer <command> [arguments]")
+	fmt.Println()
+	fmt.Println("The commands are:")
+	fmt.Println()
 	fmt.Println("\texample\t\trender an example scene")
 	fmt.Println("\tversion\t\tprint raytracer-go version")
 	fmt.Println("\thelp   \t\tshow usage for a command (eg 'help example')")
@@ -115,11 +119,15 @@ func printUsage() {
 }
 
 func printUsageForSubcommand(name string, cmd, subCmd *flag.FlagSet) {
-	fmt.Println("raytracer-go is a tool for rendering 3d scenes using raytracing.\n")
-	fmt.Println("Usage:\n")
-	fmt.Printf("\traytracer %s [arguments]\n", name)
+	fmt.Println("raytracer-go is a tool for rendering 3d scenes using raytracing.")
 	fmt.Println()
-	fmt.Println("Flags:\n")
+	fmt.Println("Usage:")
+	fmt.Println()
+	fmt.Printf("\traytracer %s [arguments]", name)
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("Flags:")
+	fmt.Println()
 	subCmd.PrintDefaults()
 	os.Exit(1)
 }
