@@ -39,11 +39,11 @@ func Draw(filepath string, drawFunc func(*World, *Camera)) {
 	} else if strings.HasSuffix(filepath, ".gif") {
 		err = canvas.SaveGIF(filepath)
 	} else {
-		fmt.Errorf("Unsupported file extension: %s\n", filepath)
+		fmt.Printf("Unsupported file extension: %s\n", filepath)
 	}
 
 	if err != nil {
-		fmt.Errorf("Something went wrong! %s\n", err)
+		fmt.Printf("Something went wrong! %s\n", err)
 	} else {
 		fmt.Printf("Saved to %s\n", filepath)
 	}

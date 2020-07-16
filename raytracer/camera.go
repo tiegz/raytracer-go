@@ -46,7 +46,7 @@ func (c *Camera) PixelSize() float64 {
 		c.HalfHeight = halfView / aspectRatio
 	} else { // v > h
 		c.HalfWidth = halfView * aspectRatio
-		c.HalfHeight = c.HalfHeight
+		c.HalfHeight = halfView
 	}
 
 	return (c.HalfWidth * 2) / float64(c.HSize)
