@@ -33,7 +33,6 @@ func IntersectionAllowed(op string, lhit, inl, inr bool) bool {
 	} else {
 		panic("Invalid Csg operation!") // TODO: replace eith returned error?
 	}
-	return false
 }
 
 // For this to work, your filter_intersections() function needs to loop over each intersection in xs, keeping
