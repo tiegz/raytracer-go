@@ -202,7 +202,7 @@ func decodeMaterial(defs map[string]Material, m Material, n yaml.Node) (Material
 		if def, ok := defs[defKey]; ok {
 			m = def
 		} else {
-			fmt.Errorf("Material definition not found: %s\n", defKey)
+			return m, fmt.Errorf("Material definition not found: %s\n", defKey)
 		}
 		// 2: try to decode as YamlMaterial
 	} else {
