@@ -43,9 +43,7 @@ func RunAnimation() {
 		rightSphere.SetTransform(rightSphereTranslation.Multiply(rightSphere.Transform))
 
 		Draw(fmt.Sprintf("tmp/world_%03d.jpg", i), func(world *World, camera *Camera) {
-			camera.HSize = 320
-			camera.VSize = 245
-			camera.FieldOfView = math.Pi / 3
+			camera.SetSize(320, 245, math.Pi/3)
 
 			camera.SetTransform(NewViewTransform(
 				NewPoint(0, 1.5, -5),

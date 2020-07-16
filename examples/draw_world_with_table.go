@@ -10,10 +10,7 @@ import (
 // TODO: include NewSolidPattern() in here
 func RunDrawWorldWithTable() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 1600
-		camera.VSize = 800
-		camera.FieldOfView = math.Pi / 4
-
+		camera.SetSize(1600, 800, math.Pi/4)
 		camera.SetTransform(NewViewTransform(
 			NewPoint(8, 6, -8),
 			NewPoint(0, 3, 0),

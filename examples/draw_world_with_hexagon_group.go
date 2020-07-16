@@ -8,10 +8,7 @@ import (
 
 func RunDrawWorldWithHexagonGroup() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 300
-		camera.VSize = 200
-		camera.FieldOfView = math.Pi / 3
-
+		camera.SetSize(300, 200, math.Pi/3)
 		camera.SetTransform(NewViewTransform(
 			NewPoint(0, 2, -4),
 			NewPoint(0, 0, 0),

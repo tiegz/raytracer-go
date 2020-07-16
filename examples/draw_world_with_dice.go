@@ -8,10 +8,7 @@ import (
 
 func RunDrawWorldWithDice() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 600
-		camera.VSize = 600
-		camera.FieldOfView = math.Pi / 3
-
+		camera.SetSize(600, 600, math.Pi/3)
 		camera.SetTransform(NewViewTransform(
 			NewPoint(2, 3, -2), // NewPoint(0, 3, -4),
 			NewPoint(0, 1, 0),

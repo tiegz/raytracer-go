@@ -8,10 +8,7 @@ import (
 
 func RunDrawWorldWithMultiplePatterns() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 1920
-		camera.VSize = 1080
-		camera.FieldOfView = math.Pi / 3
-
+		camera.SetSize(1920, 1080, math.Pi/3)
 		camera.SetTransform(NewViewTransform(
 			NewPoint(0, 1.5, -5),
 			NewPoint(0, 1, 0),

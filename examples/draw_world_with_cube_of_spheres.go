@@ -9,9 +9,7 @@ import (
 
 func RunDrawWorldWithCubeOfSpheres() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 200
-		camera.VSize = 200
-		camera.FieldOfView = math.Pi / 3
+		camera.SetSize(200, 200, math.Pi/3)
 
 		camera.SetTransform(NewViewTransform(
 			NewPoint(-5, 15, -5),

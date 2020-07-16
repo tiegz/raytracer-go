@@ -8,10 +8,7 @@ import (
 
 func RunDrawWorldWithSnowman() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 320
-		camera.VSize = 240
-		camera.FieldOfView = math.Pi / 3
-
+		camera.SetSize(320, 240, math.Pi/3)
 		camera.SetTransform(NewViewTransform(
 			NewPoint(-2, 2.5, -6),
 			NewPoint(0, 2.2, 0),

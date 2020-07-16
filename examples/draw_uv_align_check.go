@@ -8,9 +8,7 @@ import (
 
 func RunDrawUVAlignCheck() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 400
-		camera.VSize = 400
-		camera.FieldOfView = math.Pi / 3
+		camera.SetSize(400, 400, math.Pi/3)
 
 		camera.SetTransform(NewViewTransform(
 			NewPoint(1, 2, -5),

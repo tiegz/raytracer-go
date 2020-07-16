@@ -11,20 +11,20 @@ func TestConstructingACamera(t *testing.T) {
 	fieldOfView := math.Pi / 2
 	camera := NewCamera(hsize, vsize, fieldOfView)
 
-	assertEqualInt(t, 160, camera.HSize)
-	assertEqualInt(t, 120, camera.VSize)
-	assertEqualFloat64(t, math.Pi/2, camera.FieldOfView)
-	assertEqualMatrix(t, IdentityMatrix(), camera.Transform)
+	assertEqualInt(t, 160, camera.GetHSize())
+	assertEqualInt(t, 120, camera.GetVSize())
+	assertEqualFloat64(t, math.Pi/2, camera.GetFieldOfView())
+	assertEqualMatrix(t, IdentityMatrix(), camera.GetTransform())
 }
 
 func TestPixelSizeForHorizontalCanvas(t *testing.T) {
 	c := NewCamera(200, 125, math.Pi/2)
-	assertEqualFloat64(t, 0.01, c.PixelSize)
+	assertEqualFloat64(t, 0.01, c.GetPixelSize())
 }
 
 func TestPixelSizeForVerticalCanvas(t *testing.T) {
 	c := NewCamera(125, 200, math.Pi/2)
-	assertEqualFloat64(t, 0.01, c.PixelSize)
+	assertEqualFloat64(t, 0.01, c.GetPixelSize())
 }
 
 func TestConstructingARayThroughCenterOfTheCanvas(t *testing.T) {

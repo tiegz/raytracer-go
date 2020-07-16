@@ -8,10 +8,7 @@ import (
 
 func RunDrawWorldWithCube() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 320
-		camera.VSize = 200
-		camera.FieldOfView = math.Pi / 3
-
+		camera.SetSize(320, 200, math.Pi/3)
 		camera.SetTransform(NewViewTransform(
 			NewPoint(0, 3, -10),
 			NewPoint(0, 2, 0),

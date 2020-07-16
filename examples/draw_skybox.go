@@ -9,8 +9,7 @@ import (
 
 func RunDrawSkybox() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.FieldOfView = math.Pi / 2.5
-
+		camera.SetSize(200, 200, math.Pi/2.5)
 		camera.SetTransform(NewViewTransform(
 			NewPoint(0, 0, 0),
 			NewPoint(0, 0, 5),

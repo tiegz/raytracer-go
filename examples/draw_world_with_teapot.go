@@ -9,10 +9,7 @@ import (
 
 func RunDrawWorldWithTeapot() {
 	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
-		camera.HSize = 640
-		camera.VSize = 400
-		camera.FieldOfView = math.Pi / 3
-
+		camera.SetSize(640, 400, math.Pi/3)
 		camera.SetTransform(NewViewTransform(
 			NewPoint(0, 20, -20),
 			NewPoint(2, 5, 0),
