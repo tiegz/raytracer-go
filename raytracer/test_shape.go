@@ -23,7 +23,7 @@ func (ts TestShape) LocalIntersect(r Ray, shape *Shape) Intersections {
 	return Intersections{}
 }
 
-func (ts TestShape) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (ts TestShape) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	return NewVector(localPoint.X, localPoint.Y, localPoint.Z)
 }
 

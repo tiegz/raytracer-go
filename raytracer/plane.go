@@ -48,7 +48,7 @@ func (p Plane) LocalIntersect(r Ray, shape *Shape) Intersections {
 }
 
 // ... every single point on the plane has the same normal: vector(0, 1, 0). ...
-func (p Plane) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (p Plane) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	return NewVector(0, 1, 0)
 }
 

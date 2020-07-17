@@ -110,7 +110,7 @@ func assertEqualGroup(t *testing.T, expectedShapes []*Shape, actual Shape) {
 }
 
 func assertEqualIntersection(t *testing.T, expected Intersection, actual Intersection) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }

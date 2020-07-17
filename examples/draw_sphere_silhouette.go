@@ -51,7 +51,7 @@ func RunDrawSphereSilhouette(scaleX, scaleY, rotateZ, skew bool) {
 			r := NewRay(rayOrigin, rayDirection)
 			intersections := sphere.Intersect(r)
 
-			if hit := intersections.Hit(false); !hit.IsNull() {
+			if hit := intersections.Hit(false); hit != nil {
 				canvas.WritePixel(int(x), int(y), Colors["Purple"])
 			}
 		}
