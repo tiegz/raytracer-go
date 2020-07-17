@@ -5,7 +5,7 @@ import (
 )
 
 type ShapeInterface interface {
-	LocalNormalAt(Tuple, Intersection) Tuple
+	LocalNormalAt(Tuple, *Intersection) Tuple
 	LocalIntersect(Ray, *Shape) Intersections
 	LocalBounds() BoundingBox
 	localIsEqualTo(ShapeInterface) bool
@@ -49,7 +49,7 @@ func (s *Shape) Intersect(r Ray) Intersections {
 	return s.LocalShape.LocalIntersect(r, s)
 }
 
-func (s *Shape) NormalAt(worldPoint Tuple, i Intersection) Tuple {
+func (s *Shape) NormalAt(worldPoint Tuple, i *Intersection) Tuple {
 	objectPoint := s.WorldToObject(worldPoint)
 	objectNormal := s.LocalShape.LocalNormalAt(objectPoint, i)
 	return s.NormalToWorld(objectNormal)

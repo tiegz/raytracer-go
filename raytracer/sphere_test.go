@@ -59,8 +59,8 @@ func TestRayIntersectsSphereAtTwoPoints(t *testing.T) {
 	intersections := sphere.Intersect(ray)
 
 	assertEqualInt(t, 2, len(intersections))
-	assertEqualIntersection(t, NewIntersection(4.0, sphere), intersections[0])
-	assertEqualIntersection(t, NewIntersection(6.0, sphere), intersections[1])
+	assertEqualIntersection(t, *NewIntersection(4.0, sphere), *intersections[0])
+	assertEqualIntersection(t, *NewIntersection(6.0, sphere), *intersections[1])
 }
 
 func TestRayIntersectsSphereAtTangent(t *testing.T) {
@@ -69,8 +69,8 @@ func TestRayIntersectsSphereAtTangent(t *testing.T) {
 	intersections := sphere.Intersect(ray)
 
 	assertEqualInt(t, 2, len(intersections))
-	assertEqualIntersection(t, NewIntersection(5.0, sphere), intersections[0])
-	assertEqualIntersection(t, NewIntersection(5.0, sphere), intersections[1])
+	assertEqualIntersection(t, *NewIntersection(5.0, sphere), *intersections[0])
+	assertEqualIntersection(t, *NewIntersection(5.0, sphere), *intersections[1])
 }
 
 func TestRayMissesSphere(t *testing.T) {
@@ -87,8 +87,8 @@ func TestRayOriginatesInsideAndIntersectsSphere(t *testing.T) {
 	intersections := sphere.Intersect(ray)
 
 	assertEqualInt(t, 2, len(intersections))
-	assertEqualIntersection(t, NewIntersection(-1.0, sphere), intersections[0])
-	assertEqualIntersection(t, NewIntersection(1.0, sphere), intersections[1])
+	assertEqualIntersection(t, *NewIntersection(-1.0, sphere), *intersections[0])
+	assertEqualIntersection(t, *NewIntersection(1.0, sphere), *intersections[1])
 }
 
 func TestRayIsBehindAndIntersectsSphere(t *testing.T) {
@@ -97,8 +97,8 @@ func TestRayIsBehindAndIntersectsSphere(t *testing.T) {
 	intersections := sphere.Intersect(ray)
 
 	assertEqualInt(t, 2, len(intersections))
-	assertEqualIntersection(t, NewIntersection(-6.0, sphere), intersections[0])
-	assertEqualIntersection(t, NewIntersection(-4.0, sphere), intersections[1])
+	assertEqualIntersection(t, *NewIntersection(-6.0, sphere), *intersections[0])
+	assertEqualIntersection(t, *NewIntersection(-4.0, sphere), *intersections[1])
 }
 
 func TestAHelperForProducingASphereWithAGlassyMaterial(t *testing.T) {

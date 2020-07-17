@@ -31,7 +31,7 @@ func TestHitWithAllIntersectionsHavingPositiveT(t *testing.T) {
 	intersections := Intersections{i1, i2}
 
 	hit := intersections.Hit(false)
-	assertEqualIntersection(t, i1, hit)
+	assertEqualIntersection(t, *i1, *hit)
 }
 
 func TestHitWithSomeIntersectionsHavingNegativeT(t *testing.T) {
@@ -41,7 +41,7 @@ func TestHitWithSomeIntersectionsHavingNegativeT(t *testing.T) {
 	intersections := Intersections{i1, i2}
 
 	hit := intersections.Hit(false)
-	assertEqualIntersection(t, i2, hit)
+	assertEqualIntersection(t, *i2, *hit)
 }
 
 func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
@@ -51,7 +51,7 @@ func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
 	intersections := Intersections{i1, i2}
 
 	hit := intersections.Hit(false)
-	assert(t, hit.IsNull())
+	assertNil(t, hit)
 }
 
 func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
@@ -63,7 +63,7 @@ func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
 	intersections := Intersections{i1, i2, i3, i4}
 
 	hit := intersections.Hit(false)
-	assertEqualIntersection(t, i4, hit)
+	assertEqualIntersection(t, *i4, *hit)
 }
 
 func TestPrecomputingStateOfIntersection(t *testing.T) {

@@ -91,7 +91,7 @@ func (c Csg) LocalIntersect(r Ray, shape *Shape) Intersections {
 	}
 }
 
-func (c Csg) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (c Csg) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	// TODO: return error instead
 	//  ... if your code ever tries to call local_normal_at() on a Csg, that means there’s a bug somewhere (p200) ...
 	return NewVector(localPoint.X, localPoint.Y, localPoint.Z)

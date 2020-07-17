@@ -85,8 +85,8 @@ func TestFilteringAListOfIntersections(t *testing.T) {
 			result := csg.FilterIntersections(xs)
 
 			assertEqualInt(t, 2, len(result))
-			assertEqualIntersection(t, xs[tc.x0], result[0])
-			assertEqualIntersection(t, xs[tc.x1], result[1])
+			assertEqualIntersection(t, *xs[tc.x0], *result[0])
+			assertEqualIntersection(t, *xs[tc.x1], *result[1])
 		})
 	}
 }

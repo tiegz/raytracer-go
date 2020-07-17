@@ -68,7 +68,7 @@ func (t Triangle) LocalIntersect(r Ray, shape *Shape) Intersections {
 	}
 }
 
-func (t Triangle) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (t Triangle) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	return t.Normal
 }
 

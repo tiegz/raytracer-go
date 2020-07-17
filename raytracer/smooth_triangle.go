@@ -73,7 +73,7 @@ func (t SmoothTriangle) LocalIntersect(r Ray, shape *Shape) Intersections {
 	}
 }
 
-func (t SmoothTriangle) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (t SmoothTriangle) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	return t.N2.Multiply(hit.U).
 		Add(t.N3.Multiply(hit.V)).
 		Add(t.N1.Multiply(1 - hit.U - hit.V))

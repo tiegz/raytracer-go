@@ -60,7 +60,7 @@ func (s Sphere) LocalIntersect(r Ray, shape *Shape) Intersections {
 	return i
 }
 
-func (s Sphere) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (s Sphere) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	return localPoint.Subtract(s.Origin)
 }
 
