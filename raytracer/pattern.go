@@ -19,10 +19,10 @@ type Pattern struct {
 	InverseTransform Matrix
 }
 
-func NewPattern(pi PatternInterface) Pattern {
+func NewPattern(pi PatternInterface) *Pattern {
 	p := Pattern{LocalPattern: pi}
 	p.SetTransform(IdentityMatrix())
-	return p
+	return &p
 }
 
 func (p *Pattern) SetTransform(m Matrix) {
@@ -30,11 +30,11 @@ func (p *Pattern) SetTransform(m Matrix) {
 	p.InverseTransform = m.Inverse()
 }
 
-func (p Pattern) String() string {
+func (p *Pattern) String() string {
 	return fmt.Sprintf("Pattern(\n  LocalPattern: %v\n  Transform: %v\n)", p.LocalPattern, p.Transform)
 }
 
-func (p Pattern) IsEqualTo(p2 Pattern) bool {
+func (p *Pattern) IsEqualTo(p2 *Pattern) bool {
 	pt1 := p.LocalPattern.localType()
 	pt2 := p2.LocalPattern.localType()
 
@@ -47,14 +47,14 @@ func (p Pattern) IsEqualTo(p2 Pattern) bool {
 	}
 }
 
-func (p Pattern) PatternAtShape(s Shape, worldPoint Tuple) Color {
+func (p *Pattern) PatternAtShape(s Shape, worldPoint Tuple) Color {
 	objectPoint := s.WorldToObject(worldPoint)
 	patternPoint := p.InverseTransform.MultiplyByTuple(objectPoint)
 
 	return p.LocalPattern.LocalPatternAt(patternPoint)
 }
 
-func (p Pattern) UVPatternAt(u, v float64) Color {
+func (p *Pattern) UVPatternAt(u, v float64) Color {
 	return p.LocalPattern.LocalUVPatternAt(u, v)
 }
 

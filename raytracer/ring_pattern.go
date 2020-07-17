@@ -10,7 +10,7 @@ type RingPattern struct {
 	B Color
 }
 
-func NewRingPattern(a, b Color) Pattern {
+func NewRingPattern(a, b Color) *Pattern {
 	return NewPattern(RingPattern{a, b})
 }
 

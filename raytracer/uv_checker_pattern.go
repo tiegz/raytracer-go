@@ -13,15 +13,15 @@ type UVCheckerPattern struct {
 }
 
 type TextureMap struct {
-	pattern  Pattern
+	pattern  *Pattern
 	function func(Tuple) (float64, float64)
 }
 
-func NewTextureMap(p Pattern, f func(Tuple) (float64, float64)) TextureMap {
+func NewTextureMap(p *Pattern, f func(Tuple) (float64, float64)) TextureMap {
 	return TextureMap{p, f}
 }
 
-func NewUVCheckerPattern(w, h float64, a, b Color) Pattern {
+func NewUVCheckerPattern(w, h float64, a, b Color) *Pattern {
 	return NewPattern(UVCheckerPattern{w, h, a, b})
 }
 

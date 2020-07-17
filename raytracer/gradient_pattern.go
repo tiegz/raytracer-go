@@ -10,7 +10,7 @@ type GradientPattern struct {
 	B Color
 }
 
-func NewGradientPattern(a, b Color) Pattern {
+func NewGradientPattern(a, b Color) *Pattern {
 	return NewPattern(GradientPattern{a, b})
 }
 

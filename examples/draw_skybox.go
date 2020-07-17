@@ -17,7 +17,7 @@ func RunDrawSkybox() {
 			NewVector(0, 1, 0),
 		))
 
-		getCubeSide := func(filepath string) Pattern {
+		getCubeSide := func(filepath string) *Pattern {
 			image, err := ioutil.ReadFile(filepath)
 			if err != nil {
 				panic(err)

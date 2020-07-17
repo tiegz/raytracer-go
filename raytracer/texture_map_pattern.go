@@ -6,11 +6,11 @@ import (
 )
 
 type TextureMapPattern struct {
-	Pattern Pattern
+	Pattern *Pattern
 	UVMap   func(Tuple) (float64, float64)
 }
 
-func NewTextureMapPattern(p Pattern, f func(Tuple) (float64, float64)) Pattern {
+func NewTextureMapPattern(p *Pattern, f func(Tuple) (float64, float64)) *Pattern {
 	return NewPattern(TextureMapPattern{p, f})
 }
 
