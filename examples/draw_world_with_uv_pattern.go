@@ -83,7 +83,7 @@ func RunDrawWorldWithUVPattern() {
 			NewScale(2, 1, 1),
 		))
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			backWall,
 			sphere,

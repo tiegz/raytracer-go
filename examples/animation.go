@@ -72,7 +72,7 @@ func RunAnimation() {
 			leftWall.SetTransform(leftWall.Transform.Multiply(NewRotateX(math.Pi / 2)))
 			leftWall.Material.Pattern = NewCheckerPattern(Colors["Purple"], Colors["Yellow"])
 
-			world.Objects = []Shape{
+			world.Objects = []*Shape{
 				floor,
 				rightWall,
 				leftWall,

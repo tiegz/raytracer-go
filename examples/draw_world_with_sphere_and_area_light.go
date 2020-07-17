@@ -55,7 +55,7 @@ func RunDrawWorldWithSphereAndAreaLight() {
 			NewTranslation(4, 0, 5),
 		))
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			cube,
 			sphere,

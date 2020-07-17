@@ -32,7 +32,7 @@ func RunDrawUVAlignCheck() {
 			PlanarMap,
 		)
 
-		world.Objects = []Shape{floor}
+		world.Objects = []*Shape{floor}
 		world.Lights = []AreaLight{
 			NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 		}

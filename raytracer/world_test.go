@@ -20,12 +20,11 @@ func TestDefaultWorld(t *testing.T) {
 
 	s1 := NewSphere()
 	s1.Material = Material{
-		Color:     NewColor(0.8, 1.0, 0.6),
-		Ambient:   0.1,
-		Diffuse:   0.7,
-		Specular:  0.2,
-		Shininess: 200,
-		// Pattern:         nil,
+		Color:           NewColor(0.8, 1.0, 0.6),
+		Ambient:         0.1,
+		Diffuse:         0.7,
+		Specular:        0.2,
+		Shininess:       200,
 		Reflective:      0.0,
 		Transparency:    0.0,
 		RefractiveIndex: 1.0,
@@ -89,7 +88,7 @@ func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 	w.Lights = []AreaLight{
 		NewPointLight(NewPoint(0, 0, -10), Colors["White"]),
 	}
-	w.Objects = []Shape{
+	w.Objects = []*Shape{
 		s1,
 		s2,
 	}

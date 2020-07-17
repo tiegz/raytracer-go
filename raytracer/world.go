@@ -10,7 +10,7 @@ import (
 const DefaultMaximumReflections int = 4 // recommended on page 148
 
 type World struct {
-	Objects []Shape
+	Objects []*Shape
 	Lights  []AreaLight
 }
 
@@ -45,7 +45,7 @@ func (w *World) String() string {
 }
 
 // Contains returns true if the world contains obj.
-func (w *World) Contains(obj Shape) bool {
+func (w *World) Contains(obj *Shape) bool {
 	for _, o := range w.Objects {
 		if o.IsEqualTo(obj) {
 			return true

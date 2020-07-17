@@ -35,7 +35,7 @@ func TestIntersectingARayParallelToTheTriangle(t *testing.T) {
 	shape := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
 	tri := shape.LocalShape.(*Triangle)
 	r := NewRay(NewPoint(0, -1, -2), NewVector(0, 1, 0))
-	xs := tri.LocalIntersect(r, &shape)
+	xs := tri.LocalIntersect(r, shape)
 
 	assertEqualInt(t, 0, len(xs))
 }
@@ -44,7 +44,7 @@ func TestARayMissesTheP1ToP3Edge(t *testing.T) {
 	shape := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
 	tri := shape.LocalShape.(*Triangle)
 	r := NewRay(NewPoint(1, 1, -2), NewVector(0, 0, 1))
-	xs := tri.LocalIntersect(r, &shape)
+	xs := tri.LocalIntersect(r, shape)
 
 	assertEqualInt(t, 0, len(xs))
 }
@@ -53,7 +53,7 @@ func TestARayMissesThteP1ToP2Edge(t *testing.T) {
 	shape := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
 	tri := shape.LocalShape.(*Triangle)
 	r := NewRay(NewPoint(-1, 1, -2), NewVector(0, 0, 1))
-	xs := tri.LocalIntersect(r, &shape)
+	xs := tri.LocalIntersect(r, shape)
 
 	assertEqualInt(t, 0, len(xs))
 }
@@ -62,7 +62,7 @@ func TestARayMissesThteP2ToP3Edge(t *testing.T) {
 	shape := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
 	tri := shape.LocalShape.(*Triangle)
 	r := NewRay(NewPoint(0, -1, -2), NewVector(0, 0, 1))
-	xs := tri.LocalIntersect(r, &shape)
+	xs := tri.LocalIntersect(r, shape)
 
 	assertEqualInt(t, 0, len(xs))
 }
@@ -71,7 +71,7 @@ func TestARayStrikesATriangle(t *testing.T) {
 	shape := NewTriangle(NewPoint(0, 1, 0), NewPoint(-1, 0, 0), NewPoint(1, 0, 0))
 	tri := shape.LocalShape.(*Triangle)
 	r := NewRay(NewPoint(0, 0.5, -2), NewVector(0, 0, 1))
-	xs := tri.LocalIntersect(r, &shape)
+	xs := tri.LocalIntersect(r, shape)
 
 	assertEqualInt(t, 1, len(xs))
 	assertEqualFloat64(t, 2, xs[0].Time)

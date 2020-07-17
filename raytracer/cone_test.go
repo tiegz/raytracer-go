@@ -23,7 +23,7 @@ func TestIntersectingAConeWithARay(t *testing.T) {
 			shape := NewCone()
 			cone := shape.LocalShape.(*Cone)
 			r := NewRay(tc.Origin, tc.Direction.Normalized())
-			xs := cone.LocalIntersect(r, &shape)
+			xs := cone.LocalIntersect(r, shape)
 
 			assertEqualInt(t, 2, len(xs))
 			assertEqualFloat64(t, tc.T1, xs[0].Time)
@@ -37,7 +37,7 @@ func TestIntersectingAConeWithARayParallelToOneOfItsHalves(t *testing.T) {
 	cone := shape.LocalShape.(*Cone)
 	direction := NewVector(0, 1, 1)
 	r := NewRay(NewPoint(0, 0, -1), direction.Normalized())
-	xs := cone.LocalIntersect(r, &shape)
+	xs := cone.LocalIntersect(r, shape)
 
 	assertEqualInt(t, 1, len(xs))
 	assertEqualFloat64(t, 0.35355, xs[0].Time)
@@ -63,7 +63,7 @@ func TestIntersectingAConesEndCaps(t *testing.T) {
 	for idx, tc := range testCases {
 		t.Run(fmt.Sprintf("Intersecta cone's end caps #%v", idx), func(t *testing.T) {
 			r := NewRay(tc.Origin, tc.Direction.Normalized())
-			xs := cone.LocalIntersect(r, &shape)
+			xs := cone.LocalIntersect(r, shape)
 
 			assertEqualInt(t, tc.Count, len(xs))
 		})

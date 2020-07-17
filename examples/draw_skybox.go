@@ -61,7 +61,7 @@ func RunDrawSkybox() {
 		sphere.Material.Reflective = .6
 		sphere.Material.Ambient = 0
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			cube,
 			sphere,
 		}

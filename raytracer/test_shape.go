@@ -6,7 +6,7 @@ import "fmt"
 type TestShape struct {
 }
 
-func NewTestShape() Shape {
+func NewTestShape() *Shape {
 	return NewShape(TestShape{})
 }
 

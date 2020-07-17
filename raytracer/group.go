@@ -11,7 +11,7 @@ type Group struct {
 	RightBounds BoundingBox
 }
 
-func NewGroup() Shape {
+func NewGroup() *Shape {
 	c := []*Shape{}
 	return NewShape(Group{Children: c})
 }

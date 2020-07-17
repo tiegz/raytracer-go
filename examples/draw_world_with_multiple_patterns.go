@@ -48,7 +48,7 @@ func RunDrawWorldWithMultiplePatterns() {
 		leftSphere.Material.Diffuse = 0.7
 		leftSphere.Material.Specular = 0.3
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			midSphere,
 			leftSphere,

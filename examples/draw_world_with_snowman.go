@@ -47,7 +47,7 @@ func RunDrawWorldWithSnowman() {
 			nose.LocalShape.(*Cone).Closed = true
 			nose.LocalShape.(*Cone).Minimum = 0.0
 			nose.LocalShape.(*Cone).Maximum = 2.0
-			return &nose
+			return nose
 		}
 
 		createHat := func() *Shape {
@@ -76,7 +76,7 @@ func RunDrawWorldWithSnowman() {
 				NewScale(1.2, 1, 1.4),
 			))
 			topTwo.Shadows = false
-			top := NewCsg("difference", &topOne, &topTwo)
+			top := NewCsg("difference", topOne, topTwo)
 
 			band := NewCylinder()
 			band.Material.Color = NewColor(0.7, 0, 0)
@@ -98,8 +98,8 @@ func RunDrawWorldWithSnowman() {
 			rim.LocalShape.(*Cylinder).Minimum = 0.0
 			rim.LocalShape.(*Cylinder).Maximum = 0.02
 
-			hat.AddChildren(&rim, &band, &top)
-			return &hat
+			hat.AddChildren(rim, band, top)
+			return hat
 		}
 
 		createArm := func() *Shape {
@@ -127,9 +127,9 @@ func RunDrawWorldWithSnowman() {
 				NewTranslation(-1.6, 3.1, 0),
 			))
 
-			arm.AddChildren(&stickOne, &stickTwo, &stickThree)
+			arm.AddChildren(stickOne, stickTwo, stickThree)
 
-			return &arm
+			return arm
 		}
 
 		createDot := func() *Shape {
@@ -141,7 +141,7 @@ func RunDrawWorldWithSnowman() {
 				NewScale(0.05, 0.05, 0.05),
 				NewTranslation(0, 1, 0),
 			))
-			return &sphere
+			return sphere
 		}
 
 		createBall := func() *Shape {
@@ -150,7 +150,7 @@ func RunDrawWorldWithSnowman() {
 				NewTranslation(0, 1, 0)),
 			)
 			sphere.Material.Color = NewColor(1, 1, 1)
-			return &sphere
+			return sphere
 		}
 
 		createSnowman := func() *Shape {
@@ -212,7 +212,7 @@ func RunDrawWorldWithSnowman() {
 
 			snowman.AddChildren(bottomBall, middleBall, topBall, leftEye, rightEye)
 
-			return &snowman
+			return snowman
 		}
 
 		snowman := createSnowman()
@@ -230,14 +230,14 @@ func RunDrawWorldWithSnowman() {
 			NewRotateY(math.Pi),
 		))
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			backWall,
-			*nose,
-			*leftArm,
-			*rightArm,
-			*snowman,
-			*hat,
+			nose,
+			leftArm,
+			rightArm,
+			snowman,
+			hat,
 		}
 		world.Lights = []AreaLight{
 			// NewPointLight(NewPoint(0, 30, 70), NewColor(1, 1, 1)),

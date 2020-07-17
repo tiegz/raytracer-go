@@ -90,18 +90,18 @@ func RunDrawWorldWithDice() {
 					dot.Shadows = false
 					dot.Material.Color = Colors["White"]
 					dot.SetTransform(dot.Transform.Multiply(face.rotation))
-					dotGroup.AddChildren(&dot)
+					dotGroup.AddChildren(dot)
 				}
 			}
 
-			dice := NewCsg("difference", &cube, &dotGroup)
+			dice := NewCsg("difference", cube, dotGroup)
 			// To flip the dice over
 			// dice..SetTransform(dice.Transform.Compose(
 			// 	NewRotateX(math.Pi),
 			// 	NewTranslation(0, 2, 0),
 			// ))
 
-			return &dice
+			return dice
 		}
 
 		d1 := createDice(NewColor(0.2, 0.9, 0.4))
@@ -110,11 +110,11 @@ func RunDrawWorldWithDice() {
 		d3 := createDice(NewColor(0.2, 0.2, 0.9))
 		d3.SetTransform(d3.Transform.Multiply(NewTranslation(0, 0, 4)))
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			room,
-			*d1,
-			*d2,
-			*d3,
+			d1,
+			d2,
+			d3,
 		}
 		world.Lights = []AreaLight{
 			NewPointLight(NewPoint(-2, 4, -5), NewColor(1, 1, 1)),

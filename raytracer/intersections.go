@@ -7,7 +7,7 @@ import (
 
 type Intersection struct {
 	Time   float64
-	Object Shape
+	Object *Shape
 	U      float64 // identifies where on 2D triangle that an intersection occurred, relative to corners.
 	V      float64 // identifies where on 2D triangle that an intersection occurred, relative to corners.
 }
@@ -16,7 +16,7 @@ type Intersections []Intersection
 
 type Computation struct {
 	Time       float64 // the moment (in time units) at which the intersection happened
-	Object     Shape   // the object that was intersected
+	Object     *Shape  // the object that was intersected
 	Point      Tuple   // the point where intersection happened
 	OverPoint  Tuple   // the Point value adjusted slightly to avoid "raytracer acne"
 	UnderPoint Tuple   //
@@ -29,18 +29,18 @@ type Computation struct {
 }
 
 func NullIntersection() Intersection {
-	return Intersection{Time: math.MaxFloat64, Object: NewNullShape()}
+	return Intersection{Time: math.MaxFloat64}
 }
 
 func (i Intersection) IsNull() bool {
 	return i.Time == math.MaxFloat64
 }
 
-func NewIntersection(t float64, obj Shape) Intersection {
+func NewIntersection(t float64, obj *Shape) Intersection {
 	return Intersection{Time: t, Object: obj}
 }
 
-func NewIntersectionWithUV(t float64, obj Shape, u, v float64) Intersection {
+func NewIntersectionWithUV(t float64, obj *Shape, u, v float64) Intersection {
 	return Intersection{Time: t, Object: obj, U: u, V: v}
 }
 
@@ -110,7 +110,7 @@ func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computatio
 		c.Inside = false
 	}
 
-	visitedShapes := []Shape{}
+	visitedShapes := []*Shape{}
 	for _, intersection := range xs {
 		isHit := intersection.IsEqualTo(*i) // is this intersection the hit?
 
@@ -123,7 +123,7 @@ func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computatio
 		}
 
 		// TODO move somewhere else?
-		indexOf := func(shape Shape, shapes []Shape) int {
+		indexOf := func(shape *Shape, shapes []*Shape) int {
 			for idx, s := range shapes {
 				if s.IsEqualTo(shape) {
 					return idx

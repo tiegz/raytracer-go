@@ -12,7 +12,7 @@ type Cylinder struct {
 	Closed  bool
 }
 
-func NewCylinder() Shape {
+func NewCylinder() *Shape {
 	return NewShape(&Cylinder{NewPoint(0, 0, 0), math.Inf(-1), math.Inf(1), false})
 }
 
@@ -69,12 +69,12 @@ func (cyl Cylinder) LocalIntersect(r Ray, shape *Shape) Intersections {
 
 		y0 := r.Origin.Y + (t0 * r.Direction.Y)
 		if cyl.Minimum < y0 && y0 < cyl.Maximum {
-			xs = append(xs, NewIntersection(t0, *shape))
+			xs = append(xs, NewIntersection(t0, shape))
 		}
 
 		y1 := r.Origin.Y + (t1 * r.Direction.Y)
 		if cyl.Minimum < y1 && y1 < cyl.Maximum {
-			xs = append(xs, NewIntersection(t1, *shape))
+			xs = append(xs, NewIntersection(t1, shape))
 		}
 	}
 
@@ -85,13 +85,13 @@ func (cyl Cylinder) LocalIntersect(r Ray, shape *Shape) Intersections {
 		// Does the ray intersect bottom cap?
 		t := (cyl.Minimum - r.Origin.Y) / r.Direction.Y
 		if checkCap(r, t, 1) {
-			xs = append(xs, NewIntersection(t, *shape))
+			xs = append(xs, NewIntersection(t, shape))
 		}
 
 		// Does the ray intersect top cap?
 		t = (cyl.Maximum - r.Origin.Y) / r.Direction.Y
 		if checkCap(r, t, 1) {
-			xs = append(xs, NewIntersection(t, *shape))
+			xs = append(xs, NewIntersection(t, shape))
 		}
 	}
 

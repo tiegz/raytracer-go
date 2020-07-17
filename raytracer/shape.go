@@ -26,7 +26,7 @@ type Shape struct {
 	Shadows          bool
 }
 
-func NewShape(si ShapeInterface) Shape {
+func NewShape(si ShapeInterface) *Shape {
 	s := Shape{
 		LocalShape: si,
 		Material:   DefaultMaterial(),
@@ -34,7 +34,7 @@ func NewShape(si ShapeInterface) Shape {
 		Shadows:    true, // does this shape cast shadows?
 	}
 	s.SetTransform(IdentityMatrix())
-	return s
+	return &s
 }
 
 func (s *Shape) SetTransform(m Matrix) {
@@ -114,7 +114,7 @@ func (s *Shape) MakeSubGroup(shapes ...*Shape) {
 	subGroup := NewGroup()
 	subGroup.Label = "NewSubGroup"
 	subGroup.AddChildren(shapes...)
-	s.AddChildren(&subGroup)
+	s.AddChildren(subGroup)
 }
 
 // Adds one or more children to this Group.
@@ -170,7 +170,7 @@ func (s *Shape) PartitionChildren() ([]*Shape, []*Shape) {
 
 // NB: this returns true for "regular shape includes itself"
 func (s *Shape) Includes(s2 *Shape) bool {
-	if s.IsEqualTo(*s2) {
+	if s.IsEqualTo(s2) {
 		return true
 	}
 
@@ -190,16 +190,16 @@ func (s *Shape) Includes(s2 *Shape) bool {
 	return false
 }
 
-func (s Shape) Bounds() BoundingBox {
+func (s *Shape) Bounds() BoundingBox {
 	return s.LocalShape.LocalBounds()
 }
 
-func (s Shape) ParentSpaceBounds() BoundingBox {
+func (s *Shape) ParentSpaceBounds() BoundingBox {
 	b := s.Bounds()
 	return b.Transform(s.Transform)
 }
 
-func (s Shape) String() string {
+func (s *Shape) String() string {
 	return fmt.Sprintf(
 		"Shape(\n  Label: %v\n  LocalShape: %v\n  Transform: %v\n  Material: %v\n  Parent: %T\n  Shadows: %v\n)",
 		s.Label,
@@ -211,7 +211,7 @@ func (s Shape) String() string {
 	)
 }
 
-func (s *Shape) IsEqualTo(s2 Shape) bool {
+func (s *Shape) IsEqualTo(s2 *Shape) bool {
 	st1 := s.LocalShape.localType()
 	st2 := s2.LocalShape.localType()
 	if st1 != st2 {

@@ -91,7 +91,7 @@ func ParseYamlSceneFile(filename string) (YamlSceneFile, error) {
 					),
 				)
 			case "plane", "sphere", "cube":
-				var obj Shape
+				var obj *Shape
 				var t Matrix
 				var m Material
 				switch instruction.Add {
