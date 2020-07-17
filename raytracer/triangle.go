@@ -13,7 +13,7 @@ type Triangle struct {
 	boundsMax Tuple
 }
 
-func NewTriangle(p1, p2, p3 Tuple) Shape {
+func NewTriangle(p1, p2, p3 Tuple) *Shape {
 	tri := Triangle{P1: p1, P2: p2, P3: p3}
 	// Pre-calculate edge vectors and normal
 	tri.E1 = p2.Subtract(p1)
@@ -64,7 +64,7 @@ func (t Triangle) LocalIntersect(r Ray, shape *Shape) Intersections {
 		}
 
 		time := f * t.E2.Dot(originCrossE1)
-		return Intersections{NewIntersection(time, *shape)}
+		return Intersections{NewIntersection(time, shape)}
 	}
 }
 

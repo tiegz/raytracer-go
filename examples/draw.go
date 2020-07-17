@@ -15,7 +15,7 @@ import (
 // 	   cube := NewCube()
 //     cube.SetTransform(NewTranslation(0, 1, 1))
 //     cube.Material.Color = Colors["Red"]
-//     world.Objects = []Shape{floor, cube}
+//     world.Objects = []*Shape{floor, cube}
 //   }
 func Draw(filepath string, drawFunc func(*World, *Camera)) {
 	world := NewWorld()

@@ -24,7 +24,7 @@ func RunDrawWorldWithHexagonGroup() {
 				NewUScale(0.25),
 				NewTranslation(0, 0, -1),
 			))
-			return &corner
+			return corner
 		}
 
 		hexagonEdge := func() *Shape {
@@ -38,7 +38,7 @@ func RunDrawWorldWithHexagonGroup() {
 				NewRotateY(-math.Pi/6),
 				NewTranslation(0, 0, -1),
 			))
-			return &edge
+			return edge
 		}
 
 		hexagonSide := func() *Shape {
@@ -46,7 +46,7 @@ func RunDrawWorldWithHexagonGroup() {
 			corner := hexagonCorner()
 			edge := hexagonEdge()
 			side.AddChildren(corner, edge)
-			return &side
+			return side
 		}
 
 		hexagon := func() *Shape {
@@ -61,8 +61,8 @@ func RunDrawWorldWithHexagonGroup() {
 
 		hex := hexagon()
 
-		world.Objects = []Shape{
-			*hex,
+		world.Objects = []*Shape{
+			hex,
 		}
 		world.Lights = []AreaLight{
 			NewPointLight(NewPoint(5, 8, -9), NewColor(1, 1, 1)),

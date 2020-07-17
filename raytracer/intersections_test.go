@@ -10,7 +10,7 @@ func TestNewIntersection(t *testing.T) {
 	i := NewIntersection(1.23, sphere)
 
 	assertEqualFloat64(t, 1.23, i.Time)
-	assertEqualShape(t, sphere, i.Object)
+	assertEqualShape(t, *sphere, *i.Object)
 }
 
 func TestAggregatingIntersections(t *testing.T) {
@@ -73,7 +73,7 @@ func TestPrecomputingStateOfIntersection(t *testing.T) {
 	c := i.PrepareComputations(r)
 
 	assertEqualFloat64(t, i.Time, c.Time)
-	assertEqualShape(t, s, c.Object)
+	assertEqualShape(t, *s, *c.Object)
 	assertEqualTuple(t, NewPoint(0, 0, -1), c.Point)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.EyeV)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)
@@ -94,7 +94,7 @@ func TestHitWhenIntersectionOccursOnInside(t *testing.T) {
 	i := NewIntersection(1, s)
 	c := i.PrepareComputations(r)
 
-	assertEqualShape(t, s, c.Object)
+	assertEqualShape(t, *s, *c.Object)
 	assertEqualTuple(t, NewPoint(0, 0, 1), c.Point)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.EyeV)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)
@@ -177,7 +177,7 @@ func TestColorAtWithMutuallyReflectiveSurfaces(t *testing.T) {
 	upper.Material.Reflective = 1
 	upper.SetTransform(NewTranslation(0, 1, 0))
 
-	w.Objects = []Shape{lower, upper}
+	w.Objects = []*Shape{lower, upper}
 
 	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 1, 0))
 

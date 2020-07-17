@@ -12,11 +12,11 @@ type Csg struct {
 	Right     *Shape
 }
 
-func NewCsg(t string, l, r *Shape) Shape {
+func NewCsg(t string, l, r *Shape) *Shape {
 	csg := Csg{t, l, r}
 	s := NewShape(csg)
-	l.Parent = &s
-	r.Parent = &s
+	l.Parent = s
+	r.Parent = s
 	return s
 }
 
@@ -44,7 +44,7 @@ func (c *Csg) FilterIntersections(xs Intersections) Intersections {
 	filteredXs := Intersections{} // list of filtered intersections
 
 	for _, x := range xs {
-		lhit := c.Left.Includes(&x.Object)
+		lhit := c.Left.Includes(x.Object)
 
 		if IntersectionAllowed(c.Operation, lhit, inl, inr) {
 			filteredXs = append(filteredXs, x)
@@ -99,9 +99,9 @@ func (c Csg) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
 
 func (c Csg) localIsEqualTo(c2 ShapeInterface) bool {
 	c2Csg := c2.(Csg)
-	if !c.Left.IsEqualTo(*c2Csg.Left) {
+	if !c.Left.IsEqualTo(c2Csg.Left) {
 		return false
-	} else if !c.Right.IsEqualTo(*c2Csg.Right) {
+	} else if !c.Right.IsEqualTo(c2Csg.Right) {
 		return false
 	}
 	return true

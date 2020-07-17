@@ -96,7 +96,7 @@ func assertEqualString(t *testing.T, expected string, actual string) {
 }
 
 func assertEqualShape(t *testing.T, expected Shape, actual Shape) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }

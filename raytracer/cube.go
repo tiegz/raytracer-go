@@ -9,7 +9,7 @@ type Cube struct {
 	Origin Tuple
 }
 
-func NewCube() Shape {
+func NewCube() *Shape {
 	return NewShape(&Cube{NewPoint(0, 0, 0)})
 }
 
@@ -46,8 +46,8 @@ func (c Cube) LocalIntersect(r Ray, shape *Shape) Intersections {
 	}
 
 	return Intersections{
-		Intersection{Time: tMin, Object: *shape},
-		Intersection{Time: tMax, Object: *shape},
+		Intersection{Time: tMin, Object: shape},
+		Intersection{Time: tMax, Object: shape},
 	}
 }
 

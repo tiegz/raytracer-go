@@ -9,14 +9,14 @@ func TestCSVGIsCreatedWithAnOperationAndTwoShapes(t *testing.T) {
 	s1 := NewSphere()
 	s2 := NewCube()
 
-	shape := NewCsg("union", &s1, &s2)
+	shape := NewCsg("union", s1, s2)
 	c := shape.LocalShape.(Csg)
 
 	assertEqualString(t, "union", c.Operation)
-	assertEqualShape(t, s1, *c.Left)
-	assertEqualShape(t, s2, *c.Right)
-	assertEqualShape(t, shape, *s1.Parent)
-	assertEqualShape(t, shape, *s2.Parent)
+	assertEqualShape(t, *s1, *c.Left)
+	assertEqualShape(t, *s2, *c.Right)
+	assertEqualShape(t, *shape, *s1.Parent)
+	assertEqualShape(t, *shape, *s2.Parent)
 }
 
 func TestEvaluatingTheRuleForACsgOperation(t *testing.T) {
@@ -74,7 +74,7 @@ func TestFilteringAListOfIntersections(t *testing.T) {
 		t.Run(fmt.Sprintf("Csg rule truth table %v", tc), func(t *testing.T) {
 			s1 := NewSphere()
 			s2 := NewCube()
-			c := NewCsg(tc.operation, &s1, &s2)
+			c := NewCsg(tc.operation, s1, s2)
 			csg := c.LocalShape.(Csg)
 			xs := Intersections{
 				NewIntersection(1, s1),
@@ -94,10 +94,10 @@ func TestFilteringAListOfIntersections(t *testing.T) {
 func TestARayMissesACsgObject(t *testing.T) {
 	sphere := NewSphere()
 	cube := NewCube()
-	c := NewCsg("union", &sphere, &cube)
+	c := NewCsg("union", sphere, cube)
 	r := NewRay(NewPoint(0, 2, -5), NewVector(0, 0, 1))
 
-	xs := c.LocalShape.LocalIntersect(r, &c)
+	xs := c.LocalShape.LocalIntersect(r, c)
 	assertEqualInt(t, 0, len(xs))
 }
 
@@ -107,21 +107,21 @@ func TestARayHitsACsgObject(t *testing.T) {
 	s2 := NewSphere()
 	s2.Label = "s2"
 	s2.SetTransform(NewTranslation(0, 0, 0.5))
-	c := NewCsg("union", &s1, &s2)
+	c := NewCsg("union", s1, s2)
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
-	xs := c.LocalShape.LocalIntersect(r, &c)
+	xs := c.LocalShape.LocalIntersect(r, c)
 
 	assertEqualInt(t, 2, len(xs))
 	assertEqualFloat64(t, 4, xs[0].Time)
-	assertEqualShape(t, s1, xs[0].Object)
+	assertEqualShape(t, *s1, *xs[0].Object)
 	assertEqualFloat64(t, 6.5, xs[1].Time)
-	assertEqualShape(t, s2, xs[1].Object)
+	assertEqualShape(t, *s2, *xs[1].Object)
 }
 
 func TestCreatingANewCsg(t *testing.T) {
 	shape1 := NewCube()
 	shape2 := NewSphere()
-	s := NewCsg("difference", &shape1, &shape2)
+	s := NewCsg("difference", shape1, shape2)
 	g := s.LocalShape.(Csg)
 
 	assertEqualMatrix(t, IdentityMatrix(), s.Transform)
@@ -136,7 +136,7 @@ func TestACsgShapeHasABoundingBoxThatContainsItseChildren(t *testing.T) {
 	right := NewSphere()
 	right.SetTransform(NewTranslation(2, 3, 4))
 
-	csg := NewCsg("difference", &left, &right)
+	csg := NewCsg("difference", left, right)
 	box := csg.Bounds()
 
 	assertEqualTuple(t, NewPoint(-1, -1, -1), box.MinPoint)
@@ -146,7 +146,7 @@ func TestACsgShapeHasABoundingBoxThatContainsItseChildren(t *testing.T) {
 func TestIntersectingRayAndCsgDoesntTestChildrenIfBoxIsMissed(t *testing.T) {
 	left := NewTestShape()
 	right := NewTestShape()
-	s := NewCsg("difference", &left, &right)
+	s := NewCsg("difference", left, right)
 	csg := s.LocalShape.(Csg)
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 2, 0))
 
@@ -159,7 +159,7 @@ func TestIntersectingRayAndCsgDoesntTestChildrenIfBoxIsMissed(t *testing.T) {
 func TestIntersectingRayAndCsgTestsChildrenIfBoxIsHit(t *testing.T) {
 	left := NewTestShape()
 	right := NewTestShape()
-	s := NewCsg("difference", &left, &right)
+	s := NewCsg("difference", left, right)
 	csg := s.LocalShape.(Csg)
 	r := NewRay(NewPoint(0, 0, -5), NewVector(0, 0, 1))
 

@@ -96,7 +96,7 @@ func RunDrawUVAlignCheckCubes() {
 	))
 
 	world := NewWorld()
-	world.Objects = []Shape{
+	world.Objects = []*Shape{
 		cube1,
 		cube2,
 		cube3,

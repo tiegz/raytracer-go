@@ -40,7 +40,7 @@ func RunDrawWorldWithCube() {
 		cubeRight.Material.Diffuse = 0.7
 		cubeRight.Material.Specular = 0.3
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			cubeLeft,
 			cubeMiddle,

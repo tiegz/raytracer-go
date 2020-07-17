@@ -9,7 +9,7 @@ import (
 type Plane struct {
 }
 
-func NewPlane() Shape {
+func NewPlane() *Shape {
 	return NewShape(&Plane{})
 }
 
@@ -40,7 +40,7 @@ func (p Plane) LocalIntersect(r Ray, shape *Shape) Intersections {
 		return i
 	}
 
-	i1 := NewIntersection(-r.Origin.Y/r.Direction.Y, *shape)
+	i1 := NewIntersection(-r.Origin.Y/r.Direction.Y, shape)
 
 	i = append(i, i1)
 

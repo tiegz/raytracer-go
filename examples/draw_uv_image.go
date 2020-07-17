@@ -58,7 +58,7 @@ func RunDrawUVImage() {
 		sphere.Material.Ambient = 0.1
 
 		// world := NewWorld()
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			platform,
 			sphere,

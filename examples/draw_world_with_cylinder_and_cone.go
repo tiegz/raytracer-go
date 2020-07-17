@@ -67,7 +67,7 @@ func RunDrawWorldWithCylinderAndCone() {
 		iceCreamScoopThree.SetTransform(iceCreamScoopThree.Transform.Multiply(NewUScale(0.3)))
 		iceCreamScoopThree.Material.Color = Colors["DarkRed"]
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			cylinder,
 			cone,

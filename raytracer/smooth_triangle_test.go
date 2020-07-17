@@ -5,7 +5,7 @@ import (
 )
 
 // TODO: can we somehow cajole the first test into using this too?
-func getTestTriangle() Shape {
+func getTestTriangle() *Shape {
 	p1 := NewPoint(0, 1, 0)
 	p2 := NewPoint(-1, 0, 0)
 	p3 := NewPoint(1, 0, 0)
@@ -48,7 +48,7 @@ func TestAnIntersectionWithASmoothTriangleStoresUV(t *testing.T) {
 	tri := shape.LocalShape.(*SmoothTriangle)
 
 	r := NewRay(NewPoint(-0.2, 0.3, -2), NewVector(0, 0, 1))
-	xs := tri.LocalIntersect(r, &shape)
+	xs := tri.LocalIntersect(r, shape)
 
 	assertEqualFloat64(t, 0.45, xs[0].U)
 	assertEqualFloat64(t, 0.25, xs[0].V)

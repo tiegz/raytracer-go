@@ -26,7 +26,7 @@ func TestARayIntersectsACube(t *testing.T) {
 			shape := NewCube()
 			cube := shape.LocalShape.(*Cube)
 			r := NewRay(tc.Origin, tc.Direction)
-			xs := cube.LocalIntersect(r, &shape)
+			xs := cube.LocalIntersect(r, shape)
 
 			assertEqualInt(t, 2, len(xs))
 			assertEqualFloat64(t, tc.T1, xs[0].Time)
@@ -52,7 +52,7 @@ func TestARayMissesACube(t *testing.T) {
 			shape := NewCube()
 			cube := shape.LocalShape.(*Cube)
 			r := NewRay(tc.Origin, tc.Direction)
-			xs := cube.LocalIntersect(r, &shape)
+			xs := cube.LocalIntersect(r, shape)
 
 			assertEqualInt(t, 0, len(xs))
 		})

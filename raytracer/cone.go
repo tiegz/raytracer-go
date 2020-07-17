@@ -12,7 +12,7 @@ type Cone struct {
 	Closed  bool
 }
 
-func NewCone() Shape {
+func NewCone() *Shape {
 	return NewShape(&Cone{NewPoint(0, 0, 0), math.Inf(-1), math.Inf(1), false})
 }
 
@@ -27,13 +27,13 @@ func (cone Cone) intersectCaps(xs Intersections, r Ray, shape *Shape) Intersecti
 
 	t := (cone.Minimum - r.Origin.Y) / r.Direction.Y
 	if checkCap(r, t, math.Abs(cone.Minimum)) {
-		xs = append(xs, NewIntersection(t, *shape))
+		xs = append(xs, NewIntersection(t, shape))
 	}
 
 	// Does the ray intersect top cap?
 	t = (cone.Maximum - r.Origin.Y) / r.Direction.Y
 	if checkCap(r, t, math.Abs(cone.Maximum)) {
-		xs = append(xs, NewIntersection(t, *shape))
+		xs = append(xs, NewIntersection(t, shape))
 	}
 
 	return xs
@@ -70,7 +70,7 @@ func (cone Cone) LocalIntersect(r Ray, shape *Shape) Intersections {
 		}
 
 		t := -c / (2 * b)
-		xs := Intersections{NewIntersection(t, *shape)}
+		xs := Intersections{NewIntersection(t, shape)}
 
 		return cone.intersectCaps(xs, r, shape)
 	}
@@ -90,12 +90,12 @@ func (cone Cone) LocalIntersect(r Ray, shape *Shape) Intersections {
 
 	y0 := r.Origin.Y + (t0 * r.Direction.Y)
 	if cone.Minimum < y0 && y0 < cone.Maximum {
-		xs = append(xs, NewIntersection(t0, *shape))
+		xs = append(xs, NewIntersection(t0, shape))
 	}
 
 	y1 := r.Origin.Y + (t1 * r.Direction.Y)
 	if cone.Minimum < y1 && y1 < cone.Maximum {
-		xs = append(xs, NewIntersection(t1, *shape))
+		xs = append(xs, NewIntersection(t1, shape))
 	}
 
 	// Caps only matter if the cone is closed, and might possibly be intersected by the ray.

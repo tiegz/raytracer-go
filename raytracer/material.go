@@ -21,13 +21,12 @@ type Material struct {
 // Beware: use this instead of Material{}, for Material{} without all the args will throw errors when rendering.
 func DefaultMaterial() Material {
 	return Material{
-		Label:     "default-material",
-		Color:     Colors["White"],
-		Ambient:   0.1,
-		Diffuse:   0.9,
-		Specular:  0.9,
-		Shininess: 200,
-		// Pattern:         nil,
+		Label:           "default-material",
+		Color:           Colors["White"],
+		Ambient:         0.1,
+		Diffuse:         0.9,
+		Specular:        0.9,
+		Shininess:       200,
 		Reflective:      0.0,
 		Transparency:    0.0,
 		RefractiveIndex: 1.0,
@@ -79,7 +78,7 @@ func (m Material) String() string {
 //   * Specular reflection: reflection of the light source; depends on angle btwn the reflection
 //      										and eye vectors. Intensity is controlled by "shininess".
 // Inensity: 0.0 = in shadow, 1.0 = not in shadow.
-func (m Material) Lighting(obj Shape, light AreaLight, point Tuple, eyeVector, normalVector Tuple, intensity float64) Color {
+func (m Material) Lighting(obj *Shape, light AreaLight, point Tuple, eyeVector, normalVector Tuple, intensity float64) Color {
 	var baseColor, ambient, specular, diffuse Color
 
 	if m.Pattern != nil {
