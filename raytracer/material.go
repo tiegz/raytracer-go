@@ -12,7 +12,7 @@ type Material struct {
 	Diffuse         float64
 	Specular        float64
 	Shininess       float64
-	Pattern         Pattern
+	Pattern         *Pattern
 	Reflective      float64
 	Transparency    float64
 	RefractiveIndex float64 // Vacuum=1, Water=1.333, Glass=1.52, Diamond=2.42
@@ -21,13 +21,13 @@ type Material struct {
 // Beware: use this instead of Material{}, for Material{} without all the args will throw errors when rendering.
 func DefaultMaterial() Material {
 	return Material{
-		Label:           "default-material",
-		Color:           Colors["White"],
-		Ambient:         0.1,
-		Diffuse:         0.9,
-		Specular:        0.9,
-		Shininess:       200,
-		Pattern:         NewNullPattern(),
+		Label:     "default-material",
+		Color:     Colors["White"],
+		Ambient:   0.1,
+		Diffuse:   0.9,
+		Specular:  0.9,
+		Shininess: 200,
+		// Pattern:         nil,
 		Reflective:      0.0,
 		Transparency:    0.0,
 		RefractiveIndex: 1.0,
@@ -82,7 +82,7 @@ func (m Material) String() string {
 func (m Material) Lighting(obj Shape, light AreaLight, point Tuple, eyeVector, normalVector Tuple, intensity float64) Color {
 	var baseColor, ambient, specular, diffuse Color
 
-	if !m.Pattern.IsEqualTo(NewNullPattern()) {
+	if m.Pattern != nil {
 		baseColor = m.Pattern.PatternAtShape(obj, point)
 	} else {
 		baseColor = m.Color

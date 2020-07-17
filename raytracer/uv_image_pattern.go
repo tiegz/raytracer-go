@@ -10,7 +10,7 @@ type UVImagePattern struct {
 	Canvas Canvas
 }
 
-func NewUVImagePattern(c Canvas) Pattern {
+func NewUVImagePattern(c Canvas) *Pattern {
 	return NewPattern(UVImagePattern{c})
 }
 

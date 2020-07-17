@@ -8,7 +8,7 @@ import (
 type TestPattern struct {
 }
 
-func NewTestPattern() Pattern {
+func NewTestPattern() *Pattern {
 	return NewPattern(TestPattern{})
 }
 

@@ -10,7 +10,7 @@ type StripePattern struct {
 	B Color
 }
 
-func NewStripePattern(a, b Color) Pattern {
+func NewStripePattern(a, b Color) *Pattern {
 	return NewPattern(StripePattern{a, b})
 }
 

@@ -10,7 +10,7 @@ type CheckerPattern struct {
 	B Color
 }
 
-func NewCheckerPattern(a, b Color) Pattern {
+func NewCheckerPattern(a, b Color) *Pattern {
 	return NewPattern(CheckerPattern{a, b})
 }
 
