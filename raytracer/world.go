@@ -67,7 +67,7 @@ func (w *World) Intersect(r Ray) Intersections {
 }
 
 // ShadeHit returns the color for the given computation's intersection.
-func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
+func (w *World) ShadeHit(c *Computation, remainingReflections int) Color {
 	color := NewColor(0, 0, 0)
 
 	for _, light := range w.Lights {
@@ -94,7 +94,7 @@ func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 	return color
 }
 
-func (w *World) ReflectedColor(c Computation, remainingReflections int) Color {
+func (w *World) ReflectedColor(c *Computation, remainingReflections int) Color {
 	if remainingReflections < 1 {
 		return Colors["Black"]
 	} else if c.Object.Material.Reflective == 0 {
@@ -129,7 +129,7 @@ func (w *World) ColorAt(r Ray, remainingReflections int) Color {
 	return color
 }
 
-func (w *World) RefractedColor(c Computation, remaining int) Color { // remaining
+func (w *World) RefractedColor(c *Computation, remaining int) Color { // remaining
 	if remaining == 0 || c.Object.Material.Transparency == 0 {
 		return Colors["Black"]
 	}
