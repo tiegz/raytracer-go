@@ -22,8 +22,8 @@ type Camera struct {
 // The f argument is the field-of-view of the camera. (i.e. smaller means zoomed-in)
 //
 // The Camera also has a Transform attribute, describing the world's orientation relative to the camera.
-func NewCamera(h, v int, f float64) Camera {
-	c := Camera{
+func NewCamera(h, v int, f float64) *Camera {
+	c := &Camera{
 		HSize:       h,
 		VSize:       v,
 		FieldOfView: f,
@@ -32,7 +32,7 @@ func NewCamera(h, v int, f float64) Camera {
 	return c
 }
 
-func (c Camera) String() string {
+func (c *Camera) String() string {
 	return fmt.Sprintf("Camera(\n  HSize: %d\n  Vsize: %d\n Field of View: %f\n  Transform: %v\n)", c.HSize, c.VSize, c.FieldOfView, c.Transform)
 }
 
