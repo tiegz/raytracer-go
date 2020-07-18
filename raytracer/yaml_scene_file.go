@@ -10,7 +10,7 @@ import (
 
 type YamlSceneFile struct {
 	Camera             Camera
-	World              World
+	World              *World
 	MaterialDefs       map[string]Material
 	TransformationDefs map[string]Matrix
 }

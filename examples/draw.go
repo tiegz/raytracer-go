@@ -28,7 +28,7 @@ func Draw(filepath string, drawFunc func(*World, *Camera)) {
 		NewPoint(0, 1, 0),
 		NewVector(0, 1, 0),
 	))
-	drawFunc(&world, &camera)
+	drawFunc(world, &camera)
 	canvas := camera.RenderWithProgress(world)
 
 	var err error

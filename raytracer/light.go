@@ -86,7 +86,7 @@ func (l AreaLight) IsEqualTo(l2 AreaLight) bool {
 	return true
 }
 
-func (l AreaLight) IntensityAt(p Tuple, w World) float64 {
+func (l AreaLight) IntensityAt(p Tuple, w *World) float64 {
 	total := 0.0
 	for v := 0.0; v < l.VSteps; v++ {
 		for u := 0.0; u < l.USteps; u++ {
