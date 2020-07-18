@@ -22,7 +22,7 @@ func TestAssigningATransformation(t *testing.T) {
 func TestDefaultMatrial(t *testing.T) {
 	s := NewTestShape()
 
-	assertEqualMaterial(t, s.Material, DefaultMaterial())
+	assertEqualMaterial(t, *s.Material, *DefaultMaterial())
 }
 
 func TestAssigningAMaterial(t *testing.T) {
@@ -31,7 +31,7 @@ func TestAssigningAMaterial(t *testing.T) {
 	m.Ambient = 1
 	s.Material = m
 
-	assertEqualMaterial(t, s.Material, m)
+	assertEqualMaterial(t, *s.Material, *m)
 }
 
 //  These tests are both based on (and replace) the tests called “Intersecting a scaled sphere with a ray” and “Intersecting a translated sphere with a ray”

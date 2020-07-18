@@ -19,8 +19,8 @@ type Material struct {
 }
 
 // Beware: use this instead of Material{}, for Material{} without all the args will throw errors when rendering.
-func DefaultMaterial() Material {
-	return Material{
+func DefaultMaterial() *Material {
+	return &Material{
 		Label:           "default-material",
 		Color:           Colors["White"],
 		Ambient:         0.1,
@@ -33,7 +33,7 @@ func DefaultMaterial() Material {
 	}
 }
 
-func (m Material) IsEqualTo(m2 Material) bool {
+func (m *Material) IsEqualTo(m2 *Material) bool {
 	// TODO add check for Pattern equality too
 	if !m.Color.IsEqualTo(m2.Color) {
 		return false
@@ -55,7 +55,7 @@ func (m Material) IsEqualTo(m2 Material) bool {
 	return true
 }
 
-func (m Material) String() string {
+func (m *Material) String() string {
 	return fmt.Sprintf(
 		"Material(\n  Label: %v\n  Color: %v\n  Ambient: %v\n  Diffuse: %v\n  Specular: %v\n  Shininess: %v\n  Pattern: %v\n  Reflective: %v\n  Transparency: %v\n  ReflectiveIndex: %v\n)",
 		m.Label,
@@ -78,7 +78,7 @@ func (m Material) String() string {
 //   * Specular reflection: reflection of the light source; depends on angle btwn the reflection
 //      										and eye vectors. Intensity is controlled by "shininess".
 // Inensity: 0.0 = in shadow, 1.0 = not in shadow.
-func (m Material) Lighting(obj *Shape, light AreaLight, point Tuple, eyeVector, normalVector Tuple, intensity float64) Color {
+func (m *Material) Lighting(obj *Shape, light AreaLight, point Tuple, eyeVector, normalVector Tuple, intensity float64) Color {
 	var baseColor, ambient, specular, diffuse Color
 
 	if m.Pattern != nil {

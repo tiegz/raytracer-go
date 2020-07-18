@@ -105,10 +105,10 @@ func ParseYamlSceneFile(filename string) (YamlSceneFile, error) {
 					obj = NewCube()
 					obj.Label = "cube"
 				}
-				if m, err = decodeMaterial(ysf.MaterialDefs, DefaultMaterial(), instruction.Material); err != nil {
+				if m, err = decodeMaterial(ysf.MaterialDefs, *DefaultMaterial(), instruction.Material); err != nil {
 					return ysf, err
 				}
-				obj.Material = m
+				obj.Material = &m
 				if t, err = decodeTransforms(ysf.TransformationDefs, instruction.Transform); err != nil {
 					return ysf, err
 				}
@@ -125,7 +125,7 @@ func ParseYamlSceneFile(filename string) (YamlSceneFile, error) {
 				if instruction.Extend != "" {
 					m = ysf.MaterialDefs[instruction.Extend]
 				} else {
-					m = DefaultMaterial()
+					m = *DefaultMaterial()
 				}
 				m.Label = instruction.Define
 				if m, err = decodeMaterial(ysf.MaterialDefs, m, instruction.Value); err != nil {
