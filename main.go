@@ -75,7 +75,11 @@ func main() {
 		} else if len(*exampleNamePtr) > 0 {
 			name := *exampleNamePtr
 			fmt.Printf("Rendering example: %s\n", name)
-			examples[name]()
+			if f, ok := examples[name]; ok {
+				f()
+			} else {
+				fmt.Printf("Example %s not found!\nRun 'raytracer-go example -list' to see examples.\n", name)
+			}
 		} else {
 			printUsageForSubcommand("example", cmd, exampleCmd)
 		}
