@@ -21,7 +21,7 @@ type Shape struct {
 	Transform        Matrix         // WARNING: don't set Transform directly, use SetTransform()
 	InverseTransform Matrix
 	Material         Material
-	SavedRay         Ray // TODO replace this later, it's only for testing purposes with TestShape
+	SavedRay         *Ray // TODO replace this later, it's only for testing purposes with TestShape
 	Parent           *Shape
 	Shadows          bool
 }
@@ -30,7 +30,6 @@ func NewShape(si ShapeInterface) *Shape {
 	s := Shape{
 		LocalShape: si,
 		Material:   DefaultMaterial(),
-		SavedRay:   NullRay(),
 		Shadows:    true, // does this shape cast shadows?
 	}
 	s.SetTransform(IdentityMatrix())
