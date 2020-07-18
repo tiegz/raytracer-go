@@ -122,7 +122,7 @@ func assertEqualLight(t *testing.T, expected AreaLight, actual AreaLight) {
 }
 
 func assertEqualMaterial(t *testing.T, expected Material, actual Material) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }

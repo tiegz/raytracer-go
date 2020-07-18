@@ -20,7 +20,7 @@ type Shape struct {
 	LocalShape       ShapeInterface // not using anonymous embedded field mostly bc of IsEqualTo()... we have to pass the LocalShape, not the Shape
 	Transform        Matrix         // WARNING: don't set Transform directly, use SetTransform()
 	InverseTransform Matrix
-	Material         Material
+	Material         *Material
 	SavedRay         *Ray // TODO replace this later, it's only for testing purposes with TestShape
 	Parent           *Shape
 	Shadows          bool
