@@ -72,7 +72,7 @@ func (c Csg) LocalBounds() BoundingBox {
 	return b
 }
 
-func (c Csg) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (c Csg) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	// This is the optimization that Csg offers: only calculate its Left/Right
 	// intersections if the ray interects the BoundingBox itself.
 	if c.LocalBounds().Intersects(r) {

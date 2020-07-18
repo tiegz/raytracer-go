@@ -39,7 +39,7 @@ func (s Sphere) localString() string {
 
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
-func (s Sphere) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (s Sphere) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	i := make(Intersections, 0, 2)
 
 	sphereToRay := r.Origin.Subtract(s.Origin)

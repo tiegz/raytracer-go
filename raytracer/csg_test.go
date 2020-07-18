@@ -165,6 +165,6 @@ func TestIntersectingRayAndCsgTestsChildrenIfBoxIsHit(t *testing.T) {
 
 	s.Intersect(r)
 
-	assertEqualRay(t, r, *csg.Left.SavedRay)
-	assertEqualRay(t, r, *csg.Right.SavedRay)
+	assertEqualRay(t, *r, *csg.Left.SavedRay)
+	assertEqualRay(t, *r, *csg.Right.SavedRay)
 }

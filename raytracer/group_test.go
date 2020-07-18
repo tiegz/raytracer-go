@@ -100,7 +100,7 @@ func TestIntersectingRayAndGroupDoesntTestsChildrenIfBoxIsHit(t *testing.T) {
 
 	g.Intersect(r)
 
-	assertEqualRay(t, r, *ts.SavedRay)
+	assertEqualRay(t, *r, *ts.SavedRay)
 }
 
 func TestCreatingASubGroupFromAListOfChildren(t *testing.T) {

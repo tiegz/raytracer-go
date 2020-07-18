@@ -47,7 +47,7 @@ func (t SmoothTriangle) LocalBounds() BoundingBox {
 
 // Uses the Möller–Trumbore algorithm to find the intersection of the
 // ray and the triangle.
-func (t SmoothTriangle) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (t SmoothTriangle) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	directionCrossE2 := r.Direction.Cross(t.E2)
 	determinant := directionCrossE2.Dot(t.E1)
 

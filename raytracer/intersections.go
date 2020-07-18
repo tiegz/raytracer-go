@@ -80,7 +80,7 @@ func (is *Intersections) Hit(checkingForShadows bool) *Intersection {
 
 // r:  the ray that hit the intersection
 // xs: "... the collection of all intersections, which can tell you where the hit is relative to the rest of the intersections ...""
-func (i *Intersection) PrepareComputations(r Ray, xs ...*Intersection) *Computation {
+func (i *Intersection) PrepareComputations(r *Ray, xs ...*Intersection) *Computation {
 	if len(xs) == 0 {
 		xs = []*Intersection{i}
 	}

@@ -6,7 +6,7 @@ import (
 
 type ShapeInterface interface {
 	LocalNormalAt(Tuple, *Intersection) Tuple
-	LocalIntersect(Ray, *Shape) Intersections
+	LocalIntersect(*Ray, *Shape) Intersections
 	LocalBounds() BoundingBox
 	localIsEqualTo(ShapeInterface) bool
 	localType() string
@@ -41,7 +41,7 @@ func (s *Shape) SetTransform(m Matrix) {
 	s.InverseTransform = m.Inverse()
 }
 
-func (s *Shape) Intersect(r Ray) Intersections {
+func (s *Shape) Intersect(r *Ray) Intersections {
 	// Instead of applying object's transformation to object, we can just apply
 	// the inverse of the transformation to the ray.
 	r = r.Transform(s.InverseTransform)
