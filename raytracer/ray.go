@@ -13,10 +13,6 @@ func NewRay(o, d Tuple) Ray {
 	return Ray{o, d}
 }
 
-func NullRay() Ray {
-	return NewRay(NewPoint(0, 0, 0), NewVector(0, 0, 0))
-}
-
 func (r Ray) String() string {
 	return fmt.Sprintf("Ray(\n  Origin: %v\n  Direction: %v\n)", r.Origin, r.Direction)
 }

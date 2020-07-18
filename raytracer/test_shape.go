@@ -19,7 +19,7 @@ func (ts TestShape) LocalBounds() BoundingBox {
 }
 
 func (ts TestShape) LocalIntersect(r Ray, shape *Shape) Intersections {
-	shape.SavedRay = r
+	shape.SavedRay = &r
 	return Intersections{}
 }
 
