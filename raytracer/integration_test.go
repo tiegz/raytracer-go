@@ -19,7 +19,7 @@ func BenchmarkRenderIntegrationTestScene(b *testing.B) {
 // Renders a tiny JPG image of a sphere on top of a plane.
 func renderIntegrationTestScene() {
 	world := NewWorld()
-	world.Lights = []AreaLight{
+	world.Lights = []*AreaLight{
 		NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 	}
 	camera := NewCamera(10, 10, math.Pi/3)
@@ -36,7 +36,7 @@ func renderIntegrationTestScene() {
 	sphere := NewSphere()
 	sphere.Material.Color = Colors["Red"]
 
-	world.Objects = []Shape{
+	world.Objects = []*Shape{
 		floor,
 		sphere,
 	}

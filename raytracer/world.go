@@ -15,15 +15,15 @@ type World struct {
 }
 
 // NewWorld instantiates a new World object.
-func NewWorld() World {
-	return World{}
+func NewWorld() *World {
+	return &World{}
 }
 
 // DefaultWorld returns a new world with some default settings:
 //   * 1 unit sphere with color
 //   * 1 smaller sphere inside ^
 //   * a single white light
-func DefaultWorld() World {
+func DefaultWorld() *World {
 	w := NewWorld()
 
 	defaultPointLight := NewPointLight(NewPoint(-10, 10, -10), Colors["White"])
@@ -72,8 +72,7 @@ func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 
 	for _, light := range w.Lights {
 		// isShadowed := w.IsShadowed(c.OverPoint, light)
-		// TODO: try passing world as a pointer instead, and see if it's any faster?
-		intensity := light.IntensityAt(c.OverPoint, *w)
+		intensity := light.IntensityAt(c.OverPoint, w)
 		surfaceColor := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, intensity)
 
 		reflectedColor := w.ReflectedColor(c, remainingReflections)
