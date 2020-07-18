@@ -239,7 +239,7 @@ func RunDrawWorldWithSnowman() {
 			snowman,
 			hat,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			// NewPointLight(NewPoint(0, 30, 70), NewColor(1, 1, 1)),
 			NewAreaLight(NewPoint(0, 5, -2), NewVector(4, 0, 0), 16, NewVector(0, 4, 0), 16, NewColor(1, 1, 1)),
 		}

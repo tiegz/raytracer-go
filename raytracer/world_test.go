@@ -33,7 +33,7 @@ func TestDefaultWorld(t *testing.T) {
 	s2 := NewSphere()
 	s2.SetTransform(NewScale(0.5, 0.5, 0.5))
 
-	assertEqualLight(t, l, world.Lights[0])
+	assertEqualLight(t, *l, *world.Lights[0])
 	assert(t, world.Contains(s1))
 	assert(t, world.Contains(s2))
 }
@@ -64,7 +64,7 @@ func TestShadingAnIntersection(t *testing.T) {
 
 func TestShadingAnIntersectionFromInside(t *testing.T) {
 	w := DefaultWorld()
-	w.Lights = []AreaLight{
+	w.Lights = []*AreaLight{
 		NewPointLight(NewPoint(0, 0.25, 0), Colors["White"]),
 	}
 
@@ -85,7 +85,7 @@ func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 	s2 := NewSphere()
 	s2.SetTransform(NewTranslation(0, 0, 10))
 
-	w.Lights = []AreaLight{
+	w.Lights = []*AreaLight{
 		NewPointLight(NewPoint(0, 0, -10), Colors["White"]),
 	}
 	w.Objects = []*Shape{

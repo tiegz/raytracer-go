@@ -61,7 +61,7 @@ func RunDrawWorldWithTriangles() {
 			pyramid2,
 			pyramid3,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(0, 5, 0), NewColor(1, 1, 1)),
 		}
 	})

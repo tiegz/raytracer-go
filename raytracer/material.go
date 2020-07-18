@@ -78,7 +78,7 @@ func (m *Material) String() string {
 //   * Specular reflection: reflection of the light source; depends on angle btwn the reflection
 //      										and eye vectors. Intensity is controlled by "shininess".
 // Inensity: 0.0 = in shadow, 1.0 = not in shadow.
-func (m *Material) Lighting(obj *Shape, light AreaLight, point Tuple, eyeVector, normalVector Tuple, intensity float64) Color {
+func (m *Material) Lighting(obj *Shape, light *AreaLight, point Tuple, eyeVector, normalVector Tuple, intensity float64) Color {
 	var baseColor, ambient, specular, diffuse Color
 
 	if m.Pattern != nil {

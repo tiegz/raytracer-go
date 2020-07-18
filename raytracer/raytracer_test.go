@@ -116,7 +116,7 @@ func assertEqualIntersection(t *testing.T, expected Intersection, actual Interse
 }
 
 func assertEqualLight(t *testing.T, expected AreaLight, actual AreaLight) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }

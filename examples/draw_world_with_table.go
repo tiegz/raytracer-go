@@ -163,7 +163,7 @@ func RunDrawWorldWithTable() {
 			mirrorFrame,
 			mirror,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(0, 6.9, -5), NewColor(1, 1, 1)),
 		}
 	})
