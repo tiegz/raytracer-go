@@ -46,7 +46,7 @@ func RunDrawWorldWithCube() {
 			cubeMiddle,
 			cubeRight,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 		}
 	})

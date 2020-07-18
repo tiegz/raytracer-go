@@ -11,7 +11,7 @@ const DefaultMaximumReflections int = 4 // recommended on page 148
 
 type World struct {
 	Objects []*Shape
-	Lights  []AreaLight
+	Lights  []*AreaLight
 }
 
 // NewWorld instantiates a new World object.
@@ -36,7 +36,7 @@ func DefaultWorld() *World {
 	defaultObj2.SetTransform(NewScale(0.5, 0.5, 0.5))
 
 	w.Objects = append(w.Objects, defaultObj1, defaultObj2)
-	w.Lights = []AreaLight{defaultPointLight}
+	w.Lights = []*AreaLight{defaultPointLight}
 	return w
 }
 

@@ -167,7 +167,7 @@ func TestShadeHitWithAReflectiveMaterial(t *testing.T) {
 func TestColorAtWithMutuallyReflectiveSurfaces(t *testing.T) {
 	w := DefaultWorld()
 	light := NewPointLight(NewPoint(0, 0, 0), NewColor(1, 1, 1))
-	w.Lights = []AreaLight{light}
+	w.Lights = []*AreaLight{light}
 
 	lower := NewPlane()
 	lower.Material.Reflective = 1

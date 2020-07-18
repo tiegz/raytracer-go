@@ -61,7 +61,7 @@ func RunDrawWorldWithSphereAndAreaLight() {
 			sphere,
 			cylinder,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewAreaLight(NewPoint(0, 3, -3), NewVector(2, 0, 0), 4, NewVector(0, 2, 0), 4, NewColor(1.5, 1.5, 1.5)),
 		}
 	})

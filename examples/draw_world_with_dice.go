@@ -116,7 +116,7 @@ func RunDrawWorldWithDice() {
 			d2,
 			d3,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(-2, 4, -5), NewColor(1, 1, 1)),
 			NewPointLight(NewPoint(2, 2, 5), NewColor(1, 1, 1)),
 		}

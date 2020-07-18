@@ -19,7 +19,7 @@ import (
 //   }
 func Draw(filepath string, drawFunc func(*World, *Camera)) {
 	world := NewWorld()
-	world.Lights = []AreaLight{
+	world.Lights = []*AreaLight{
 		NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 	}
 	camera := NewCamera(800, 400, math.Pi/3)

@@ -65,7 +65,7 @@ func RunDrawSkybox() {
 			cube,
 			sphere,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(0, 100, 0), NewColor(1, 1, 1)),
 		}
 	})
