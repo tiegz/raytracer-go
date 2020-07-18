@@ -31,7 +31,7 @@ func (p Plane) LocalBounds() BoundingBox {
 
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
-func (p Plane) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (p Plane) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	i := make(Intersections, 0, 1)
 
 	// TODO worth short-circuiting this to return a slice with 0,0 instead of 0,1?

@@ -30,7 +30,7 @@ func assertEqualBool(t *testing.T, expected, actual bool) {
 }
 
 func assertEqualRay(t *testing.T, expected, actual Ray) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }

@@ -32,7 +32,7 @@ func (c Cube) localString() string {
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
 // We treat a cube like 6 planes, with 2 parallel planes per axis.
-func (c Cube) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (c Cube) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	xTMin, xTMax := c.checkAxis(r.Origin.X, r.Direction.X)
 	yTMin, yTMax := c.checkAxis(r.Origin.Y, r.Direction.Y)
 	zTMin, zTMax := c.checkAxis(r.Origin.Z, r.Direction.Z)

@@ -24,7 +24,7 @@ func (g Group) String() string {
 // ShapeInterface methods
 /////////////////////////
 
-func (g Group) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (g Group) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	xs := Intersections{}
 
 	// This is the optimization that Groups offers: only calculate its Children

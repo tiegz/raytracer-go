@@ -54,7 +54,7 @@ func (w *World) Contains(obj *Shape) bool {
 	return false
 }
 
-func (w *World) Intersect(r Ray) Intersections {
+func (w *World) Intersect(r *Ray) Intersections {
 	var xs Intersections
 
 	for _, obj := range w.Objects {
@@ -107,7 +107,7 @@ func (w *World) ReflectedColor(c *Computation, remainingReflections int) Color {
 }
 
 // ColorAt gets a ray's intersection in the world and returns that intersection's color.
-func (w *World) ColorAt(r Ray, remainingReflections int) Color {
+func (w *World) ColorAt(r *Ray, remainingReflections int) Color {
 	var color Color
 
 	// 	Call intersect_world to find the intersections of the given ray with the given world.

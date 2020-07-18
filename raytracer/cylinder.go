@@ -28,7 +28,7 @@ func (cyl Cylinder) String() string {
 
 // Is the ray at time t within a radius of 1 in y axis
 // TODO: better name, e.g. isInsideCap
-func checkCap(r Ray, t float64, radius float64) bool {
+func checkCap(r *Ray, t float64, radius float64) bool {
 	x := r.Origin.X + t*r.Direction.X
 	z := r.Origin.Z + t*r.Direction.Z
 	return ((x * x) + (z * z)) <= (radius * radius)
@@ -49,7 +49,7 @@ func (c Cylinder) localString() string {
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
 // We treat a cube like 6 planes, with 2 parallel planes per axis.
-func (cyl Cylinder) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (cyl Cylinder) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	a := (r.Direction.X * r.Direction.X) + (r.Direction.Z * r.Direction.Z)
 	xs := make(Intersections, 0, 2)
 
