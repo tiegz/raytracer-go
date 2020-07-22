@@ -27,9 +27,9 @@ keys.each do |key|
     delta = (parent_ns_per_op - current_ns_per_op).round(3)
     delta_percentage = ((delta/parent_ns_per_op) * 100).round(1)
     # Highlight anything that's 50% slower or faster.
-    delta_text = if delta_percentage < -50
+    delta_text = if delta_percentage < -10
       red("#{delta_percentage}%")
-    elsif delta_percentage > 50
+    elsif delta_percentage > 10
       green("#{delta_percentage}%")
     else
       "#{delta_percentage}%"

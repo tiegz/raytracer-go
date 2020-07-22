@@ -29,17 +29,29 @@ jobs:
       - name: Run benchmarks
         run: go test ./... -bench=. | tee bench-$GITHUB_SHA.txt
 
+      - name: Run parent benchmarks
+        run: git checkout HEAD^ && go test ./... -bench=. | tee bench-$(git rev-parse $GITHUB_SHA^).txt && ls -larth .
+
       - name: Convert benchmarks into json
         run: ruby .github/workflows/convert_benchmarks_to_json.rb bench-$GITHUB_SHA.txt > bench-$GITHUB_SHA.json
+
+      - name: Convert parent benchmarks into json
+        run: ruby .github/workflows/convert_benchmarks_to_json.rb bench-$(git rev-parse $GITHUB_SHA^).txt > bench-$(git rev-parse $GITHUB_SHA^).json
 
       - name: Upload bench to s3
         run: aws s3 cp bench-$GITHUB_SHA.json s3://raytracer-go-benchmarks/bench-$GITHUB_SHA.json --region us-east-1
 
-      - name: Get parent bench from s3
-        run: aws s3 cp s3://raytracer-go-benchmarks/bench-$(git rev-parse $GITHUB_SHA^).json .
+      - name: Upload parent bench to s3
+        run: aws s3 cp bench-$(git rev-parse $GITHUB_SHA^).json s3://raytracer-go-benchmarks/bench-$(git rev-parse $GITHUB_SHA^).json --region us-east-1
+
+      # - name: Get parent bench from s3
+      #   run: aws s3 cp s3://raytracer-go-benchmarks/bench-$(git rev-parse $GITHUB_SHA^).json .
 
       - name: Compare benches
-        run: ruby .github/workflows/compare_benchmarks.rb $GITHUB_SHA $(git rev-parse $GITHUB_SHA^)
+        run: ruby .github/workflows/compare_benchmarks.rb $GITHUB_SHA $(git rev-parse $GITHUB_SHA^) | tee bench-comparison-$(git rev-parse $GITHUB_SHA^)-$GITHUB_SHA.txt
+
+      - name: Upload bench comparison to s3
+        run: aws s3 cp bench-comparison-$(git rev-parse $GITHUB_SHA^)-$GITHUB_SHA.txt s3://raytracer-go-benchmarks/bench-comparison-$(git rev-parse $GITHUB_SHA^)-$GITHUB_SHA.txt --region us-east-1
 
       - name: List files
         run: ls -lart
