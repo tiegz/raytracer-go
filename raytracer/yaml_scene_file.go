@@ -9,8 +9,8 @@ import (
 )
 
 type YamlSceneFile struct {
-	Camera             Camera
-	World              World
+	Camera             *Camera
+	World              *World
 	MaterialDefs       map[string]Material
 	TransformationDefs map[string]Matrix
 }
@@ -91,7 +91,7 @@ func ParseYamlSceneFile(filename string) (YamlSceneFile, error) {
 					),
 				)
 			case "plane", "sphere", "cube":
-				var obj Shape
+				var obj *Shape
 				var t Matrix
 				var m Material
 				switch instruction.Add {
@@ -105,10 +105,10 @@ func ParseYamlSceneFile(filename string) (YamlSceneFile, error) {
 					obj = NewCube()
 					obj.Label = "cube"
 				}
-				if m, err = decodeMaterial(ysf.MaterialDefs, DefaultMaterial(), instruction.Material); err != nil {
+				if m, err = decodeMaterial(ysf.MaterialDefs, *DefaultMaterial(), instruction.Material); err != nil {
 					return ysf, err
 				}
-				obj.Material = m
+				obj.Material = &m
 				if t, err = decodeTransforms(ysf.TransformationDefs, instruction.Transform); err != nil {
 					return ysf, err
 				}
@@ -125,7 +125,7 @@ func ParseYamlSceneFile(filename string) (YamlSceneFile, error) {
 				if instruction.Extend != "" {
 					m = ysf.MaterialDefs[instruction.Extend]
 				} else {
-					m = DefaultMaterial()
+					m = *DefaultMaterial()
 				}
 				m.Label = instruction.Define
 				if m, err = decodeMaterial(ysf.MaterialDefs, m, instruction.Value); err != nil {

@@ -20,7 +20,7 @@ func TestARayMissesACylinder(t *testing.T) {
 			shape := NewCylinder()
 			cyl := shape.LocalShape.(*Cylinder)
 			r := NewRay(tc.Origin, tc.Direction.Normalized())
-			xs := cyl.LocalIntersect(r, &shape)
+			xs := cyl.LocalIntersect(r, shape)
 
 			assertEqualInt(t, 0, len(xs))
 		})
@@ -43,7 +43,7 @@ func TestARayStrikesACylnder(t *testing.T) {
 			shape := NewCylinder()
 			cyl := shape.LocalShape.(*Cylinder)
 			r := NewRay(tc.Origin, tc.Direction.Normalized())
-			xs := cyl.LocalIntersect(r, &shape)
+			xs := cyl.LocalIntersect(r, shape)
 
 			assertEqualInt(t, 2, len(xs))
 			assertEqualFloat64(t, tc.T1, xs[0].Time)
@@ -99,7 +99,7 @@ func TestIntersectingAConstraintedCylinder(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("Intersecting a constrained cylinder %v, %v", tc.Point, tc.Direction), func(t *testing.T) {
 			r := NewRay(tc.Point, tc.Direction.Normalized())
-			xs := cyl.LocalIntersect(r, &shape)
+			xs := cyl.LocalIntersect(r, shape)
 			assertEqualInt(t, tc.Count, len(xs))
 		})
 	}
@@ -131,7 +131,7 @@ func TestIntersectingTheCapsOfAClosedCylinder(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("Intersecting the caps of a closed cylinder %v", tc.Point), func(t *testing.T) {
 			r := NewRay(tc.Point, tc.Direction.Normalized())
-			xs := cyl.LocalIntersect(r, &shape)
+			xs := cyl.LocalIntersect(r, shape)
 			assertEqualInt(t, tc.Count, len(xs))
 		})
 	}

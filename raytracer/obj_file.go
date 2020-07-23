@@ -17,7 +17,7 @@ type ObjFile struct {
 	CurrentGroupName string
 }
 
-func (of *ObjFile) ToGroup() Shape {
+func (of *ObjFile) ToGroup() *Shape {
 	g := NewGroup()
 	for _, v := range of.Groups {
 		g.AddChildren(v)
@@ -42,7 +42,7 @@ func ParseObjFile(s string) ObjFile {
 	of.Normals = []Tuple{NewVector(0, 0, 0)} // first element is dummy, this is a 1-indexed array
 	defaultGroup := NewGroup()
 	of.Groups = map[string]*Shape{
-		"": &defaultGroup,
+		"": defaultGroup,
 	}
 	of.CurrentGroupName = ""
 	of.DefaultGroup = of.Groups[""]
@@ -104,7 +104,7 @@ func ParseObjFile(s string) ObjFile {
 			of.CurrentGroupName = g
 			if _, found := of.Groups[g]; !found {
 				group := NewGroup()
-				of.Groups[g] = &group
+				of.Groups[g] = group
 			}
 			continue
 		}
@@ -132,7 +132,7 @@ func ParseObjFile(s string) ObjFile {
 func fanTriangulation(faceVertices, faceNormals []Tuple) []*Shape {
 	triangles := []*Shape{}
 	for idx := 0; idx < len(faceVertices)-2; idx++ {
-		var tri Shape
+		var tri *Shape
 		if len(faceNormals) > 0 {
 			tri = NewSmoothTriangle(
 				faceVertices[0],
@@ -145,7 +145,7 @@ func fanTriangulation(faceVertices, faceNormals []Tuple) []*Shape {
 		} else {
 			tri = NewTriangle(faceVertices[0], faceVertices[idx+1], faceVertices[idx+2])
 		}
-		triangles = append(triangles, &tri)
+		triangles = append(triangles, tri)
 	}
 	return triangles
 }

@@ -143,7 +143,7 @@ func RunDrawWorldWithTable() {
 		mirror.Material.Shininess = 300
 		mirror.Material.Reflective = 1
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floorCeiling,
 			walls,
 			tabletop,
@@ -163,7 +163,7 @@ func RunDrawWorldWithTable() {
 			mirrorFrame,
 			mirror,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(0, 6.9, -5), NewColor(1, 1, 1)),
 		}
 	})

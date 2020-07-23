@@ -13,7 +13,7 @@ type Triangle struct {
 	boundsMax Tuple
 }
 
-func NewTriangle(p1, p2, p3 Tuple) Shape {
+func NewTriangle(p1, p2, p3 Tuple) *Shape {
 	tri := Triangle{P1: p1, P2: p2, P3: p3}
 	// Pre-calculate edge vectors and normal
 	tri.E1 = p2.Subtract(p1)
@@ -43,7 +43,7 @@ func (t Triangle) LocalBounds() BoundingBox {
 
 // Uses the Möller–Trumbore algorithm to find the intersection of the
 // ray and the triangle.
-func (t Triangle) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (t Triangle) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	directionCrossE2 := r.Direction.Cross(t.E2)
 	determinant := directionCrossE2.Dot(t.E1)
 
@@ -64,11 +64,11 @@ func (t Triangle) LocalIntersect(r Ray, shape *Shape) Intersections {
 		}
 
 		time := f * t.E2.Dot(originCrossE1)
-		return Intersections{NewIntersection(time, *shape)}
+		return Intersections{NewIntersection(time, shape)}
 	}
 }
 
-func (t Triangle) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (t Triangle) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	return t.Normal
 }
 

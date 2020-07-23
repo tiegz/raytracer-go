@@ -7,16 +7,16 @@ import (
 
 type Intersection struct {
 	Time   float64
-	Object Shape
+	Object *Shape
 	U      float64 // identifies where on 2D triangle that an intersection occurred, relative to corners.
 	V      float64 // identifies where on 2D triangle that an intersection occurred, relative to corners.
 }
 
-type Intersections []Intersection
+type Intersections []*Intersection
 
 type Computation struct {
 	Time       float64 // the moment (in time units) at which the intersection happened
-	Object     Shape   // the object that was intersected
+	Object     *Shape  // the object that was intersected
 	Point      Tuple   // the point where intersection happened
 	OverPoint  Tuple   // the Point value adjusted slightly to avoid "raytracer acne"
 	UnderPoint Tuple   //
@@ -28,23 +28,15 @@ type Computation struct {
 	N2         float64 // refractive index of object being entered at ray-object intersection
 }
 
-func NullIntersection() Intersection {
-	return Intersection{Time: math.MaxFloat64, Object: NewNullShape()}
+func NewIntersection(t float64, obj *Shape) *Intersection {
+	return &Intersection{Time: t, Object: obj}
 }
 
-func (i Intersection) IsNull() bool {
-	return i.Time == math.MaxFloat64
+func NewIntersectionWithUV(t float64, obj *Shape, u, v float64) *Intersection {
+	return &Intersection{Time: t, Object: obj, U: u, V: v}
 }
 
-func NewIntersection(t float64, obj Shape) Intersection {
-	return Intersection{Time: t, Object: obj}
-}
-
-func NewIntersectionWithUV(t float64, obj Shape, u, v float64) Intersection {
-	return Intersection{Time: t, Object: obj, U: u, V: v}
-}
-
-func (i Intersection) IsEqualTo(i2 Intersection) bool {
+func (i *Intersection) IsEqualTo(i2 *Intersection) bool {
 	if i.Time != i2.Time {
 		return false
 	} else if !i.Object.IsEqualTo(i2.Object) {
@@ -53,7 +45,7 @@ func (i Intersection) IsEqualTo(i2 Intersection) bool {
 	return true
 }
 
-func (i Intersection) String() string {
+func (i *Intersection) String() string {
 	return fmt.Sprintf(
 		"Intersection(\nTime: %.3f\nObject: %v\nU: %v, V: %v\n)",
 		i.Time,
@@ -73,11 +65,11 @@ func (xs Intersections) String() string {
 }
 
 // TODO: should we just break out the shadow-checking Hit() into a new method?
-func (is *Intersections) Hit(checkingForShadows bool) Intersection {
-	minIntersection := NullIntersection()
+func (is *Intersections) Hit(checkingForShadows bool) *Intersection {
+	var minIntersection *Intersection
 	for _, intersection := range *is {
 		if intersection.Time > EPSILON && (!checkingForShadows || intersection.Object.Shadows) { // NB the book uses 0, but I had to use this instead to fix the minute difference that broke in TestTheRefractedColorWithARefractedRay's Sphere#LocalIntersect's i2 calcluation
-			if minIntersection.IsEqualTo(intersection) || intersection.Time < minIntersection.Time {
+			if minIntersection == nil || minIntersection.IsEqualTo(intersection) || intersection.Time < minIntersection.Time {
 				minIntersection = intersection
 			}
 		}
@@ -88,17 +80,17 @@ func (is *Intersections) Hit(checkingForShadows bool) Intersection {
 
 // r:  the ray that hit the intersection
 // xs: "... the collection of all intersections, which can tell you where the hit is relative to the rest of the intersections ...""
-func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computation {
+func (i *Intersection) PrepareComputations(r *Ray, xs ...*Intersection) *Computation {
 	if len(xs) == 0 {
-		xs = []Intersection{*i}
+		xs = []*Intersection{i}
 	}
 
-	c := Computation{}
+	c := &Computation{}
 	c.Time = i.Time
 	c.Object = i.Object
 	c.Point = r.Position(c.Time)
 	c.EyeV = r.Direction.Negate()
-	c.NormalV = c.Object.NormalAt(c.Point, *i)
+	c.NormalV = c.Object.NormalAt(c.Point, i)
 	c.ReflectV = r.Direction.Reflect(c.NormalV)            // TODO after negating the normal, if necessary
 	c.OverPoint = c.Point.Add(c.NormalV.Multiply(EPSILON)) // to avoid "raytracer acne" with shadows
 	c.UnderPoint = c.Point.Subtract(c.NormalV.Multiply(EPSILON))
@@ -110,9 +102,9 @@ func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computatio
 		c.Inside = false
 	}
 
-	visitedShapes := []Shape{}
+	visitedShapes := []*Shape{}
 	for _, intersection := range xs {
-		isHit := intersection.IsEqualTo(*i) // is this intersection the hit?
+		isHit := intersection.IsEqualTo(i) // is this intersection the hit?
 
 		if isHit {
 			if len(visitedShapes) == 0 {
@@ -123,7 +115,7 @@ func (i *Intersection) PrepareComputations(r Ray, xs ...Intersection) Computatio
 		}
 
 		// TODO move somewhere else?
-		indexOf := func(shape Shape, shapes []Shape) int {
+		indexOf := func(shape *Shape, shapes []*Shape) int {
 			for idx, s := range shapes {
 				if s.IsEqualTo(shape) {
 					return idx

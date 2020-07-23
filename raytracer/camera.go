@@ -22,8 +22,8 @@ type Camera struct {
 // The f argument is the field-of-view of the camera. (i.e. smaller means zoomed-in)
 //
 // The Camera also has a Transform attribute, describing the world's orientation relative to the camera.
-func NewCamera(h, v int, f float64) Camera {
-	c := Camera{
+func NewCamera(h, v int, f float64) *Camera {
+	c := &Camera{
 		HSize:       h,
 		VSize:       v,
 		FieldOfView: f,
@@ -32,7 +32,7 @@ func NewCamera(h, v int, f float64) Camera {
 	return c
 }
 
-func (c Camera) String() string {
+func (c *Camera) String() string {
 	return fmt.Sprintf("Camera(\n  HSize: %d\n  Vsize: %d\n Field of View: %f\n  Transform: %v\n)", c.HSize, c.VSize, c.FieldOfView, c.Transform)
 }
 
@@ -59,7 +59,7 @@ func (c *Camera) SetTransform(m Matrix) {
 
 // TODO memoize PixelSize() for this func?
 // RayForPixel returns a ray, from the camera through the point indicated.
-func (c *Camera) RayForPixel(pixelX, pixelY int) Ray {
+func (c *Camera) RayForPixel(pixelX, pixelY int) *Ray {
 	// ... the offset from the edge of the canvas to the pixel's center ...
 	xOffset := (float64(pixelX) + 0.5) * c.PixelSize()
 	yOffset := (float64(pixelY) + 0.5) * c.PixelSize()
@@ -81,7 +81,7 @@ func (c *Camera) RayForPixel(pixelX, pixelY int) Ray {
 }
 
 // Returns a canvas that renders the world from the given camera.
-func (c *Camera) Render(w World) Canvas {
+func (c *Camera) Render(w *World) Canvas {
 	canvas := NewCanvas(c.HSize, c.VSize)
 
 	for y := 0; y < c.VSize; y += 1 {
@@ -96,7 +96,7 @@ func (c *Camera) Render(w World) Canvas {
 }
 
 // Same as Render(), while also outputting the current number of pixels rendered to stdout.
-func (c *Camera) RenderWithProgress(w World) Canvas {
+func (c *Camera) RenderWithProgress(w *World) Canvas {
 	canvas := NewCanvas(c.HSize, c.VSize)
 
 	count := c.HSize * c.VSize

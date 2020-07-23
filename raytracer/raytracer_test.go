@@ -30,7 +30,7 @@ func assertEqualBool(t *testing.T, expected, actual bool) {
 }
 
 func assertEqualRay(t *testing.T, expected, actual Ray) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }
@@ -96,7 +96,7 @@ func assertEqualString(t *testing.T, expected string, actual string) {
 }
 
 func assertEqualShape(t *testing.T, expected Shape, actual Shape) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }
@@ -110,19 +110,19 @@ func assertEqualGroup(t *testing.T, expectedShapes []*Shape, actual Shape) {
 }
 
 func assertEqualIntersection(t *testing.T, expected Intersection, actual Intersection) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }
 
 func assertEqualLight(t *testing.T, expected AreaLight, actual AreaLight) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }
 
 func assertEqualMaterial(t *testing.T, expected Material, actual Material) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }

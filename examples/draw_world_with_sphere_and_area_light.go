@@ -55,13 +55,13 @@ func RunDrawWorldWithSphereAndAreaLight() {
 			NewTranslation(4, 0, 5),
 		))
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			cube,
 			sphere,
 			cylinder,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewAreaLight(NewPoint(0, 3, -3), NewVector(2, 0, 0), 4, NewVector(0, 2, 0), 4, NewColor(1.5, 1.5, 1.5)),
 		}
 	})

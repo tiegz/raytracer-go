@@ -6,7 +6,7 @@ import "fmt"
 type TestShape struct {
 }
 
-func NewTestShape() Shape {
+func NewTestShape() *Shape {
 	return NewShape(TestShape{})
 }
 
@@ -18,12 +18,12 @@ func (ts TestShape) LocalBounds() BoundingBox {
 	return NewBoundingBox(NewPoint(-1, -1, -1), NewPoint(1, 1, 1))
 }
 
-func (ts TestShape) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (ts TestShape) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	shape.SavedRay = r
 	return Intersections{}
 }
 
-func (ts TestShape) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (ts TestShape) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	return NewVector(localPoint.X, localPoint.Y, localPoint.Z)
 }
 

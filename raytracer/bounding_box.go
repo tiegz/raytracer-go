@@ -106,7 +106,7 @@ func (b BoundingBox) Transform(m Matrix) BoundingBox {
 
 // TODO: we can reuse the Cube LocalIntersect code here if we make
 // this return an Interesctions instead.
-func (b BoundingBox) Intersects(r Ray) bool {
+func (b BoundingBox) Intersects(r *Ray) bool {
 	xTMin, xTMax := b.checkAxis(r.Origin.X, r.Direction.X, b.MinPoint.X, b.MaxPoint.X)
 	yTMin, yTMax := b.checkAxis(r.Origin.Y, r.Direction.Y, b.MinPoint.Y, b.MaxPoint.Y)
 	zTMin, zTMax := b.checkAxis(r.Origin.Z, r.Direction.Z, b.MinPoint.Z, b.MaxPoint.Z)

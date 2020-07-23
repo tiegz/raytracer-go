@@ -17,7 +17,7 @@ func RunDrawSkybox() {
 			NewVector(0, 1, 0),
 		))
 
-		getCubeSide := func(filepath string) Pattern {
+		getCubeSide := func(filepath string) *Pattern {
 			image, err := ioutil.ReadFile(filepath)
 			if err != nil {
 				panic(err)
@@ -61,11 +61,11 @@ func RunDrawSkybox() {
 		sphere.Material.Reflective = .6
 		sphere.Material.Ambient = 0
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			cube,
 			sphere,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(0, 100, 0), NewColor(1, 1, 1)),
 		}
 	})

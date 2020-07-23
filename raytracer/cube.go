@@ -9,7 +9,7 @@ type Cube struct {
 	Origin Tuple
 }
 
-func NewCube() Shape {
+func NewCube() *Shape {
 	return NewShape(&Cube{NewPoint(0, 0, 0)})
 }
 
@@ -32,7 +32,7 @@ func (c Cube) localString() string {
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
 // We treat a cube like 6 planes, with 2 parallel planes per axis.
-func (c Cube) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (c Cube) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	xTMin, xTMax := c.checkAxis(r.Origin.X, r.Direction.X)
 	yTMin, yTMax := c.checkAxis(r.Origin.Y, r.Direction.Y)
 	zTMin, zTMax := c.checkAxis(r.Origin.Z, r.Direction.Z)
@@ -46,8 +46,8 @@ func (c Cube) LocalIntersect(r Ray, shape *Shape) Intersections {
 	}
 
 	return Intersections{
-		Intersection{Time: tMin, Object: *shape},
-		Intersection{Time: tMax, Object: *shape},
+		&Intersection{Time: tMin, Object: shape},
+		&Intersection{Time: tMax, Object: shape},
 	}
 }
 
@@ -70,7 +70,7 @@ func (c Cube) checkAxis(origin float64, direction float64) (float64, float64) {
 	}
 }
 
-func (c Cube) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (c Cube) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	maxC := maxFloat64(math.Abs(localPoint.X), math.Abs(localPoint.Y), math.Abs(localPoint.Z))
 	if maxC == math.Abs(localPoint.X) {
 		return NewVector(localPoint.X, 0, 0)

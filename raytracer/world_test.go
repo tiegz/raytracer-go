@@ -19,13 +19,12 @@ func TestDefaultWorld(t *testing.T) {
 	l := NewPointLight(NewPoint(-10, 10, -10), Colors["White"])
 
 	s1 := NewSphere()
-	s1.Material = Material{
+	s1.Material = &Material{
 		Color:           NewColor(0.8, 1.0, 0.6),
 		Ambient:         0.1,
 		Diffuse:         0.7,
 		Specular:        0.2,
 		Shininess:       200,
-		Pattern:         NewNullPattern(),
 		Reflective:      0.0,
 		Transparency:    0.0,
 		RefractiveIndex: 1.0,
@@ -34,7 +33,7 @@ func TestDefaultWorld(t *testing.T) {
 	s2 := NewSphere()
 	s2.SetTransform(NewScale(0.5, 0.5, 0.5))
 
-	assertEqualLight(t, l, world.Lights[0])
+	assertEqualLight(t, *l, *world.Lights[0])
 	assert(t, world.Contains(s1))
 	assert(t, world.Contains(s2))
 }
@@ -65,7 +64,7 @@ func TestShadingAnIntersection(t *testing.T) {
 
 func TestShadingAnIntersectionFromInside(t *testing.T) {
 	w := DefaultWorld()
-	w.Lights = []AreaLight{
+	w.Lights = []*AreaLight{
 		NewPointLight(NewPoint(0, 0.25, 0), Colors["White"]),
 	}
 
@@ -86,10 +85,10 @@ func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 	s2 := NewSphere()
 	s2.SetTransform(NewTranslation(0, 0, 10))
 
-	w.Lights = []AreaLight{
+	w.Lights = []*AreaLight{
 		NewPointLight(NewPoint(0, 0, -10), Colors["White"]),
 	}
-	w.Objects = []Shape{
+	w.Objects = []*Shape{
 		s1,
 		s2,
 	}

@@ -29,7 +29,7 @@ func RunDrawWorldWithCubeOfSpheres() {
 					sphere.SetTransform(NewTranslation(x, y, z))
 					sphere.SetTransform(sphere.Transform.Multiply(NewUScale(0.5)))
 					sphere.Material.Color = NewColor(x/10.0, y/10.0, z/10.0)
-					group.AddChildren(&sphere)
+					group.AddChildren(sphere)
 				}
 			}
 		}
@@ -37,10 +37,10 @@ func RunDrawWorldWithCubeOfSpheres() {
 		group.Divide(4)
 		fmt.Printf("done dividing!\n")
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			group,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(0, -10, -5), NewColor(1, 1, 1)),
 			NewPointLight(NewPoint(0, 10, -5), NewColor(1, 1, 1)),
 		}

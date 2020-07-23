@@ -22,7 +22,7 @@ func TestAssigningATransformation(t *testing.T) {
 func TestDefaultMatrial(t *testing.T) {
 	s := NewTestShape()
 
-	assertEqualMaterial(t, s.Material, DefaultMaterial())
+	assertEqualMaterial(t, *s.Material, *DefaultMaterial())
 }
 
 func TestAssigningAMaterial(t *testing.T) {
@@ -31,7 +31,7 @@ func TestAssigningAMaterial(t *testing.T) {
 	m.Ambient = 1
 	s.Material = m
 
-	assertEqualMaterial(t, s.Material, m)
+	assertEqualMaterial(t, *s.Material, *m)
 }
 
 //  These tests are both based on (and replace) the tests called “Intersecting a scaled sphere with a ray” and “Intersecting a translated sphere with a ray”
@@ -85,11 +85,11 @@ func TestConvertingAPointFromWorldToObjectSpace(t *testing.T) {
 	g1.SetTransform(NewRotateY(math.Pi / 2))
 	g2 := NewGroup()
 	g2.SetTransform(NewScale(2, 2, 2))
-	g1.AddChildren(&g2)
+	g1.AddChildren(g2)
 
 	s := NewSphere()
 	s.SetTransform(NewTranslation(5, 0, 0))
-	g2.AddChildren(&s)
+	g2.AddChildren(s)
 
 	p := s.WorldToObject(NewPoint(-2, 0, -10))
 
@@ -102,11 +102,11 @@ func TestConvertingANormalFromObjectToWorldSpace(t *testing.T) {
 
 	g2 := NewGroup()
 	g2.SetTransform(NewScale(1, 2, 3))
-	g1.AddChildren(&g2)
+	g1.AddChildren(g2)
 
 	s := NewSphere()
 	s.SetTransform(NewTranslation(5, 0, 0))
-	g2.AddChildren(&s)
+	g2.AddChildren(s)
 
 	n := s.NormalToWorld(NewVector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
 
@@ -120,11 +120,11 @@ func TestFindingTheNormalOnAChildObject(t *testing.T) {
 
 	g2 := NewGroup()
 	g2.SetTransform(NewScale(1, 2, 3))
-	g1.AddChildren(&g2)
+	g1.AddChildren(g2)
 
 	s := NewSphere()
 	s.SetTransform(NewTranslation(5, 0, 0))
-	g2.AddChildren(&s)
+	g2.AddChildren(s)
 
 	n := s.NormalAt(NewPoint(1.7321, 1.1547, -5.5774), NewIntersection(0, s))
 
@@ -137,24 +137,24 @@ func TestIncludesInspectsShapesChildren(t *testing.T) {
 	cylinder := NewCylinder()
 	cube := NewCube()
 	group1 := NewGroup()
-	group1.AddChildren(&sphere)
+	group1.AddChildren(sphere)
 	group2 := NewGroup()
-	group2.AddChildren(&group1)
-	csg := NewCsg("intersection", &sphere, &cube)
+	group2.AddChildren(group1)
+	csg := NewCsg("intersection", sphere, cube)
 
 	// group
-	assert(t, group1.Includes(&sphere))
-	assert(t, group2.Includes(&group1))
-	assert(t, group2.Includes(&sphere))
+	assert(t, group1.Includes(sphere))
+	assert(t, group2.Includes(group1))
+	assert(t, group2.Includes(sphere))
 
 	// csg
-	assert(t, csg.Includes(&sphere))
-	assert(t, csg.Includes(&cube))
-	assert(t, !sphere.Includes(&cylinder))
+	assert(t, csg.Includes(sphere))
+	assert(t, csg.Includes(cube))
+	assert(t, !sphere.Includes(cylinder))
 
 	// etc
-	assert(t, sphere.Includes(&sphere))
-	assert(t, !sphere.Includes(&cylinder))
+	assert(t, sphere.Includes(sphere))
+	assert(t, !sphere.Includes(cylinder))
 }
 
 func TestFindingTheBoundsOnAnObject(t *testing.T) {
@@ -218,10 +218,10 @@ func BenchmarkShapeMethodWorldToObject(b *testing.B) {
 	g1.SetTransform(NewRotateY(math.Pi / 2))
 	g2 := NewGroup()
 	g2.SetTransform(NewScale(2, 2, 2))
-	g1.AddChildren(&g2)
+	g1.AddChildren(g2)
 	s := NewSphere()
 	s.SetTransform(NewTranslation(5, 0, 0))
-	g2.AddChildren(&s)
+	g2.AddChildren(s)
 	for i := 0; i < b.N; i++ {
 		s.WorldToObject(NewPoint(-2, 0, -10))
 	}
@@ -233,10 +233,10 @@ func BenchmarkShapeMethodNormalToWorld(b *testing.B) {
 	g1.SetTransform(NewRotateY(math.Pi / 2))
 	g2 := NewGroup()
 	g2.SetTransform(NewScale(1, 2, 3))
-	g1.AddChildren(&g2)
+	g1.AddChildren(g2)
 	s := NewSphere()
 	s.SetTransform(NewTranslation(5, 0, 0))
-	g2.AddChildren(&s)
+	g2.AddChildren(s)
 
 	for i := 0; i < b.N; i++ {
 		s.NormalToWorld(NewVector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))

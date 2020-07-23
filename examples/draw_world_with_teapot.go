@@ -43,12 +43,12 @@ func RunDrawWorldWithTeapot() {
 		// TODO: color on group not working?
 		// group.Material.Color = Colors["Red"]
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			backWall,
 			group,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(0, -10, -5), NewColor(1, 1, 1)),
 			NewPointLight(NewPoint(0, 10, -5), NewColor(1, 1, 1)),
 		}

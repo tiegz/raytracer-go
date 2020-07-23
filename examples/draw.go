@@ -15,11 +15,11 @@ import (
 // 	   cube := NewCube()
 //     cube.SetTransform(NewTranslation(0, 1, 1))
 //     cube.Material.Color = Colors["Red"]
-//     world.Objects = []Shape{floor, cube}
+//     world.Objects = []*Shape{floor, cube}
 //   }
 func Draw(filepath string, drawFunc func(*World, *Camera)) {
 	world := NewWorld()
-	world.Lights = []AreaLight{
+	world.Lights = []*AreaLight{
 		NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 	}
 	camera := NewCamera(800, 400, math.Pi/3)
@@ -28,7 +28,7 @@ func Draw(filepath string, drawFunc func(*World, *Camera)) {
 		NewPoint(0, 1, 0),
 		NewVector(0, 1, 0),
 	))
-	drawFunc(&world, &camera)
+	drawFunc(world, camera)
 	canvas := camera.RenderWithProgress(world)
 
 	var err error

@@ -96,7 +96,7 @@ func RunDrawUVAlignCheckCubes() {
 	))
 
 	world := NewWorld()
-	world.Objects = []Shape{
+	world.Objects = []*Shape{
 		cube1,
 		cube2,
 		cube3,
@@ -107,7 +107,7 @@ func RunDrawUVAlignCheckCubes() {
 		cube8,
 	}
 
-	world.Lights = []AreaLight{
+	world.Lights = []*AreaLight{
 		NewPointLight(NewPoint(0, 100, -100), NewColor(0.25, 0.25, 0.25)),
 		NewPointLight(NewPoint(0, -100, -100), NewColor(0.25, 0.25, 0.25)),
 		NewPointLight(NewPoint(-100, 0, -100), NewColor(0.25, 0.25, 0.25)),

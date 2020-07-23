@@ -57,7 +57,7 @@ func RunDrawWorld() {
 		leftSphere.Material.Diffuse = 0.7
 		leftSphere.Material.Specular = 0.3
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			leftWall,
 			rightWall,
@@ -65,7 +65,7 @@ func RunDrawWorld() {
 			leftSphere,
 			rightSphere,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
 		}
 	})

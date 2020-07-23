@@ -13,7 +13,7 @@ type UVAlignCheckPattern struct {
 	br   Color
 }
 
-func NewUVAlignCheckPattern(main, ul, ur, bl, br Color) Pattern {
+func NewUVAlignCheckPattern(main, ul, ur, bl, br Color) *Pattern {
 	return NewPattern(UVAlignCheckPattern{main, ul, ur, bl, br})
 }
 

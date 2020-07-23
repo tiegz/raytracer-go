@@ -10,7 +10,7 @@ func TestNewIntersection(t *testing.T) {
 	i := NewIntersection(1.23, sphere)
 
 	assertEqualFloat64(t, 1.23, i.Time)
-	assertEqualShape(t, sphere, i.Object)
+	assertEqualShape(t, *sphere, *i.Object)
 }
 
 func TestAggregatingIntersections(t *testing.T) {
@@ -31,7 +31,7 @@ func TestHitWithAllIntersectionsHavingPositiveT(t *testing.T) {
 	intersections := Intersections{i1, i2}
 
 	hit := intersections.Hit(false)
-	assertEqualIntersection(t, i1, hit)
+	assertEqualIntersection(t, *i1, *hit)
 }
 
 func TestHitWithSomeIntersectionsHavingNegativeT(t *testing.T) {
@@ -41,7 +41,7 @@ func TestHitWithSomeIntersectionsHavingNegativeT(t *testing.T) {
 	intersections := Intersections{i1, i2}
 
 	hit := intersections.Hit(false)
-	assertEqualIntersection(t, i2, hit)
+	assertEqualIntersection(t, *i2, *hit)
 }
 
 func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
@@ -51,7 +51,7 @@ func TestHitWhenAllIntersectionsHaveNegativeT(t *testing.T) {
 	intersections := Intersections{i1, i2}
 
 	hit := intersections.Hit(false)
-	assert(t, hit.IsNull())
+	assertNil(t, hit)
 }
 
 func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
@@ -63,7 +63,7 @@ func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
 	intersections := Intersections{i1, i2, i3, i4}
 
 	hit := intersections.Hit(false)
-	assertEqualIntersection(t, i4, hit)
+	assertEqualIntersection(t, *i4, *hit)
 }
 
 func TestPrecomputingStateOfIntersection(t *testing.T) {
@@ -73,7 +73,7 @@ func TestPrecomputingStateOfIntersection(t *testing.T) {
 	c := i.PrepareComputations(r)
 
 	assertEqualFloat64(t, i.Time, c.Time)
-	assertEqualShape(t, s, c.Object)
+	assertEqualShape(t, *s, *c.Object)
 	assertEqualTuple(t, NewPoint(0, 0, -1), c.Point)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.EyeV)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)
@@ -94,7 +94,7 @@ func TestHitWhenIntersectionOccursOnInside(t *testing.T) {
 	i := NewIntersection(1, s)
 	c := i.PrepareComputations(r)
 
-	assertEqualShape(t, s, c.Object)
+	assertEqualShape(t, *s, *c.Object)
 	assertEqualTuple(t, NewPoint(0, 0, 1), c.Point)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.EyeV)
 	assertEqualTuple(t, NewVector(0, 0, -1), c.NormalV)
@@ -167,7 +167,7 @@ func TestShadeHitWithAReflectiveMaterial(t *testing.T) {
 func TestColorAtWithMutuallyReflectiveSurfaces(t *testing.T) {
 	w := DefaultWorld()
 	light := NewPointLight(NewPoint(0, 0, 0), NewColor(1, 1, 1))
-	w.Lights = []AreaLight{light}
+	w.Lights = []*AreaLight{light}
 
 	lower := NewPlane()
 	lower.Material.Reflective = 1
@@ -177,7 +177,7 @@ func TestColorAtWithMutuallyReflectiveSurfaces(t *testing.T) {
 	upper.Material.Reflective = 1
 	upper.SetTransform(NewTranslation(0, 1, 0))
 
-	w.Objects = []Shape{lower, upper}
+	w.Objects = []*Shape{lower, upper}
 
 	r := NewRay(NewPoint(0, 0, 0), NewVector(0, 1, 0))
 

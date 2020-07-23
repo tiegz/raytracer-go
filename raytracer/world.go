@@ -10,20 +10,20 @@ import (
 const DefaultMaximumReflections int = 4 // recommended on page 148
 
 type World struct {
-	Objects []Shape
-	Lights  []AreaLight
+	Objects []*Shape
+	Lights  []*AreaLight
 }
 
 // NewWorld instantiates a new World object.
-func NewWorld() World {
-	return World{}
+func NewWorld() *World {
+	return &World{}
 }
 
 // DefaultWorld returns a new world with some default settings:
 //   * 1 unit sphere with color
 //   * 1 smaller sphere inside ^
 //   * a single white light
-func DefaultWorld() World {
+func DefaultWorld() *World {
 	w := NewWorld()
 
 	defaultPointLight := NewPointLight(NewPoint(-10, 10, -10), Colors["White"])
@@ -36,7 +36,7 @@ func DefaultWorld() World {
 	defaultObj2.SetTransform(NewScale(0.5, 0.5, 0.5))
 
 	w.Objects = append(w.Objects, defaultObj1, defaultObj2)
-	w.Lights = []AreaLight{defaultPointLight}
+	w.Lights = []*AreaLight{defaultPointLight}
 	return w
 }
 
@@ -45,7 +45,7 @@ func (w *World) String() string {
 }
 
 // Contains returns true if the world contains obj.
-func (w *World) Contains(obj Shape) bool {
+func (w *World) Contains(obj *Shape) bool {
 	for _, o := range w.Objects {
 		if o.IsEqualTo(obj) {
 			return true
@@ -54,7 +54,7 @@ func (w *World) Contains(obj Shape) bool {
 	return false
 }
 
-func (w *World) Intersect(r Ray) Intersections {
+func (w *World) Intersect(r *Ray) Intersections {
 	var xs Intersections
 
 	for _, obj := range w.Objects {
@@ -67,13 +67,12 @@ func (w *World) Intersect(r Ray) Intersections {
 }
 
 // ShadeHit returns the color for the given computation's intersection.
-func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
+func (w *World) ShadeHit(c *Computation, remainingReflections int) Color {
 	color := NewColor(0, 0, 0)
 
 	for _, light := range w.Lights {
 		// isShadowed := w.IsShadowed(c.OverPoint, light)
-		// TODO: try passing world as a pointer instead, and see if it's any faster?
-		intensity := light.IntensityAt(c.OverPoint, *w)
+		intensity := light.IntensityAt(c.OverPoint, w)
 		surfaceColor := c.Object.Material.Lighting(c.Object, light, c.OverPoint, c.EyeV, c.NormalV, intensity)
 
 		reflectedColor := w.ReflectedColor(c, remainingReflections)
@@ -95,7 +94,7 @@ func (w *World) ShadeHit(c Computation, remainingReflections int) Color {
 	return color
 }
 
-func (w *World) ReflectedColor(c Computation, remainingReflections int) Color {
+func (w *World) ReflectedColor(c *Computation, remainingReflections int) Color {
 	if remainingReflections < 1 {
 		return Colors["Black"]
 	} else if c.Object.Material.Reflective == 0 {
@@ -108,14 +107,14 @@ func (w *World) ReflectedColor(c Computation, remainingReflections int) Color {
 }
 
 // ColorAt gets a ray's intersection in the world and returns that intersection's color.
-func (w *World) ColorAt(r Ray, remainingReflections int) Color {
+func (w *World) ColorAt(r *Ray, remainingReflections int) Color {
 	var color Color
 
 	// 	Call intersect_world to find the intersections of the given ray with the given world.
 	is := w.Intersect(r)
 
 	// 2. Find the hit from the resulting intersections.
-	if hit := is.Hit(false); hit.IsNull() {
+	if hit := is.Hit(false); hit == nil {
 
 		// 3. Return the color black if there is no such intersection.
 		color = Colors["Black"]
@@ -130,7 +129,7 @@ func (w *World) ColorAt(r Ray, remainingReflections int) Color {
 	return color
 }
 
-func (w *World) RefractedColor(c Computation, remaining int) Color { // remaining
+func (w *World) RefractedColor(c *Computation, remaining int) Color { // remaining
 	if remaining == 0 || c.Object.Material.Transparency == 0 {
 		return Colors["Black"]
 	}
@@ -167,7 +166,7 @@ func (w *World) IsShadowed(p Tuple, lightPosition Tuple) bool {
 	r := NewRay(p, direction)
 	is := w.Intersect(r)
 
-	if hit := is.Hit(true); hit.IsNull() {
+	if hit := is.Hit(true); hit == nil {
 		return false
 	} else {
 		// is the intersection between the point and the light?

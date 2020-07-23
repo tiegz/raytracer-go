@@ -10,11 +10,11 @@ type Sphere struct {
 	Radius float64
 }
 
-func NewSphere() Shape {
+func NewSphere() *Shape {
 	return NewShape(&Sphere{NewPoint(0, 0, 0), 1})
 }
 
-func NewGlassSphere() Shape {
+func NewGlassSphere() *Shape {
 	shape := NewShape(&Sphere{NewPoint(0, 0, 0), 1})
 	shape.Material.Transparency = 1.0
 	shape.Material.RefractiveIndex = 1.5
@@ -39,7 +39,7 @@ func (s Sphere) localString() string {
 
 // TODO can we remove Shape arg somehow? It's only there because ShapeInterface
 // has no knowledge of its parent, but we need to put its aprent in the Intersection :(
-func (s Sphere) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (s Sphere) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	i := make(Intersections, 0, 2)
 
 	sphereToRay := r.Origin.Subtract(s.Origin)
@@ -52,15 +52,15 @@ func (s Sphere) LocalIntersect(r Ray, shape *Shape) Intersections {
 		return i
 	}
 
-	i1 := NewIntersection((-b-math.Sqrt(discriminant))/(2*a), *shape)
-	i2 := NewIntersection((-b+math.Sqrt(discriminant))/(2*a), *shape)
+	i1 := NewIntersection((-b-math.Sqrt(discriminant))/(2*a), shape)
+	i2 := NewIntersection((-b+math.Sqrt(discriminant))/(2*a), shape)
 
 	i = append(i, i1, i2)
 
 	return i
 }
 
-func (s Sphere) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (s Sphere) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	return localPoint.Subtract(s.Origin)
 }
 

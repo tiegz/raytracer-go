@@ -11,7 +11,7 @@ type Group struct {
 	RightBounds BoundingBox
 }
 
-func NewGroup() Shape {
+func NewGroup() *Shape {
 	c := []*Shape{}
 	return NewShape(Group{Children: c})
 }
@@ -24,7 +24,7 @@ func (g Group) String() string {
 // ShapeInterface methods
 /////////////////////////
 
-func (g Group) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (g Group) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	xs := Intersections{}
 
 	// This is the optimization that Groups offers: only calculate its Children
@@ -39,7 +39,7 @@ func (g Group) LocalIntersect(r Ray, shape *Shape) Intersections {
 	return xs
 }
 
-func (g Group) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (g Group) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	// TODO: return error instead
 	//  ... if your code ever tries to call local_normal_at() on a group, that means there’s a bug somewhere (p200) ...
 	return NewVector(localPoint.X, localPoint.Y, localPoint.Z)

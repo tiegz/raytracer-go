@@ -12,11 +12,11 @@ type Csg struct {
 	Right     *Shape
 }
 
-func NewCsg(t string, l, r *Shape) Shape {
+func NewCsg(t string, l, r *Shape) *Shape {
 	csg := Csg{t, l, r}
 	s := NewShape(csg)
-	l.Parent = &s
-	r.Parent = &s
+	l.Parent = s
+	r.Parent = s
 	return s
 }
 
@@ -44,7 +44,7 @@ func (c *Csg) FilterIntersections(xs Intersections) Intersections {
 	filteredXs := Intersections{} // list of filtered intersections
 
 	for _, x := range xs {
-		lhit := c.Left.Includes(&x.Object)
+		lhit := c.Left.Includes(x.Object)
 
 		if IntersectionAllowed(c.Operation, lhit, inl, inr) {
 			filteredXs = append(filteredXs, x)
@@ -72,7 +72,7 @@ func (c Csg) LocalBounds() BoundingBox {
 	return b
 }
 
-func (c Csg) LocalIntersect(r Ray, shape *Shape) Intersections {
+func (c Csg) LocalIntersect(r *Ray, shape *Shape) Intersections {
 	// This is the optimization that Csg offers: only calculate its Left/Right
 	// intersections if the ray interects the BoundingBox itself.
 	if c.LocalBounds().Intersects(r) {
@@ -91,7 +91,7 @@ func (c Csg) LocalIntersect(r Ray, shape *Shape) Intersections {
 	}
 }
 
-func (c Csg) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
+func (c Csg) LocalNormalAt(localPoint Tuple, hit *Intersection) Tuple {
 	// TODO: return error instead
 	//  ... if your code ever tries to call local_normal_at() on a Csg, that means there’s a bug somewhere (p200) ...
 	return NewVector(localPoint.X, localPoint.Y, localPoint.Z)
@@ -99,9 +99,9 @@ func (c Csg) LocalNormalAt(localPoint Tuple, hit Intersection) Tuple {
 
 func (c Csg) localIsEqualTo(c2 ShapeInterface) bool {
 	c2Csg := c2.(Csg)
-	if !c.Left.IsEqualTo(*c2Csg.Left) {
+	if !c.Left.IsEqualTo(c2Csg.Left) {
 		return false
-	} else if !c.Right.IsEqualTo(*c2Csg.Right) {
+	} else if !c.Right.IsEqualTo(c2Csg.Right) {
 		return false
 	}
 	return true

@@ -83,7 +83,7 @@ func RunDrawWorldWithUVPattern() {
 			NewScale(2, 1, 1),
 		))
 
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			backWall,
 			sphere,
@@ -91,7 +91,7 @@ func RunDrawWorldWithUVPattern() {
 			cone,
 			cyl,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewAreaLight(NewPoint(3, 5, -5), NewVector(4, 0, 0), 4, NewVector(0, 4, 0), 4, NewColor(1, 1, 1)),
 		}
 	})

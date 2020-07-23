@@ -5,15 +5,15 @@ import (
 )
 
 type CubeMapPattern struct {
-	left  Pattern
-	front Pattern
-	right Pattern
-	back  Pattern
-	upper Pattern
-	lower Pattern
+	left  *Pattern
+	front *Pattern
+	right *Pattern
+	back  *Pattern
+	upper *Pattern
+	lower *Pattern
 }
 
-func NewCubeMapPattern(l, f, r, b, u, d Pattern) Pattern {
+func NewCubeMapPattern(l, f, r, b, u, d *Pattern) *Pattern {
 	return NewPattern(CubeMapPattern{l, f, r, b, u, d})
 }
 

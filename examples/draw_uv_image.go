@@ -57,23 +57,10 @@ func RunDrawUVImage() {
 		sphere.Material.Shininess = 10
 		sphere.Material.Ambient = 0.1
 
-		// world := NewWorld()
-		world.Objects = []Shape{
+		world.Objects = []*Shape{
 			floor,
 			platform,
 			sphere,
 		}
-		// world.Lights = []AreaLight{
-		// 	NewPointLight(NewPoint(-100, 100, -100), NewColor(1, 1, 1)),
-		// }
-
-		// canvas := camera.RenderWithProgress(world)
-
-		// if err := canvas.SaveJPEG("tmp/world.jpg"); err != nil {
-		// 	fmt.Printf("Something went wrong! %s\n", err)
-		// } else {
-		// 	fmt.Println("Saved to tmp/world.jpg")
-		// }
-
 	})
 }

@@ -40,8 +40,8 @@ func RunDrawWorldWithTriangles() {
 			side3.Material.Ambient = 0.5
 			side3.Material.Transparency = 0.9
 			g := NewGroup()
-			g.AddChildren(&side1, &side2, &side3, &bottom)
-			return &g
+			g.AddChildren(side1, side2, side3, bottom)
+			return g
 		}
 
 		pyramid1 := pyramid()
@@ -56,12 +56,12 @@ func RunDrawWorldWithTriangles() {
 			NewRotateY(math.Pi/2),
 		))
 
-		world.Objects = []Shape{
-			*pyramid1,
-			*pyramid2,
-			*pyramid3,
+		world.Objects = []*Shape{
+			pyramid1,
+			pyramid2,
+			pyramid3,
 		}
-		world.Lights = []AreaLight{
+		world.Lights = []*AreaLight{
 			NewPointLight(NewPoint(0, 5, 0), NewColor(1, 1, 1)),
 		}
 	})
