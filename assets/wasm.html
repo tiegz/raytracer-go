@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>raytracer-go/WASM</title>
+  </head>
+  <body>
+    <style>
+      table tr td {
+        width: 10px;
+        height: 10px;
+        overflow: hidden;
+        font-size: 10px;
+      }
+    </style>
+    <!-- cp $(go env GOROOT)/misc/wasm/wasm_exec.js assets/ -->
+    <script src="wasm_exec.js"></script>
+    <script src="color_to_emoji_map_4bit.js"></script>
+    <script>
+      if (!WebAssembly.instantiateStreaming) { // polyfill
+        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+          const source = await (await resp).arrayBuffer();
+          return await WebAssembly.instantiate(source, importObject);
+        };
+      }
+      console.log('loaded? ', colorToEmojiMap)
+      colorToEmojiMap["0,0,0"] = "⬛️";
+
+      var canvas;
+      var ctx;
+      var pixels = []
+      var width = 50;
+      var height = 50;
+      var scale = 1;
+
+      document.addEventListener("DOMContentLoaded", function (event) {
+        canvasTable = document.getElementById('canvasTable');
+        for (var x = 0; x < width; x++) {
+          var tr = document.createElement('tr')
+          for (var y = 0; y < height; y++) {
+            tr.appendChild(document.createElement('td'))
+          }
+          canvasTable.appendChild(tr)
+        }
+
+        canvas = document.getElementById("mycanvas");
+        ctx = canvas.getContext('2d');
+        const go = new Go();
+        let mod, inst;
+        WebAssembly.instantiateStreaming(fetch("raytracer.wasm"), go.importObject).then((result) => {
+          mod = result.module;
+          inst = result.instance;
+          go.run(inst)
+          setSize(width, height)
+          render()
+          // renderColorEmojiMap();
+        })
+
+        const left = document.getElementById('left')
+        const right = document.getElementById('right')
+        left.addEventListener('click', (e) => {
+          console.log('left')
+          moveLeft()
+          render()
+        })
+        right.addEventListener('click', (e) => {
+          console.log('right')
+          moveRight()
+          render()
+        })
+      })
+
+      function findEmoji(red, green, blue) {
+        if (emoji) {
+          return emoji
+        } else {
+        }
+        return null;
+      }
+
+      // ranges over color map to display all emojis in rgb order
+      function renderColorEmojiMap() {
+        for (var r = 0; r < 16; r++) {
+          for (var g = 0; g < 16; g++) {
+            for (var b = 0; b < 16; b++) {
+              var span = document.createElement('div')
+              span.style.display = 'inline-block'
+              span.style.width = '12px'
+              span.style.height = '12px'
+              span.innerText = colorToEmojiMap[[r, g, b].join(',')] || ""
+              var color = "rgb(" + Math.round(r * 16) + "," + Math.round(g * 16) + "," + Math.round(b * 16) + ")"
+              // console.log(color)
+              span.style.backgroundColor = color
+              document.body.appendChild(span)
+            }
+          }
+        }
+      }
+
+      function render () {
+        var start = new Date();
+        for (var x = 0; x < width; x++) {
+          for (var y = 0; y < height; y++) {
+            var rgb = renderPixel(x, y)
+            var r = Math.round(rgb[0] / 16)
+            var g = Math.round(rgb[1] / 16)
+            var b = Math.round(rgb[2] / 16)
+            ctx.fillStyle = 'rgb(' + rgb.join(',') + ')'
+            ctx.fillRect(x, y, 1, 1);
+
+            var emoji = colorToEmojiMap[[r, g, b].join(",")]
+            if (!emoji) {
+              console.log("couldn't find emoji!", rgb, r, g, b)
+            }
+            // canvasTable.children[y].children[x].style.backgroundColor = "rgb(" + Math.round(r * 16) + "," + Math.round(g * 16) + "," + Math.round(b * 16) + ")";
+            canvasTable.children[y].children[x].innerText = emoji || '*';
+          }
+        }
+        var end = new Date();
+        canvas.style.width = (width * scale) + "px";
+        canvas.style.height = (height * scale) + "px";
+        ctx.scale(scale, scale);
+        console.log("Time: ", end - start)
+      }
+
+    </script>
+    <canvas style="position: absolute; top: 10px; left: 10px; border: solid 1px white;" id="mycanvas" width="50" height="50" ></canvas>
+    <table id="canvasTable" border=0 cellspacing=0 cellpadding=0></table>
+    <br />
+        <input id="left" type="button" value="◀️" />
+        <input id="right" type="button" value="▶️" />
+  </body>
+</html>

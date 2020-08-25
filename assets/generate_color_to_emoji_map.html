@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>raytracer-go/WASM</title>
+  </head>
+  <body>
+    <style>
+      table tr td {
+        width: 10px;
+        height: 10px;
+        overflow: hidden;
+        font-size: 10px;
+      }
+    </style>
+    <script src="quantize.js"></script>
+    <script>
+      if (!WebAssembly.instantiateStreaming) { // polyfill
+        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+          const source = await (await resp).arrayBuffer();
+          return await WebAssembly.instantiate(source, importObject);
+        };
+      }
+
+      var chars = ["😀","😃","😄","😁","😆","😅","🤣","😂","🙂","🙃","😉","😊","😇","🥰","😍","🤩","😘","😗","😚","😙","😋","😛","😜","🤪","😝","🤑","🤗","🤭","🤫","🤔","🤐","🤨","😐","😑","😶","😏","😒","🙄","😬","🤥","😌","😔","😪","🤤","😴","😷","🤒","🤕","🤢","🤮","🤧","🥵","🥶","🥴","😵","🤯","🤠","🥳","😎","🤓","🧐","😕","😟","🙁","😮","😯","😲","😳","🥺","😦","😧","😨","😰","😥","😢","😭","😱","😖","😣","😞","😓","😩","😫","🥱","😤","😡","😠","🤬","😈","👿","💀","💩","🤡","👹","👺","👻","👽","👾","🤖","😺","😸","😹","😻","😼","😽","🙀","😿","😾","🙈","🙉","🙊","💋","💌","💘","💝","💖","💗","💓","💞","💕","💟","❣","💔","🧡","💛","💚","💙","💜","🤎","🖤","🤍","💯","💢","💥","💫","💦","💨","🕳","💣","💬","👁️‍🗨️","🗨","🗯","💭","💤","👋","🤚","🖐","✋","🖖","👌","🤏","✌","🤞","🤟","🤘","🤙","👈","👉","👆","🖕","👇","👍","👎","✊","👊","🤛","🤜","👏","🙌","👐","🤲","🤝","🙏","💅","🤳","💪","🦾","🦿","🦵","🦶","👂","🦻","👃","🧠","🦷","🦴","👀","👁","👅","👄","👶","🧒","👦","👧","🧑","👱","👨","🧔","👨‍🦰","👨‍🦱","👨‍🦳","👨‍🦲","👩","👩‍🦰","🧑‍🦰","👩‍🦱","🧑‍🦱","👩‍🦳","🧑‍🦳","👩‍🦲","🧑‍🦲","👱‍♀️","👱‍♂️","🧓","👴","👵","🙍","🙍‍♂️","🙍‍♀️","🙎","🙎‍♂️","🙎‍♀️","🙅","🙅‍♂️","🙅‍♀️","🙆","🙆‍♂️","🙆‍♀️","💁","💁‍♂️","💁‍♀️","🙋","🙋‍♂️","🙋‍♀️","🧏","🧏‍♂️","🧏‍♀️","🙇","🙇‍♂️","🙇‍♀️","🤦","🤦‍♂️","🤦‍♀️","🤷","🤷‍♂️","🤷‍♀️","🧑‍⚕️","👨‍⚕️","👩‍⚕️","🧑‍🎓","👨‍🎓","👩‍🎓","🧑‍🏫","👨‍🏫","👩‍🏫","🧑‍⚖️","👨‍⚖️","👩‍⚖️","🧑‍🌾","👨‍🌾","👩‍🌾","🧑‍🍳","👨‍🍳","👩‍🍳","🧑‍🔧","👨‍🔧","👩‍🔧","🧑‍🏭","👨‍🏭","👩‍🏭","🧑‍💼","👨‍💼","👩‍💼","🧑‍🔬","👨‍🔬","👩‍🔬","🧑‍💻","👨‍💻","👩‍💻","🧑‍🎤","👨‍🎤","👩‍🎤","🧑‍🎨","👨‍🎨","👩‍🎨","🧑‍✈️","👨‍✈️","👩‍✈️","🧑‍🚀","👨‍🚀","👩‍🚀","🧑‍🚒","👨‍🚒","👩‍🚒","👮","👮‍♂️","👮‍♀️","🕵","🕵️‍♂️","🕵️‍♀️","💂","💂‍♂️","💂‍♀️","👷","👷‍♂️","👷‍♀️","🤴","👸","👳","👳‍♂️","👳‍♀️","👲","🧕","🤵","👰","🤰","🤱","👼","🎅","🤶","🦸","🦸‍♂️","🦸‍♀️","🦹","🦹‍♂️","🦹‍♀️","🧙","🧙‍♂️","🧙‍♀️","🧚","🧚‍♂️","🧚‍♀️","🧛","🧛‍♂️","🧛‍♀️","🧜","🧜‍♂️","🧜‍♀️","🧝","🧝‍♂️","🧝‍♀️","🧞","🧞‍♂️","🧞‍♀️","🧟","🧟‍♂️","🧟‍♀️","💆","💆‍♂️","💆‍♀️","💇","💇‍♂️","💇‍♀️","🚶","🚶‍♂️","🚶‍♀️","🧍","🧍‍♂️","🧍‍♀️","🧎","🧎‍♂️","🧎‍♀️","🧑‍🦯","👨‍🦯","👩‍🦯","🧑‍🦼","👨‍🦼","👩‍🦼","🧑‍🦽","👨‍🦽","👩‍🦽","🏃","🏃‍♂️","🏃‍♀️","💃","🕺","🕴","👯","👯‍♂️","👯‍♀️","🧖","🧖‍♂️","🧖‍♀️","🧗","🧗‍♂️","🧗‍♀️","🤺","🏇","⛷","🏂","🏌","🏌️‍♂️","🏌️‍♀️","🏄","🏄‍♂️","🏄‍♀️","🚣","🚣‍♂️","🚣‍♀️","🏊","🏊‍♂️","🏊‍♀️","⛹","⛹️‍♂️","⛹️‍♀️","🏋","🏋️‍♂️","🏋️‍♀️","🚴","🚴‍♂️","🚴‍♀️","🚵","🚵‍♂️","🚵‍♀️","🤸","🤸‍♂️","🤸‍♀️","🤼","🤼‍♂️","🤼‍♀️","🤽","🤽‍♂️","🤽‍♀️","🤾","🤾‍♂️","🤾‍♀️","🤹","🤹‍♂️","🤹‍♀️","🧘","🧘‍♂️","🧘‍♀️","🛀","🛌","🧑‍🤝‍🧑","👭","👫","👬","💏","👩‍❤️‍💋‍👨","👨‍❤️‍💋‍👨","👩‍❤️‍💋‍👩","💑","👩‍❤️‍👨","👨‍❤️‍👨","👩‍❤️‍👩","👪","👨‍👩‍👦","👨‍👩‍👧","👨‍👩‍👧‍👦","👨‍👩‍👦‍👦","👨‍👩‍👧‍👧","👨‍👨‍👦","👨‍👨‍👧","👨‍👨‍👧‍👦","👨‍👨‍👦‍👦","👨‍👨‍👧‍👧","👩‍👩‍👦","👩‍👩‍👧","👩‍👩‍👧‍👦","👩‍👩‍👦‍👦","👩‍👩‍👧‍👧","👨‍👦","👨‍👦‍👦","👨‍👧","👨‍👧‍👦","👨‍👧‍👧","👩‍👦","👩‍👦‍👦","👩‍👧","👩‍👧‍👦","👩‍👧‍👧","🗣","👤","👥","👣","🦰","🦱","🦳","🦲","🐵","🐒","🦍","🦧","🐶","🐕","🦮","🐕‍🦺","🐩","🐺","🦊","🦝","🐱","🐈","🦁","🐯","🐅","🐆","🐴","🐎","🦄","🦓","🦌","🐮","🐂","🐃","🐄","🐷","🐖","🐗","🐽","🐏","🐑","🐐","🐪","🐫","🦙","🦒","🐘","🦏","🦛","🐭","🐁","🐀","🐹","🐰","🐇","🐿","🦔","🦇","🐻","🐨","🐼","🦥","🦦","🦨","🦘","🦡","🐾","🦃","🐔","🐓","🐣","🐤","🐥","🐦","🐧","🕊","🦅","🦆","🦢","🦉","🦩","🦚","🦜","🐸","🐊","🐢","🦎","🐍","🐲","🐉","🦕","🦖","🐳","🐋","🐬","🐟","🐠","🐡","🦈","🐙","🐚","🐌","🦋","🐛","🐜","🐝","🐞","🦗","🕷","🕸","🦂","🦟","🦠","💐","🌸","💮","🏵","🌹","🥀","🌺","🌻","🌼","🌷","🌱","🌲","🌳","🌴","🌵","🌾","🌿","☘","🍀","🍁","🍂","🍃","🍇","🍈","🍉","🍊","🍋","🍌","🍍","🥭","🍎","🍏","🍐","🍑","🍒","🍓","🥝","🍅","🥥","🥑","🍆","🥔","🥕","🌽","🌶","🥒","🥬","🥦","🧄","🧅","🍄","🥜","🌰","🍞","🥐","🥖","🥨","🥯","🥞","🧇","🧀","🍖","🍗","🥩","🥓","🍔","🍟","🍕","🌭","🥪","🌮","🌯","🥙","🧆","🥚","🍳","🥘","🍲","🥣","🥗","🍿","🧈","🧂","🥫","🍱","🍘","🍙","🍚","🍛","🍜","🍝","🍠","🍢","🍣","🍤","🍥","🥮","🍡","🥟","🥠","🥡","🦀","🦞","🦐","🦑","🦪","🍦","🍧","🍨","🍩","🍪","🎂","🍰","🧁","🥧","🍫","🍬","🍭","🍮","🍯","🍼","🥛","☕","🍵","🍶","🍾","🍷","🍸","🍹","🍺","🍻","🥂","🥃","🥤","🧃","🧉","🧊","🥢","🍽","🍴","🥄","🔪","🏺","🌍","🌎","🌏","🌐","🗺","🗾","🧭","🏔","⛰","🌋","🗻","🏕","🏖","🏜","🏝","🏞","🏟","🏛","🏗","🧱","🏘","🏚","🏠","🏡","🏢","🏣","🏤","🏥","🏦","🏨","🏩","🏪","🏫","🏬","🏭","🏯","🏰","💒","🗼","🗽","⛪","🕌","🛕","🕍","⛩","🕋","⛲","⛺","🌁","🌃","🏙","🌄","🌅","🌆","🌇","🌉","♨️","🎠","🎡","🎢","💈","🎪","🚂","🚃","🚄","🚅","🚆","🚇","🚈","🚉","🚊","🚝","🚞","🚋","🚌","🚍","🚎","🚐","🚑","🚒","🚓","🚔","🚕","🚖","🚗","🚘","🚙","🚚","🚛","🚜","🏎","🏍","🛵","🦽","🦼","🛺","🚲","🛴","🛹","🚏","🛣","🛤","🛢","⛽","🚨","🚥","🚦","🛑","🚧","⚓","⛵","🛶","🚤","🛳","⛴","🛥","🚢","🛩","🛫","🛬","🪂","💺","🚁","🚟","🚠","🚡","🛰","🚀","🛸","🛎","🧳","⌛","⏳","⌚","⏰","⏱","⏲","🕰","🕛","🕧","🕐","🕜","🕑","🕝","🕒","🕞","🕓","🕟","🕔","🕠","🕕","🕡","🕖","🕢","🕗","🕣","🕘","🕤","🕙","🕥","🕚","🕦","🌑","🌒","🌓","🌔","🌕","🌖","🌗","🌘","🌙","🌚","🌛","🌜","🌡","☀️","🌝","🌞","🪐","⭐","🌟","🌠","🌌","⛅","⛈","🌤","🌥","🌦","🌧","🌨","🌩","🌪","🌫","🌬","🌀","🌈","🌂","☔","⛱","⚡","❄️","⛄","☄","🔥","💧","🌊","🎃","🎄","🎆","🎇","🧨","✨","🎈","🎉","🎊","🎋","🎍","🎎","🎏","🎐","🎑","🧧","🎀","🎁","🎗","🎟","🎫","🎖","🏆","🏅","🥇","🥈","🥉","⚽","⚾","🥎","🏀","🏐","🏈","🏉","🎾","🥏","🎳","🏏","🏑","🏒","🥍","🏓","🏸","🥊","🥋","🥅","⛳","⛸","🎣","🤿","🎽","🎿","🛷","🥌","🎯","🪀","🪁","🎱","🔮","🧿","🎮","🕹","🎰","🎲","🧩","🧸","🃏","🀄","🎴","🎭","🖼","🎨","🧵","🧶","👓","🕶","🥽","🥼","🦺","👔","👕","👖","🧣","🧤","🧥","🧦","👗","👘","🥻","🩱","🩲","🩳","👙","👚","👛","👜","👝","🛍","🎒","👞","👟","🥾","🥿","👠","👡","🩰","👢","👑","👒","🎩","🎓","🧢","⛑","📿","💄","💍","💎","🔇","🔈","🔉","🔊","📢","📣","📯","🔔","🔕","🎼","🎵","🎶","🎙","🎚","🎛","🎤","🎧","📻","🎷","🎸","🎹","🎺","🎻","🪕","🥁","📱","📲","☎","📞","📟","📠","🔋","🔌","💻","🖥","🖨","⌨️","🖱","🖲","💽","💾","💿","📀","🧮","🎥","🎞","📽","🎬","📺","📷","📸","📹","📼","🔍","🔎","🕯","💡","🔦","🏮","🪔","📔","📕","📖","📗","📘","📙","📚","📓","📒","📃","📜","📄","📰","🗞","📑","🔖","🏷","💰","💴","💵","💶","💷","💸","💳","🧾","💹","✉","📧","📨","📩","📤","📥","📦","📫","📪","📬","📭","📮","🗳","🖋","🖊","🖌","🖍","📝","💼","📁","📂","🗂","📅","📆","🗒","🗓","📇","📈","📉","📊","📋","📌","📍","📎","🖇","📏","📐","✂","🗃","🗄","🗑","🔒","🔓","🔏","🔐","🔑","🗝","🔨","🪓","⛏","⚒","🛠","🗡","⚔","🔫","🏹","🛡","🔧","🔩","🗜","⚖️","🦯","🔗","⛓","🧰","🧲","🧪","🧫","🧬","🔬","🔭","📡","💉","🩸","💊","🩹","🩺","🚪","🛏","🛋","🪑","🚽","🚿","🛁","🪒","🧴","🧷","🧹","🧺","🧻","🧼","🧽","🧯","🛒","🚬","🗿","🏧","🚮","🚰","♿","🚹","🚺","🚻","🚼","🚾","🛂","🛃","🛄","🛅","🚸","⛔","🚫","🚳","🚭","🚯","🚱","🚷","📵","🔞","🔃","🔄","🔙","🔚","🔛","🔜","🔝","🛐","🕉","☸","☯","✝","☦","☪","☮","🕎","🔯","♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓","⛎","🔀","🔁","🔂","▶","⏩","⏭","⏯","◀","⏪","⏮","🔼","⏫","🔽","⏬","⏸","⏹","⏺","⏏","🎦","🔅","🔆","📶","📳","📴","➕","➖","➗","♾","‼","⁉","❓","❔","❕","❗","〰","💱","💲","⚕","♻","⚜","🔱","📛","🔰","⭕","✅","☑","✔","❌","❎","➰","➿","〽","✳","✴","❇","©","®","™","#️⃣"," *️⃣","0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟","🔠","🔡","🔢","🔣","🔤","🅰","🆎","🅱","🆑","🆒","🆓","ℹ","🆔","Ⓜ","🆕","🆖","🅾","🆗","🅿","🆘","🆙","🆚","🈁","🈂️","🈷️","🈶","🈯","🉐","🈹","🈚","🈲","🉑","🈸","🈴","🈳","㊗️","㊙️","🈺","🈵","🔴","🟠","🟡","🟢","🔵","🟣","🟤","⚫","⚪","🟥","🟧","🟨","🟩","🟦","🟪","🟫","⬛","⬜","◼","◻️","◾","◽","▪","▫️","🔶","🔷","🔸","🔹","🔺","🔻","💠","🔘","🔳","🔲","🏁","🚩","🎌","🏴","🏳","🏳️‍🌈","🇦🇨","🇦🇩","🇦🇪","🇦🇫","🇦🇬","🇦🇮","🇦🇱","🇦🇲","🇦🇴","🇦🇶","🇦🇷","🇦🇸","🇦🇹","🇦🇺","🇦🇼","🇦🇽","🇦🇿","🇧🇦","🇧🇧","🇧🇩","🇧🇪","🇧🇫","🇧🇬","🇧🇭","🇧🇮","🇧🇯","🇧🇱","🇧🇲","🇧🇳","🇧🇴","🇧🇶","🇧🇷","🇧🇸","🇧🇹","🇧🇻","🇧🇼","🇧🇾","🇧🇿","🇨🇦","🇨🇨","🇨🇩","🇨🇫","🇨🇬","🇨🇭","🇨🇮","🇨🇰","🇨🇱","🇨🇲","🇨🇳","🇨🇴","🇨🇵","🇨🇷","🇨🇺","🇨🇻","🇨🇼","🇨🇽","🇨🇾","🇨🇿","🇩🇪","🇩🇬","🇩🇯","🇩🇰","🇩🇲","🇩🇴","🇩🇿","🇪🇦","🇪🇨","🇪🇪","🇪🇬","🇪🇭","🇪🇷","🇪🇸","🇪🇹","🇪🇺","🇫🇮","🇫🇯","🇫🇰","🇫🇲","🇫🇴","🇫🇷","🇬🇦","🇬🇧","🇬🇩","🇬🇪","🇬🇫","🇬🇬","🇬🇭","🇬🇮","🇬🇱","🇬🇲","🇬🇳","🇬🇵","🇬🇶","🇬🇷","🇬🇸","🇬🇹","🇬🇺","🇬🇼","🇬🇾","🇭🇰","🇭🇲","🇭🇳","🇭🇷","🇭🇹","🇭🇺","🇮🇨","🇮🇩","🇮🇪","🇮🇱","🇮🇲","🇮🇳","🇮🇴","🇮🇶","🇮🇷","🇮🇸","🇮🇹","🇯🇪","🇯🇲","🇯🇴","🇯🇵","🇰🇪","🇰🇬","🇰🇭","🇰🇮","🇰🇲","🇰🇳","🇰🇵","🇰🇷","🇰🇼","🇰🇾","🇰🇿","🇱🇦","🇱🇧","🇱🇨","🇱🇮","🇱🇰","🇱🇷","🇱🇸","🇱🇹","🇱🇺","🇱🇻","🇱🇾","🇲🇦","🇲🇨","🇲🇩","🇲🇪","🇲🇫","🇲🇬","🇲🇭","🇲🇰","🇲🇱","🇲🇲","🇲🇳","🇲🇴","🇲🇵","🇲🇶","🇲🇷","🇲🇸","🇲🇹","🇲🇺","🇲🇻","🇲🇼","🇲🇽","🇲🇾","🇲🇿","🇳🇦","🇳🇨","🇳🇪","🇳🇫","🇳🇬","🇳🇮","🇳🇱","🇳🇴","🇳🇵","🇳🇷","🇳🇺","🇳🇿","🇴🇲","🇵🇦","🇵🇪","🇵🇫","🇵🇬","🇵🇭","🇵🇰","🇵🇱","🇵🇲","🇵🇳","🇵🇷","🇵🇸","🇵🇹","🇵🇼","🇵🇾","🇶🇦","🇷🇪","🇷🇴","🇷🇸","🇷🇺","🇷🇼","🇸🇦","🇸🇧","🇸🇨","🇸🇩","🇸🇪","🇸🇬","🇸🇭","🇸🇮","🇸🇯","🇸🇰","🇸🇱","🇸🇲","🇸🇳","🇸🇴","🇸🇷","🇸🇸","🇸🇹","🇸🇻","🇸🇽","🇸🇾","🇸🇿","🇹🇦","🇹🇨","🇹🇩","🇹🇫","🇹🇬","🇹🇭","🇹🇯","🇹🇰","🇹🇱","🇹🇲","🇹🇳","🇹🇴","🇹🇷","🇹🇹","🇹🇻","🇹🇼","🇹🇿","🇺🇦","🇺🇬","🇺🇲","🇺🇳","🇺🇸","🇺🇾","🇺🇿","🇻🇦","🇻🇨","🇻🇪","🇻🇬","🇻🇮","🇻🇳","🇻🇺","🇼🇫","🇼🇸","🇽🇰","🇾🇪","🇾🇹","🇿🇦","🇿🇲","🇿🇼","🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴󠁧󠁢󠁳󠁣󠁴󠁿","🏴󠁧󠁢󠁷󠁬󠁳󠁿"]
+      var canvas;
+      var ctx;
+      var offscreeCanvas;
+      var offscreenCtx;
+      var colorCanvas;
+      var colorCtx;
+      var pixels = []
+      var renderWorker;
+      var width = 50;
+      var height = 50;
+      var scale = 1;
+      var dominantColor;
+      var colorTable;
+      var colorToEmojiMap = {};
+
+      document.addEventListener("DOMContentLoaded", function (event) {
+        canvas = document.getElementById("emoji");
+        ctx = canvas.getContext('2d');
+        ctx.font = "100px Arial";
+        dominantColor = document.getElementById("dominantColor");
+
+        offscreenCanvas = new OffscreenCanvas(canvas.width, canvas.height);
+        offscreenCtx = offscreenCanvas.getContext('2d');
+
+        colorTable = document.getElementById('colorTable');
+        for(var x = 0; x < 200; x++) {
+          var tr = document.createElement('tr')
+          for (var y = 0; y < 200; y++) {
+            tr.appendChild(document.createElement('td'))
+          }
+          colorTable.appendChild(tr)
+        }
+
+        function countEmptyEmojiColors() {
+          var empty = 0;
+          for (var r = 0; r < 16; r++) {
+            for (var g = 0; g < 16; g++) {
+              for (var b = 0; b < 16; b++) {
+                if (!colorToEmojiMap[[r,g,b].join(',')]) {
+                  empty++;
+                }
+              }
+            }
+          }
+          return empty
+        }
+
+        function fillEmptyEmojiColors() {
+          for (var r = 0; r < 16; r++) {
+            for (var g = 0; g < 16; g++) {
+              for (var b = 0; b < 16; b++) {
+                rgb = [r, g, b].join(',')
+                var char = colorToEmojiMap[rgb];
+
+                // if char exists, fill in empty spots around it
+                if (!char) {
+                  char = findEmoji(r,g,b)
+                  if (char) {
+                    colorToEmojiMap[[r,g,b].join(',')] = char
+                  } else {
+                    console.log('couldnt find emoji! ', r, g, b)
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        function calculateEmojiColor(idx) {
+          var char = chars[idx];
+          offscreenCtx.clearRect(0, 0, canvas.width, canvas.height);
+          offscreenCtx.fillText(char, 1, 87);
+          var imgd = offscreenCtx.getImageData(0, 0, canvas.width, canvas.height);
+          var pix = imgd.data;
+          arrayOfPixels = []
+          for (var i = 0, n = pix.length; i < n; i += 4) {
+            // skip transparent pixels!
+            if (pix[i + 3] > 0) {
+              arrayOfPixels.push([pix[i], pix[i + 1], pix[i + 2]])
+            }
+          }
+          var maximumColorCount = 4;
+          var colorMap = MMCQ.quantize(arrayOfPixels, maximumColorCount);
+          var [r, g, b] = colorMap.palette()[0]
+          // convert from 8-bit to 4-bit color palette (4096 colors)
+          r = Math.round(r / 16)
+          g = Math.round(g / 16)
+          b = Math.round(b / 16)
+
+          var nope = 0;
+          if (!colorToEmojiMap[[r, g, b]]) {
+            colorToEmojiMap[[r, g, b]] = char
+          } else {
+            // handle collision
+            var found = false;
+            var range = 5;
+            for (var rr = -range; rr < range; rr++) {
+              for (var gg = -range; gg < range; gg++) {
+                for (var bb = -range; bb < range; bb++) {
+                  var rrr = r + rr;
+                  var ggg = g + gg;
+                  var bbb = b + bb;
+                  if (!found && rrr >= 0 && ggg >= 0 && bbb >= 0 && rrr < 16 && ggg < 16 && bbb < 16 && !colorToEmojiMap[[rrr, ggg, bbb]]) {
+                    // console.log('  found a spot! ', rrr, ggg, bbb)
+                    colorToEmojiMap[[rrr, ggg, bbb]] = char
+                    found = true
+                  }
+                }
+              }
+            }
+            if (!found) {
+              console.log('still couldnt find a spot for', char, r, g, b)
+              return false;
+            }
+          }
+          return true
+        }
+
+        var idx = 0;
+        var nope = 0;
+        for (idx = 0; idx < chars.length; idx++) {
+          // console.log(idx)
+          if (!calculateEmojiColor(idx)) {
+            nope += 1
+          }
+        }
+        fillEmptyEmojiColors();
+        console.log('map is: ', colorToEmojiMap)
+        console.log(JSON.stringify(colorToEmojiMap))
+        console.log('couldnt find a spot for ', nope, ' emojis.')
+        console.log('done! Lenght of map is', Object.keys(colorToEmojiMap).length)
+        console.log("empty spots: ", countEmptyEmojiColors())
+        drawCircle();
+      });
+
+      function findEmoji(red, green, blue) {
+        red = Math.min(15, Math.max(0, red))
+        green = Math.min(15, Math.max(0, green))
+        blue = Math.min(15, Math.max(0, blue))
+        var emoji = colorToEmojiMap[[red, green, blue]]
+        if (emoji) {
+          return emoji
+        } else {
+          // couldn't find emoji at rgb coords -- grab one that's within 1 from all rgb values instead
+          var range = 1;
+          for (var r = -range; r < range; r++) {
+            for (var g = -range; g < range; g++) {
+              for (var b = -range; b < range; b++) {
+                emoji = colorToEmojiMap[[red + r, green + g, blue + b]]
+                if (emoji) {
+                  return emoji;
+                }
+              }
+            }
+          }
+        }
+        return null;
+      }
+
+
+      function drawCircle() {
+        console.log('here ')
+        let radius = 50;
+        // let image = colorCtx.createImageData(2 * radius, 2 * radius);
+        // let data = image.data;
+
+        for (let x = -radius; x < radius; x++) {
+          for (let y = -radius; y < radius; y++) {
+            let [rad, phi] = xy2polar(x, y);
+            if (rad > radius) {
+              // skip all (x,y) coordinates that are outside of the circle
+              continue;
+            }
+
+            let deg = rad2deg(phi);
+            // Figure out the starting index of this pixel in the image data array.
+            let rowLength = 2 * radius;
+            let adjustedX = x + radius; // convert x from [-50, 50] to [0, 100] (the coordinates of the image data array)
+            let adjustedY = y + radius; // convert y from [-50, 50] to [0, 100] (the coordinates of the image data array)
+            // let pixelWidth = 4; // each pixel requires 4 slots in the data array
+            // let index = (adjustedX + (adjustedY * rowLength)) * pixelWidth;
+            // var tableX = index % 100;
+            // var tableY = Math.floor(index / 100);
+
+            let hue = deg;
+            let saturation = 1.0;
+            let value = 1.0;
+
+            let [r, g, b] = hsv2rgb(hue, saturation, value);
+            let alpha = 255;
+
+            var emoji = findEmoji(Math.floor(r / 16), Math.floor(g / 16), Math.floor(b / 16))
+            if (emoji) {
+              colorTable.children[adjustedY].children[adjustedX].innerText = emoji;
+              colorTable.children[adjustedY].children[adjustedX].style.backgroundColor = "rgb(" + Math.round(r * 16) + "," + Math.round(g * 16) + "," + Math.round(b * 16) + ")";
+            }
+
+          }
+        }
+      }
+
+      function xy2polar(x, y) {
+        let r = Math.sqrt(x * x + y * y);
+        let phi = Math.atan2(y, x);
+        return [r, phi];
+      }
+
+      // rad in [-π, π] range
+      // return degree in [0, 360] range
+      function rad2deg(rad) {
+        return ((rad + Math.PI) / (2 * Math.PI)) * 360;
+      }
+
+      // hue in range [0, 360]
+      // saturation, value in range [0,1]
+      // return [r,g,b] each in range [0,255]
+      // See: https://en.wikipedia.org/wiki/HSL_and_HSV#From_HSV
+      function hsv2rgb(hue, saturation, value) {
+        let chroma = value * saturation;
+        let hue1 = hue / 60;
+        let x = chroma * (1 - Math.abs((hue1 % 2) - 1));
+        let r1, g1, b1;
+        if (hue1 >= 0 && hue1 <= 1) {
+          ([r1, g1, b1] = [chroma, x, 0]);
+        } else if (hue1 >= 1 && hue1 <= 2) {
+          ([r1, g1, b1] = [x, chroma, 0]);
+        } else if (hue1 >= 2 && hue1 <= 3) {
+          ([r1, g1, b1] = [0, chroma, x]);
+        } else if (hue1 >= 3 && hue1 <= 4) {
+          ([r1, g1, b1] = [0, x, chroma]);
+        } else if (hue1 >= 4 && hue1 <= 5) {
+          ([r1, g1, b1] = [x, 0, chroma]);
+        } else if (hue1 >= 5 && hue1 <= 6) {
+          ([r1, g1, b1] = [chroma, 0, x]);
+        }
+
+        let m = value - chroma;
+        let [r, g, b] = [r1 + m, g1 + m, b1 + m];
+
+        // Change r,g,b values from [0,1] to [0,255]
+        return [255 * r, 255 * g, 255 * b];
+      }
+
+    </script>
+    <canvas style="border: solid 1px red;" id="emoji" width="102" height="100" ></canvas>
+    <div id="dominantColor" style="border: solid 1px black; width: 200px; height: 50px;"></div>
+    <br />
+    <table id="colorTable" border=0 cellspacing=0 cellpadding=0>
+
+    </table>
+  </body>
+</html>

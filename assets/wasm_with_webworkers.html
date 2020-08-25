@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>raytracer-go/WASM</title>
+  </head>
+  <body>
+    <script>
+      var canvas;
+      var ctx;
+      var pixels = []
+      var renderWorker;
+
+      document.addEventListener("DOMContentLoaded", function (event) {
+        canvas = document.getElementById("mycanvas");
+        ctx = canvas.getContext('2d');
+        for (var x = 0; x < 100; x++) {
+          for (var y = 0; y < 100; y++) {
+            pixels.push([x,y])
+          }
+        }
+        renderWorker = new Worker('render_worker.js');
+        renderWorker.onmessage = function (e) {
+          const { eventType, eventData, eventId } = e.data;
+          // console.log("MAIN", eventType, eventData)
+          switch (eventType) {
+          case "INITIALISED":
+            callWorker();
+            break;
+          case "RENDERED":
+            ctx.fillStyle = 'rgb(' + eventData.color.join(',') + ')'
+            ctx.fillRect(eventData.x, eventData.y, 1, 1);
+            callWorker();
+            break;
+          default:
+            // console.log("Unknown event: ", eventType, eventData)
+            break;
+          }
+        }
+        renderWorker.postMessage({ eventType: "INITIALISE", eventData: null })
+        // console.log("Time: ", end)
+      })
+
+      function callWorker () {
+        const pixel = pixels.pop();
+        if (pixel) {
+          renderWorker.postMessage({ eventType: "RENDER", eventData: pixel })
+        }
+      }
+    </script>
+    <canvas style="border: solid 1px red;" id="mycanvas" width="100" height="100"></canvas>
+  </body>
+</html>
