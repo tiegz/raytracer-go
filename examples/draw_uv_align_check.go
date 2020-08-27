@@ -6,8 +6,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawUVAlignCheck() {
-	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawUVAlignCheck(jobs int) {
+	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 400
 		camera.VSize = 400
 		camera.FieldOfView = math.Pi / 3

@@ -10,14 +10,14 @@ import (
 
 // Calls drawFunc() with a World and Camera, and saves it to filepath.
 // Example:
-//   Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+//   Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 //		 floor := NewPlane()
 // 	   cube := NewCube()
 //     cube.SetTransform(NewTranslation(0, 1, 1))
 //     cube.Material.Color = Colors["Red"]
 //     world.Objects = []*Shape{floor, cube}
 //   }
-func Draw(filepath string, drawFunc func(*World, *Camera)) {
+func Draw(jobs int, filepath string, drawFunc func(*World, *Camera)) {
 	world := NewWorld()
 	world.Lights = []*AreaLight{
 		NewPointLight(NewPoint(-10, 10, -10), NewColor(1, 1, 1)),
@@ -29,7 +29,7 @@ func Draw(filepath string, drawFunc func(*World, *Camera)) {
 		NewVector(0, 1, 0),
 	))
 	drawFunc(world, camera)
-	canvas := camera.RenderWithProgress(world)
+	canvas := camera.Render(world, jobs, true)
 
 	var err error
 	if strings.HasSuffix(filepath, ".jpg") || strings.HasSuffix(filepath, ".jpeg") {

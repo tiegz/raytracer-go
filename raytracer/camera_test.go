@@ -61,7 +61,21 @@ func TestRenderingWorldWithCamera(t *testing.T) {
 	to := NewPoint(0, 0, 0)
 	up := NewVector(0, 1, 0)
 	c.SetTransform(NewViewTransform(from, to, up))
-	image := c.Render(w)
+	image := c.Render(w, 1, false)
+
+	expected := NewColor(0.38066, 0.47583, 0.2855)
+	actual := image.PixelAt(5, 5)
+	assertEqualColor(t, expected, actual)
+}
+
+func TestRenderingWorldWithCameraInParallel(t *testing.T) {
+	w := DefaultWorld()
+	c := NewCamera(11, 11, math.Pi/2)
+	from := NewPoint(0, 0, -5)
+	to := NewPoint(0, 0, 0)
+	up := NewVector(0, 1, 0)
+	c.SetTransform(NewViewTransform(from, to, up))
+	image := c.Render(w, 2, false)
 
 	expected := NewColor(0.38066, 0.47583, 0.2855)
 	actual := image.PixelAt(5, 5)
@@ -89,6 +103,6 @@ func BenchmarkCameraMethodRender(b *testing.B) {
 	up := NewVector(0, 1, 0)
 	c.SetTransform(NewViewTransform(from, to, up))
 	for i := 0; i < b.N; i++ {
-		c.Render(w)
+		c.Render(w, 1, false)
 	}
 }

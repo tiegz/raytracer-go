@@ -6,8 +6,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithSnowman() {
-	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithSnowman(jobs int) {
+	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 320
 		camera.VSize = 240
 		camera.FieldOfView = math.Pi / 3

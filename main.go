@@ -10,31 +10,31 @@ import (
 	. "github.com/tiegz/raytracer-go/examples"
 )
 
-var examples map[string]func() = map[string]func(){
+var examples map[string]func(int) = map[string]func(int){
 	// Examples from the Raytracer Challenge
-	"World":                       func() { RunDrawWorld() },
-	"WorldWithPlane":              func() { RunDrawWorldWithPlane() },
-	"WorldWithPatterns":           func() { RunDrawWorldWithPatterns() },
-	"WorldWithMultiplePatterns":   func() { RunDrawWorldWithMultiplePatterns() },
-	"WorldWithCube":               func() { RunDrawWorldWithCube() },
-	"WorldWithTable":              func() { RunDrawWorldWithTable() },
-	"WorldWithCylinderAndCone":    func() { RunDrawWorldWithCylinderAndCone() },
-	"WorldWithHexagonGroup":       func() { RunDrawWorldWithHexagonGroup() },
-	"WorldWithTriangles":          func() { RunDrawWorldWithTriangles() },
-	"WorldWithTeapot":             func() { RunDrawWorldWithTeapot() },
-	"WorldWithDice":               func() { RunDrawWorldWithDice() },
-	"WorldWithCubeOfSpheres":      func() { RunDrawWorldWithCubeOfSpheres() },
-	"WorldWithSphereAndAreaLight": func() { RunDrawWorldWithSphereAndAreaLight() },
-	"WorldWithSnowman":            func() { RunDrawWorldWithSnowman() },
-	"WorldWithUVPattern":          func() { RunDrawWorldWithUVPattern() },
-	"UVAlignCheck":                func() { RunDrawUVAlignCheck() },
-	"UVAlignCheckCubes":           func() { RunDrawUVAlignCheckCubes() },
-	"UVImage":                     func() { RunDrawUVImage() },
-	"Skybox":                      func() { RunDrawSkybox() },
-	"Cover":                       func() { RunDrawCover() },
+	"World":                       func(jobs int) { RunDrawWorld(jobs) },
+	"WorldWithPlane":              func(jobs int) { RunDrawWorldWithPlane(jobs) },
+	"WorldWithPatterns":           func(jobs int) { RunDrawWorldWithPatterns(jobs) },
+	"WorldWithMultiplePatterns":   func(jobs int) { RunDrawWorldWithMultiplePatterns(jobs) },
+	"WorldWithCube":               func(jobs int) { RunDrawWorldWithCube(jobs) },
+	"WorldWithTable":              func(jobs int) { RunDrawWorldWithTable(jobs) },
+	"WorldWithCylinderAndCone":    func(jobs int) { RunDrawWorldWithCylinderAndCone(jobs) },
+	"WorldWithHexagonGroup":       func(jobs int) { RunDrawWorldWithHexagonGroup(jobs) },
+	"WorldWithTriangles":          func(jobs int) { RunDrawWorldWithTriangles(jobs) },
+	"WorldWithTeapot":             func(jobs int) { RunDrawWorldWithTeapot(jobs) },
+	"WorldWithDice":               func(jobs int) { RunDrawWorldWithDice(jobs) },
+	"WorldWithCubeOfSpheres":      func(jobs int) { RunDrawWorldWithCubeOfSpheres(jobs) },
+	"WorldWithSphereAndAreaLight": func(jobs int) { RunDrawWorldWithSphereAndAreaLight(jobs) },
+	"WorldWithSnowman":            func(jobs int) { RunDrawWorldWithSnowman(jobs) },
+	"WorldWithUVPattern":          func(jobs int) { RunDrawWorldWithUVPattern(jobs) },
+	"UVAlignCheck":                func(jobs int) { RunDrawUVAlignCheck(jobs) },
+	"UVAlignCheckCubes":           func(jobs int) { RunDrawUVAlignCheckCubes(jobs) },
+	"UVImage":                     func(jobs int) { RunDrawUVImage(jobs) },
+	"Skybox":                      func(jobs int) { RunDrawSkybox(jobs) },
+	"Cover":                       func(jobs int) { RunDrawCover(jobs) },
 
 	// Other examples
-	"Animation": func() { RunAnimation() },
+	"Animation": func(jobs int) { RunAnimation(jobs) },
 }
 
 func main() {
@@ -45,6 +45,7 @@ func main() {
 	exampleCmd := flag.NewFlagSet("example", flag.ExitOnError)
 	exampleNamePtr := exampleCmd.String("name", "", "Example name. (Default: World)")
 	exampleListPtr := exampleCmd.Bool("list", false, "List examples.")
+	exampleJobsPtr := exampleCmd.Int("jobs", 1, "Run n jobs in parallel. (Default: 1)")
 	versionCmd := flag.NewFlagSet("version", flag.ExitOnError)
 	helpCmd := flag.NewFlagSet("help", flag.ExitOnError)
 
@@ -76,7 +77,7 @@ func main() {
 			name := *exampleNamePtr
 			fmt.Printf("Rendering example: %s\n", name)
 			if f, ok := examples[name]; ok {
-				f()
+				f(*exampleJobsPtr)
 			} else {
 				fmt.Printf("Example %s not found!\nRun 'raytracer-go example -list' to see examples.\n", name)
 			}
