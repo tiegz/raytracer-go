@@ -7,7 +7,7 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawUVAlignCheckCubes() {
+func RunDrawUVAlignCheckCubes(jobs int) {
 	// camera := NewCamera(160, 70, math.Pi/3)
 	camera := NewCamera(800, 400, math.Pi/3)
 	// camera := NewCamera(1280, 800, math.Pi/3)
@@ -114,7 +114,7 @@ func RunDrawUVAlignCheckCubes() {
 		NewPointLight(NewPoint(100, 0, -100), NewColor(0.25, 0.25, 0.25)),
 	}
 
-	canvas := camera.RenderWithProgress(world)
+	canvas := camera.RenderWithProgress(jobs, world)
 
 	if err := canvas.SaveJPEG("tmp/world.jpg"); err != nil {
 		fmt.Printf("Something went wrong! %s\n", err)

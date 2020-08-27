@@ -3,6 +3,7 @@ package raytracer
 import (
 	"fmt"
 	"math"
+	"sync"
 )
 
 type Camera struct {
@@ -96,23 +97,35 @@ func (c *Camera) Render(w *World) Canvas {
 }
 
 // Same as Render(), while also outputting the current number of pixels rendered to stdout.
-func (c *Camera) RenderWithProgress(w *World) Canvas {
+//
+func (c *Camera) RenderWithProgress(jobs int, w *World) Canvas {
 	canvas := NewCanvas(c.HSize, c.VSize)
 
 	count := c.HSize * c.VSize
 	i := 0
-
+	outMutex := sync.Mutex{}
+	var semaphore = make(chan int, jobs)
+	wg := sync.WaitGroup{}
+	wg.Add(c.VSize * c.HSize)
 	for y := 0; y < c.VSize; y += 1 {
 		for x := 0; x < c.HSize; x += 1 {
-			r := c.RayForPixel(x, y)
-			color := w.ColorAt(r, DefaultMaximumReflections)
-			canvas.WritePixel(x, y, color)
-
-			i += 1
-			progress := ((float64(i) / float64(count)) * 100)
-			fmt.Printf("\rProgress: %6.02f%%", progress)
+			semaphore <- 1
+			go func(x, y int, wg *sync.WaitGroup) {
+				// points = append(points, [2]int{x, y})
+				r := c.RayForPixel(x, y)
+				color := w.ColorAt(r, DefaultMaximumReflections)
+				canvas.WritePixel(x, y, color)
+				outMutex.Lock()
+				i += 1
+				progress := ((float64(i) / float64(count)) * 100)
+				fmt.Printf("\rProgress: %6.02f%%", progress)
+				outMutex.Unlock()
+				<-semaphore
+				wg.Done()
+			}(x, y, &wg)
 		}
 	}
+	wg.Wait()
 	fmt.Println()
 
 	return canvas

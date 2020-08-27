@@ -7,8 +7,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawSkybox() {
-	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawSkybox(jobs int) {
+	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.FieldOfView = math.Pi / 2.5
 
 		camera.SetTransform(NewViewTransform(

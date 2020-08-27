@@ -7,7 +7,7 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawAnalogClockExample() {
+func RunDrawAnalogClockExample(jobs int) {
 	canvas_width := 200
 	canvas_halfwidth := float64(canvas_width / 2)
 	clock_radius_scale := 0.4 // as a ratio to canvas width
