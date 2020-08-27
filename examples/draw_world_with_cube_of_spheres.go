@@ -7,8 +7,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithCubeOfSpheres() {
-	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithCubeOfSpheres(jobs int) {
+	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 200
 		camera.VSize = 200
 		camera.FieldOfView = math.Pi / 3

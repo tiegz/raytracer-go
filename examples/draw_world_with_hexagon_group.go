@@ -6,8 +6,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithHexagonGroup() {
-	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithHexagonGroup(jobs int) {
+	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 300
 		camera.VSize = 200
 		camera.FieldOfView = math.Pi / 3

@@ -6,8 +6,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithUVPattern() {
-	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithUVPattern(jobs int) {
+	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 320
 		camera.VSize = 140
 		camera.FieldOfView = math.Pi / 3

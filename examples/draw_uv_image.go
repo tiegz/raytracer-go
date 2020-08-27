@@ -6,8 +6,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawUVImage() {
-	Draw("tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawUVImage(jobs int) {
+	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.SetTransform(NewViewTransform(
 			NewPoint(1, 2, -10),
 			NewPoint(0, 1.1, 0),
