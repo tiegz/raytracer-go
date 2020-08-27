@@ -22,7 +22,7 @@ def green(txt); "\033[0;32m#{txt}\033[0m"; end
 
 keys.each do |key|
   parent_ns_per_op, current_ns_per_op = parent[key].to_f, current[key].to_f
-  delta = 0, delta_text = "N/A"
+  delta, delta_text = 0, "N/A"
   if parent[key]
     delta = (parent_ns_per_op - current_ns_per_op).round(3)
     delta_percentage = ((delta/parent_ns_per_op) * 100).round(1)
