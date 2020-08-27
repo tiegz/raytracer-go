@@ -103,26 +103,24 @@ func (c *Camera) RenderWithProgress(jobs int, w *World) Canvas {
 
 	count := c.HSize * c.VSize
 	i := 0
-	outMutex := sync.Mutex{}
-	var semaphore = make(chan int, jobs)
+	printMutex := sync.Mutex{}
+	renderSemaphore := make(chan int, jobs)
 	wg := sync.WaitGroup{}
 	wg.Add(c.VSize * c.HSize)
 	for y := 0; y < c.VSize; y += 1 {
 		for x := 0; x < c.HSize; x += 1 {
-			semaphore <- 1
-			go func(x, y int, wg *sync.WaitGroup) {
-				// points = append(points, [2]int{x, y})
+			renderSemaphore <- 1
+			i += 1
+			go func(x, y, i, count int, wg *sync.WaitGroup) {
 				r := c.RayForPixel(x, y)
 				color := w.ColorAt(r, DefaultMaximumReflections)
 				canvas.WritePixel(x, y, color)
-				outMutex.Lock()
-				i += 1
-				progress := ((float64(i) / float64(count)) * 100)
-				fmt.Printf("\rProgress: %6.02f%%", progress)
-				outMutex.Unlock()
-				<-semaphore
+				printMutex.Lock()
+				fmt.Printf("\rProgress: %6.02f%%", ((float64(i) / float64(count)) * 100))
+				printMutex.Unlock()
+				<-renderSemaphore
 				wg.Done()
-			}(x, y, &wg)
+			}(x, y, i, count, &wg)
 		}
 	}
 	wg.Wait()
