@@ -8,13 +8,13 @@ import (
 type Sequence struct {
 	Numbers      []float64
 	currentIndex int
-	mutex        sync.Mutex
+	mutex        *sync.Mutex
 }
 
 // Returns a deterministic number generator.
 // TODO: break out into a SequenceInterface, with DeterministicSequence and RandomSequence?
 func NewSequence(s ...float64) Sequence {
-	return Sequence{s, 0, sync.Mutex{}}
+	return Sequence{s, 0, &sync.Mutex{}}
 }
 
 func (s Sequence) String() string {
