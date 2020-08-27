@@ -29,7 +29,7 @@ func Draw(jobs int, filepath string, drawFunc func(*World, *Camera)) {
 		NewVector(0, 1, 0),
 	))
 	drawFunc(world, camera)
-	canvas := camera.RenderWithProgress(jobs, world)
+	canvas := camera.Render(world, jobs, true)
 
 	var err error
 	if strings.HasSuffix(filepath, ".jpg") || strings.HasSuffix(filepath, ".jpeg") {

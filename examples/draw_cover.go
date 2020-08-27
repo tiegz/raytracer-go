@@ -11,7 +11,7 @@ func RunDrawCover(jobs int) {
 	if err != nil {
 		panic(err)
 	}
-	canvas := ysf.Camera.RenderWithProgress(jobs, ysf.World)
+	canvas := ysf.Camera.Render(ysf.World, jobs, true)
 
 	if err := canvas.SaveJPEG("tmp/world.jpg"); err != nil {
 		fmt.Printf("Something went wrong! %s\n", err)

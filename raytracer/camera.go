@@ -81,24 +81,12 @@ func (c *Camera) RayForPixel(pixelX, pixelY int) *Ray {
 	return NewRay(origin, direction)
 }
 
-// Returns a canvas that renders the world from the given camera.
-func (c *Camera) Render(w *World) Canvas {
-	canvas := NewCanvas(c.HSize, c.VSize)
-
-	for y := 0; y < c.VSize; y += 1 {
-		for x := 0; x < c.HSize; x += 1 {
-			r := c.RayForPixel(x, y)
-			color := w.ColorAt(r, DefaultMaximumReflections)
-			canvas.WritePixel(x, y, color)
-		}
-	}
-
-	return canvas
-}
-
-// Same as Render(), while also outputting the current number of pixels rendered to stdout.
+// Renders the world onto a canvas with the given camera, and returns the canvas.
 //
-func (c *Camera) RenderWithProgress(jobs int, w *World) Canvas {
+// If printProgress is true, outputs the current number of pixels rendered to canvas.
+//
+// The number of pixels to render at a time can be controlled with the jobs argument.
+func (c *Camera) Render(w *World, jobs int, printProgress bool) Canvas {
 	canvas := NewCanvas(c.HSize, c.VSize)
 
 	count := c.HSize * c.VSize
@@ -115,16 +103,20 @@ func (c *Camera) RenderWithProgress(jobs int, w *World) Canvas {
 				r := c.RayForPixel(x, y)
 				color := w.ColorAt(r, DefaultMaximumReflections)
 				canvas.WritePixel(x, y, color)
-				printMutex.Lock()
-				fmt.Printf("\rProgress: %6.02f%%", ((float64(i) / float64(count)) * 100))
-				printMutex.Unlock()
+				if printProgress {
+					printMutex.Lock()
+					fmt.Printf("\rProgress: %6.02f%%", ((float64(i) / float64(count)) * 100))
+					printMutex.Unlock()
+				}
 				<-renderSemaphore
 				wg.Done()
 			}(x, y, i, count, &wg)
 		}
 	}
 	wg.Wait()
-	fmt.Println()
+	if printProgress {
+		fmt.Println()
+	}
 
 	return canvas
 }

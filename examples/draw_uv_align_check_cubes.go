@@ -114,7 +114,7 @@ func RunDrawUVAlignCheckCubes(jobs int) {
 		NewPointLight(NewPoint(100, 0, -100), NewColor(0.25, 0.25, 0.25)),
 	}
 
-	canvas := camera.RenderWithProgress(jobs, world)
+	canvas := camera.Render(world, jobs, true)
 
 	if err := canvas.SaveJPEG("tmp/world.jpg"); err != nil {
 		fmt.Printf("Something went wrong! %s\n", err)
