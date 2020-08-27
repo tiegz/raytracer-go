@@ -45,7 +45,7 @@ func main() {
 	exampleCmd := flag.NewFlagSet("example", flag.ExitOnError)
 	exampleNamePtr := exampleCmd.String("name", "", "Example name. (Default: World)")
 	exampleListPtr := exampleCmd.Bool("list", false, "List examples.")
-	exampleJobsPtr := exampleCmd.Int("jobs", 1, "Run n jobs in parallel. (Default: 1")
+	exampleJobsPtr := exampleCmd.Int("jobs", 1, "Run n jobs in parallel. (Default: 1)")
 	versionCmd := flag.NewFlagSet("version", flag.ExitOnError)
 	helpCmd := flag.NewFlagSet("help", flag.ExitOnError)
 
