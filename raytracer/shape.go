@@ -41,6 +41,21 @@ func (s *Shape) SetTransform(m Matrix) {
 	s.InverseTransform = m.Inverse()
 }
 
+func (s *Shape) SetMaterialRecursively(m *Material) {
+	s.Material = m
+	switch localShape := s.LocalShape.(type) {
+	case Group:
+		for _, child := range localShape.Children {
+			child.SetMaterialRecursively(m)
+		}
+	case Csg:
+		localShape.Left.SetMaterialRecursively(m)
+		localShape.Right.SetMaterialRecursively(m)
+	default:
+		// no-op
+	}
+}
+
 func (s *Shape) Intersect(r *Ray) Intersections {
 	// Instead of applying object's transformation to object, we can just apply
 	// the inverse of the transformation to the ray.

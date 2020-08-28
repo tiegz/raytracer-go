@@ -40,8 +40,10 @@ func RunDrawWorldWithTeapot(jobs int) {
 			NewRotateX(-math.Pi/2),
 			NewUScale(0.75),
 		))
-		// TODO: color on group not working?
-		// group.Material.Color = Colors["Red"]
+
+		m := DefaultMaterial()
+		m.Color = Colors["Purple"]
+		group.SetMaterialRecursively(m)
 
 		world.Objects = []*Shape{
 			floor,

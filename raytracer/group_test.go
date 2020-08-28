@@ -176,31 +176,24 @@ func TestSubdividingAGroupWithTooFewChildren(t *testing.T) {
 	assertEqualGroup(t, []*Shape{s2, s3}, *subGroup.Children[1])
 }
 
-func TestSubdividingACsgShapeSubdividesItsChildren(t *testing.T) {
+func TestSetMaterialRecusirvelySetsOnChildren(t *testing.T) {
 	s1 := NewSphere()
-	s1.SetTransform(NewTranslation(-1.5, 0, 0))
-	s1.Label = "s1"
 	s2 := NewSphere()
-	s2.SetTransform(NewTranslation(1.5, 0, 0))
-	s2.Label = "s2"
-	l := NewGroup()
-	l.AddChildren(s1, s2)
-
 	s3 := NewSphere()
-	s3.SetTransform(NewTranslation(0, 0, -1.5))
-	s3.Label = "s3"
-	s4 := NewSphere()
-	s4.SetTransform(NewTranslation(0, 0, 1.5))
-	s4.Label = "s4"
-	r := NewGroup()
-	r.AddChildren(s3, s4)
+	g1 := NewGroup()
+	g2 := NewGroup()
 
-	shape := NewCsg("difference", l, r)
+	g1.AddChildren(s1, s2, g2)
+	g2.AddChildren(s3)
 
-	shape.Divide(1)
+	m := DefaultMaterial()
+	m.Color = Colors["Green"]
 
-	assertEqualGroup(t, []*Shape{s1}, *l.LocalShape.(Group).Children[0])
-	assertEqualGroup(t, []*Shape{s2}, *l.LocalShape.(Group).Children[1])
-	assertEqualGroup(t, []*Shape{s3}, *r.LocalShape.(Group).Children[0])
-	assertEqualGroup(t, []*Shape{s4}, *r.LocalShape.(Group).Children[1])
+	g1.SetMaterialRecursively(m)
+
+	assertEqualMaterial(t, *m, *g1.Material)
+	assertEqualMaterial(t, *m, *g2.Material)
+	assertEqualMaterial(t, *m, *s1.Material)
+	assertEqualMaterial(t, *m, *s2.Material)
+	assertEqualMaterial(t, *m, *s3.Material)
 }
