@@ -7,7 +7,7 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawUVAlignCheckCubes(jobs int) {
+func RunDrawUVAlignCheckCubes(printProgress bool, jobs int) {
 	// camera := NewCamera(160, 70, math.Pi/3)
 	camera := NewCamera(800, 400, math.Pi/3)
 	// camera := NewCamera(1280, 800, math.Pi/3)

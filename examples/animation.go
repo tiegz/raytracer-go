@@ -8,7 +8,7 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunAnimation(jobs int) {
+func RunAnimation(printProgress bool, jobs int) {
 	midSphere := NewSphere()
 	midSphere.SetTransform(NewTranslation(-0.5, 1, 0.5))
 	midSphere.Material.Reflective = 1.0
@@ -42,7 +42,7 @@ func RunAnimation(jobs int) {
 		leftSphere.SetTransform(leftSphereTranslation.Multiply(leftSphere.Transform))
 		rightSphere.SetTransform(rightSphereTranslation.Multiply(rightSphere.Transform))
 
-		Draw(jobs, fmt.Sprintf("tmp/world_%03d.jpg", i), func(world *World, camera *Camera) {
+		Draw(printProgress, jobs, fmt.Sprintf("tmp/world_%03d.jpg", i), func(world *World, camera *Camera) {
 			camera.HSize = 320
 			camera.VSize = 245
 			camera.FieldOfView = math.Pi / 3

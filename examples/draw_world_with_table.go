@@ -8,8 +8,8 @@ import (
 
 // Adapted from https://github.com/jamis/rtc-ocaml/blob/master/progs/chap12.ml
 // TODO: include NewSolidPattern() in here
-func RunDrawWorldWithTable(jobs int) {
-	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithTable(printProgress bool, jobs int) {
+	Draw(printProgress, jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 1600
 		camera.VSize = 800
 		camera.FieldOfView = math.Pi / 4

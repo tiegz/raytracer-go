@@ -6,8 +6,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithCylinderAndCone(jobs int) {
-	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithCylinderAndCone(printProgress bool, jobs int) {
+	Draw(printProgress, jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 320
 		camera.VSize = 200
 		camera.FieldOfView = math.Pi / 3

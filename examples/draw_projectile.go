@@ -6,7 +6,7 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawProjectileExample(jobs int) {
+func RunDrawProjectileExample(printProgress bool, jobs int) {
 	initialPos := NewPoint(0, 1, 0)
 	initialVel := NewVector(1, 1.8, 0)
 	initialVel = initialVel.Normalized()
