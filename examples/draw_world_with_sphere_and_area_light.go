@@ -6,8 +6,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithSphereAndAreaLight(jobs int) {
-	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithSphereAndAreaLight(printProgress bool, jobs int) {
+	Draw(printProgress, jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 320
 		camera.VSize = 200
 		camera.FieldOfView = math.Pi / 3

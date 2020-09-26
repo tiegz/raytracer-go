@@ -7,8 +7,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithTeapot(jobs int) {
-	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithTeapot(printProgress bool, jobs int) {
+	Draw(printProgress, jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 640
 		camera.VSize = 400
 		camera.FieldOfView = math.Pi / 3

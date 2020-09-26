@@ -6,8 +6,8 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawWorldWithDice(jobs int) {
-	Draw(jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
+func RunDrawWorldWithDice(printProgress bool, jobs int) {
+	Draw(printProgress, jobs, "tmp/world.jpg", func(world *World, camera *Camera) {
 		camera.HSize = 600
 		camera.VSize = 600
 		camera.FieldOfView = math.Pi / 3

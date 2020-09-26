@@ -6,7 +6,7 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawCover(jobs int) {
+func RunDrawCover(printProgress bool, jobs int) {
 	ysf, err := ParseYamlSceneFile("raytracer/files/cover.yml")
 	if err != nil {
 		panic(err)

@@ -10,43 +10,48 @@ import (
 	. "github.com/tiegz/raytracer-go/examples"
 )
 
-var examples map[string]func(int) = map[string]func(int){
+var examples map[string]func(bool, int) = map[string]func(bool, int){
 	// Examples from the Raytracer Challenge
-	"World":                       func(jobs int) { RunDrawWorld(jobs) },
-	"WorldWithPlane":              func(jobs int) { RunDrawWorldWithPlane(jobs) },
-	"WorldWithPatterns":           func(jobs int) { RunDrawWorldWithPatterns(jobs) },
-	"WorldWithMultiplePatterns":   func(jobs int) { RunDrawWorldWithMultiplePatterns(jobs) },
-	"WorldWithCube":               func(jobs int) { RunDrawWorldWithCube(jobs) },
-	"WorldWithTable":              func(jobs int) { RunDrawWorldWithTable(jobs) },
-	"WorldWithCylinderAndCone":    func(jobs int) { RunDrawWorldWithCylinderAndCone(jobs) },
-	"WorldWithHexagonGroup":       func(jobs int) { RunDrawWorldWithHexagonGroup(jobs) },
-	"WorldWithTriangles":          func(jobs int) { RunDrawWorldWithTriangles(jobs) },
-	"WorldWithTeapot":             func(jobs int) { RunDrawWorldWithTeapot(jobs) },
-	"WorldWithDice":               func(jobs int) { RunDrawWorldWithDice(jobs) },
-	"WorldWithCubeOfSpheres":      func(jobs int) { RunDrawWorldWithCubeOfSpheres(jobs) },
-	"WorldWithSphereAndAreaLight": func(jobs int) { RunDrawWorldWithSphereAndAreaLight(jobs) },
-	"WorldWithSnowman":            func(jobs int) { RunDrawWorldWithSnowman(jobs) },
-	"WorldWithUVPattern":          func(jobs int) { RunDrawWorldWithUVPattern(jobs) },
-	"UVAlignCheck":                func(jobs int) { RunDrawUVAlignCheck(jobs) },
-	"UVAlignCheckCubes":           func(jobs int) { RunDrawUVAlignCheckCubes(jobs) },
-	"UVImage":                     func(jobs int) { RunDrawUVImage(jobs) },
-	"Skybox":                      func(jobs int) { RunDrawSkybox(jobs) },
-	"Cover":                       func(jobs int) { RunDrawCover(jobs) },
+	"World":                       func(printProgress bool, jobs int) { RunDrawWorld(printProgress, jobs) },
+	"WorldWithPlane":              func(printProgress bool, jobs int) { RunDrawWorldWithPlane(printProgress, jobs) },
+	"WorldWithPatterns":           func(printProgress bool, jobs int) { RunDrawWorldWithPatterns(printProgress, jobs) },
+	"WorldWithMultiplePatterns":   func(printProgress bool, jobs int) { RunDrawWorldWithMultiplePatterns(printProgress, jobs) },
+	"WorldWithCube":               func(printProgress bool, jobs int) { RunDrawWorldWithCube(printProgress, jobs) },
+	"WorldWithTable":              func(printProgress bool, jobs int) { RunDrawWorldWithTable(printProgress, jobs) },
+	"WorldWithCylinderAndCone":    func(printProgress bool, jobs int) { RunDrawWorldWithCylinderAndCone(printProgress, jobs) },
+	"WorldWithHexagonGroup":       func(printProgress bool, jobs int) { RunDrawWorldWithHexagonGroup(printProgress, jobs) },
+	"WorldWithTriangles":          func(printProgress bool, jobs int) { RunDrawWorldWithTriangles(printProgress, jobs) },
+	"WorldWithTeapot":             func(printProgress bool, jobs int) { RunDrawWorldWithTeapot(printProgress, jobs) },
+	"WorldWithDice":               func(printProgress bool, jobs int) { RunDrawWorldWithDice(printProgress, jobs) },
+	"WorldWithCubeOfSpheres":      func(printProgress bool, jobs int) { RunDrawWorldWithCubeOfSpheres(printProgress, jobs) },
+	"WorldWithSphereAndAreaLight": func(printProgress bool, jobs int) { RunDrawWorldWithSphereAndAreaLight(printProgress, jobs) },
+	"WorldWithSnowman":            func(printProgress bool, jobs int) { RunDrawWorldWithSnowman(printProgress, jobs) },
+	"WorldWithUVPattern":          func(printProgress bool, jobs int) { RunDrawWorldWithUVPattern(printProgress, jobs) },
+	"UVAlignCheck":                func(printProgress bool, jobs int) { RunDrawUVAlignCheck(printProgress, jobs) },
+	"UVAlignCheckCubes":           func(printProgress bool, jobs int) { RunDrawUVAlignCheckCubes(printProgress, jobs) },
+	"UVImage":                     func(printProgress bool, jobs int) { RunDrawUVImage(printProgress, jobs) },
+	"Skybox":                      func(printProgress bool, jobs int) { RunDrawSkybox(printProgress, jobs) },
+	"Cover":                       func(printProgress bool, jobs int) { RunDrawCover(printProgress, jobs) },
 
 	// Other examples
-	"Animation": func(jobs int) { RunAnimation(jobs) },
+	"Animation": func(printProgress bool, jobs int) { RunAnimation(printProgress, jobs) },
 }
 
 func main() {
 	// Root command
 	cmd := flag.NewFlagSet("raytracer", flag.ExitOnError)
 
-	// Sub-commands
+	// --> example sub-command
 	exampleCmd := flag.NewFlagSet("example", flag.ExitOnError)
-	exampleNamePtr := exampleCmd.String("name", "", "Example name. (Default: World)")
+	exampleNamePtr := exampleCmd.String("name", "", "Example name.")
 	exampleListPtr := exampleCmd.Bool("list", false, "List examples.")
-	exampleJobsPtr := exampleCmd.Int("jobs", 1, "Run n jobs in parallel. (Default: 1)")
+	examplePrintProgressPtr := exampleCmd.Bool("progress", true, "Write progress to stdout.")
+	exampleJobsPtr := exampleCmd.Int("jobs", 1, "Run n jobs in parallel.")
+
+	// --> version sub-command
 	versionCmd := flag.NewFlagSet("version", flag.ExitOnError)
+
+	// --> help sub-command
 	helpCmd := flag.NewFlagSet("help", flag.ExitOnError)
 
 	if len(os.Args) < 2 {
@@ -77,7 +82,7 @@ func main() {
 			name := *exampleNamePtr
 			fmt.Printf("Rendering example: %s\n", name)
 			if f, ok := examples[name]; ok {
-				f(*exampleJobsPtr)
+				f(*examplePrintProgressPtr, *exampleJobsPtr)
 			} else {
 				fmt.Printf("Example %s not found!\nRun 'raytracer-go example -list' to see examples.\n", name)
 			}

@@ -7,7 +7,7 @@ import (
 	. "github.com/tiegz/raytracer-go/raytracer"
 )
 
-func RunDrawSphereSilhouette(scaleX, scaleY, rotateZ, skew bool) {
+func RunDrawSphereSilhouette(printProgress bool, scaleX, scaleY, rotateZ, skew bool) {
 	canvasSize := 250
 	wallZ := 10.0
 	wallSize := 7.0
