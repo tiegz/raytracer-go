@@ -12,15 +12,15 @@ func NewMatrix(rows, cols int, data []float64) Matrix {
 	return Matrix{rows, cols, data}
 }
 
-func (m Matrix) At(row, col int) float64 {
+func (m *Matrix) At(row, col int) float64 {
 	return m.Data[row*m.Cols+col]
 }
 
-func (m Matrix) Set(row, col int, val float64) {
+func (m *Matrix) Set(row, col int, val float64) {
 	m.Data[row*m.Cols+col] = val
 }
 
-func (m Matrix) IsEqualTo(m2 Matrix) bool {
+func (m *Matrix) IsEqualTo(m2 *Matrix) bool {
 	if m.Cols != m2.Cols || m.Rows != m2.Rows {
 		return false
 	}
@@ -36,7 +36,7 @@ func (m Matrix) IsEqualTo(m2 Matrix) bool {
 	return true
 }
 
-func (m Matrix) String() string {
+func (m *Matrix) String() string {
 	s := "Matrix ( "
 	for row := 0; row < m.Rows; row++ {
 		start := row * m.Cols
@@ -75,7 +75,7 @@ func (m Matrix) Compose(transformations ...Matrix) Matrix {
 	return m
 }
 
-func (m Matrix) Multiply(m2 Matrix) Matrix {
+func (m *Matrix) Multiply(m2 Matrix) Matrix {
 	m3 := NewMatrix(m.Rows, m.Cols, make([]float64, m.Rows*m.Cols, m.Rows*m.Cols))
 
 	for row := 0; row < m.Rows; row += 1 {
