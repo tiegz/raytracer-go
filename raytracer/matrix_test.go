@@ -404,7 +404,7 @@ func BenchmarkMatrixMethodIsEqualTo(b *testing.B) {
 		5, 4, 3, 2,
 	})
 	for i := 0; i < b.N; i++ {
-		m1.IsEqualTo(m2)
+		m1.IsEqualTo(&m2)
 	}
 }
 

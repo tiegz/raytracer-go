@@ -36,13 +36,13 @@ func assertEqualRay(t *testing.T, expected, actual Ray) {
 }
 
 func assertEqualMatrix(t *testing.T, expected, actual Matrix) {
-	if !expected.IsEqualTo(actual) {
+	if !expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }
 
 func assertNotEqualMatrix(t *testing.T, expected, actual Matrix) {
-	if expected.IsEqualTo(actual) {
+	if expected.IsEqualTo(&actual) {
 		expectationFailure(t, expected, actual)
 	}
 }
