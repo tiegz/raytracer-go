@@ -232,7 +232,7 @@ func (s *Shape) IsEqualTo(s2 *Shape) bool {
 		return false
 	} else if !s.Material.IsEqualTo(s2.Material) {
 		return false
-	} else if !s.Transform.IsEqualTo(s2.Transform) {
+	} else if !s.Transform.IsEqualTo(&s2.Transform) {
 		return false
 	} else {
 		return s.LocalShape.localIsEqualTo(s2.LocalShape)

@@ -40,7 +40,7 @@ func (p *Pattern) IsEqualTo(p2 *Pattern) bool {
 
 	if pt1 != pt2 {
 		return false
-	} else if !p.Transform.IsEqualTo(p2.Transform) {
+	} else if !p.Transform.IsEqualTo(&p2.Transform) {
 		return false
 	} else {
 		return p.LocalPattern.localIsEqualTo(p2.LocalPattern)
