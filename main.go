@@ -15,6 +15,7 @@ var examples map[string]func(bool, int) = map[string]func(bool, int){
 	"World":                       func(printProgress bool, jobs int) { RunDrawWorld(printProgress, jobs) },
 	"WorldWithPlane":              func(printProgress bool, jobs int) { RunDrawWorldWithPlane(printProgress, jobs) },
 	"WorldWithPatterns":           func(printProgress bool, jobs int) { RunDrawWorldWithPatterns(printProgress, jobs) },
+	"WorldWithSphere":             func(printProgress bool, jobs int) { RunDrawWorldWithSphere(printProgress, jobs) },
 	"WorldWithMultiplePatterns":   func(printProgress bool, jobs int) { RunDrawWorldWithMultiplePatterns(printProgress, jobs) },
 	"WorldWithCube":               func(printProgress bool, jobs int) { RunDrawWorldWithCube(printProgress, jobs) },
 	"WorldWithTable":              func(printProgress bool, jobs int) { RunDrawWorldWithTable(printProgress, jobs) },
