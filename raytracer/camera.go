@@ -36,7 +36,7 @@ func NewCamera(h, v int, f float64) *Camera {
 	return c
 }
 
-// TODO this will become stale if HalfWidth, HalfHeight VSze or HSize are changed. Should
+// WARNING this will become stale if HalfWidth, HalfHeight VSze or HSize are changed. Should
 // we change those to accessor methods to trigger a recalculation from this method?
 func (c *Camera) CalculatePixelSize() {
 	halfView := math.Tan(c.FieldOfView / 2) // p 106 illustration
