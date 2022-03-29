@@ -149,3 +149,9 @@ func assertFileExists(t *testing.T, filepath string) {
 		t.Errorf("\nExpected %s to exist, but it did not.\n", filepath)
 	}
 }
+
+func assertEmpty[A any](t *testing.T, list []A) {
+	if len(list) > 0 {
+		t.Errorf("\nExpected %T to be empty, but it had %d item(s).\n", list, len(list))
+	}
+}

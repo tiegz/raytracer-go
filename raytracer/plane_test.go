@@ -24,8 +24,7 @@ func TestIntersectWithARayParallelToThePlane(t *testing.T) {
 	r := NewRay(NewPoint(0, 10, 0), NewVector(0, 0, 1))
 	xs := localPlane.LocalIntersect(r, plane)
 
-	// TODO assertEmpty function
-	assertEqualInt(t, 0, len(xs))
+	assertEmpty(t, xs)
 }
 
 func TestIntersectWithACoplanarRay(t *testing.T) {
