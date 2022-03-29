@@ -35,7 +35,7 @@ func RunDrawUVImage(printProgress bool, jobs int) {
 		// Image setup:
 		// 1) wget http://planetpixelemporium.com/download/download.php?earthmap1k.jpg
 		// 2) convert tmp/earthmap1k.jpg -compress none tmp/earthmap1k.ppm
-		image, err := ioutil.ReadFile("tmp/earthmap1k.ppm")
+		image, err := ioutil.ReadFile("raytracer/files/earthmap1k.ppm")
 		if err != nil {
 			panic(err)
 		}
