@@ -19,12 +19,12 @@ func TestConstructingACamera(t *testing.T) {
 
 func TestPixelSizeForHorizontalCanvas(t *testing.T) {
 	c := NewCamera(200, 125, math.Pi/2)
-	assertEqualFloat64(t, 0.01, c.PixelSize())
+	assertEqualFloat64(t, 0.01, c.PixelSize)
 }
 
 func TestPixelSizeForVerticalCanvas(t *testing.T) {
 	c := NewCamera(125, 200, math.Pi/2)
-	assertEqualFloat64(t, 0.01, c.PixelSize())
+	assertEqualFloat64(t, 0.01, c.PixelSize)
 }
 
 func TestConstructingARayThroughCenterOfTheCanvas(t *testing.T) {
