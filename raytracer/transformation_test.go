@@ -138,46 +138,25 @@ func TestRotatingPointAroundZAxis(t *testing.T) {
 	assertEqualTuple(t, NewPoint(-1, 0, 0), full_quarter_rotation.MultiplyByTuple(point))
 }
 
-// TODO table-based tests for these 6 shearing examples
-func TestShearingPointXByProportionToY(t *testing.T) {
-	point := NewPoint(2, 3, 4)
-	shearing := NewShear(1, 0, 0, 0, 0, 0)
-
-	assertEqualTuple(t, NewPoint(5, 3, 4), shearing.MultiplyByTuple(point))
-}
-
-func TestShearingPointXByProportionToZ(t *testing.T) {
-	point := NewPoint(2, 3, 4)
-	shearing := NewShear(0, 1, 0, 0, 0, 0)
-
-	assertEqualTuple(t, NewPoint(6, 3, 4), shearing.MultiplyByTuple(point))
-}
-
-func TestShearingPointYByProportionToX(t *testing.T) {
-	point := NewPoint(2, 3, 4)
-	shearing := NewShear(0, 0, 1, 0, 0, 0)
-
-	assertEqualTuple(t, NewPoint(2, 5, 4), shearing.MultiplyByTuple(point))
-}
-func TestShearingPointYByProportionToZ(t *testing.T) {
-	point := NewPoint(2, 3, 4)
-	shearing := NewShear(0, 0, 0, 1, 0, 0)
-
-	assertEqualTuple(t, NewPoint(2, 7, 4), shearing.MultiplyByTuple(point))
-}
-
-func TestShearingPointZByProportionToX(t *testing.T) {
-	point := NewPoint(2, 3, 4)
-	shearing := NewShear(0, 0, 0, 0, 1, 0)
-
-	assertEqualTuple(t, NewPoint(2, 3, 6), shearing.MultiplyByTuple(point))
-}
-
-func TestShearingPointZByProportionToY(t *testing.T) {
-	point := NewPoint(2, 3, 4)
-	shearing := NewShear(0, 0, 0, 0, 0, 1)
-
-	assertEqualTuple(t, NewPoint(2, 3, 7), shearing.MultiplyByTuple(point))
+func TestShear(t *testing.T) {
+	testCases := []struct {
+		Name          string
+		Point         Tuple
+		Shear         Matrix
+		ExpectedPoint Tuple
+	}{
+		{"TestShearingPointXByProportionToY", NewPoint(2, 3, 4), NewShear(1, 0, 0, 0, 0, 0), NewPoint(5, 3, 4)},
+		{"TestShearingPointXByProportionToZ", NewPoint(2, 3, 4), NewShear(0, 1, 0, 0, 0, 0), NewPoint(6, 3, 4)},
+		{"TestShearingPointYByProportionToX", NewPoint(2, 3, 4), NewShear(0, 0, 1, 0, 0, 0), NewPoint(2, 5, 4)},
+		{"TestShearingPointYByProportionToZ", NewPoint(2, 3, 4), NewShear(0, 0, 0, 1, 0, 0), NewPoint(2, 7, 4)},
+		{"TestShearingPointZByProportionToX", NewPoint(2, 3, 4), NewShear(0, 0, 0, 0, 1, 0), NewPoint(2, 3, 6)},
+		{"TestShearingPointZByProportionToY", NewPoint(2, 3, 4), NewShear(0, 0, 0, 0, 0, 1), NewPoint(2, 3, 7)},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.Name, func(t *testing.T) {
+			assertEqualTuple(t, tc.ExpectedPoint, tc.Shear.MultiplyByTuple(tc.Point))
+		})
+	}
 }
 
 // TODO try to write "fluent api" for method chaining (pg 55)
