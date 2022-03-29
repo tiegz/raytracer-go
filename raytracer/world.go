@@ -78,7 +78,7 @@ func (w *World) ShadeHit(c *Computation, remainingReflections int) Color {
 		reflectedColor := w.ReflectedColor(c, remainingReflections)
 		refractedColor := w.RefractedColor(c, remainingReflections)
 		if c.Object.Material.Reflective > 0 && c.Object.Material.Transparency > 0 {
-			reflectance := c.Schlick()
+			reflectance := c.SchlickReflectance()
 			color = color.
 				Add(surfaceColor).
 				Add(reflectedColor.Multiply(reflectance)).

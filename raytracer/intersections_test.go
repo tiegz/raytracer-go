@@ -262,7 +262,7 @@ func TestTheSchlickApproximationUnderTotalInternalReflection(t *testing.T) {
 		NewIntersection(math.Sqrt(2)/2, shape),
 	}
 	comps := xs[1].PrepareComputations(r, xs...)
-	reflectance := comps.Schlick()
+	reflectance := comps.SchlickReflectance()
 
 	assertEqualFloat64(t, 1.0, reflectance)
 }
@@ -276,7 +276,7 @@ func TestTheSchlickApproximationWithAPerpendicularViewingAngle(t *testing.T) {
 		NewIntersection(1, shape),
 	}
 	comps := xs[1].PrepareComputations(r, xs...)
-	reflectance := comps.Schlick()
+	reflectance := comps.SchlickReflectance()
 
 	assertEqualFloat64(t, 0.04, reflectance)
 }
@@ -287,7 +287,7 @@ func TestTheSchlickApproximationWithSmallAngleAndN2GreaterThanN1(t *testing.T) {
 	r := NewRay(NewPoint(0, 0.99, -2), NewVector(0, 0, 1))
 	xs := Intersections{NewIntersection(1.8589, shape)}
 	comps := xs[0].PrepareComputations(r, xs...)
-	reflectance := comps.Schlick()
+	reflectance := comps.SchlickReflectance()
 
 	assertEqualFloat64(t, 0.48873, reflectance)
 }
@@ -332,7 +332,7 @@ func BenchmarkIntersectionMethodPrepareComputations(b *testing.B) {
 	}
 }
 
-func BenchmarkIntersectionMethodShlick(b *testing.B) {
+func BenchmarkIntersectionMethodSchlickReflectance(b *testing.B) {
 	// Taken from TestTheSchlickApproximationUnderTotalInternalReflection().
 	shape := NewGlassSphere()
 	r := NewRay(NewPoint(0, 0, math.Sqrt(2)/2), NewVector(0, 1, 0))
@@ -342,6 +342,6 @@ func BenchmarkIntersectionMethodShlick(b *testing.B) {
 	}
 	comps := xs[1].PrepareComputations(r, xs...)
 	for i := 0; i < b.N; i++ {
-		comps.Schlick()
+		comps.SchlickReflectance()
 	}
 }
