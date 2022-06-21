@@ -20,25 +20,25 @@ func RunDrawWorldWithCube(printProgress bool, jobs int) {
 
 		floor := NewPlane()
 		floor.Material.Color = NewColor(1, 0.9, 0.9)
-		floor.Material.Specular = 0
+		floor.Material.Specular = NewColor(0, 0, 0)
 
 		cubeLeft := NewCube()
 		cubeLeft.SetTransform(NewTranslation(-2, 1, 1))
 		cubeLeft.Material.Color = Colors["Red"]
-		cubeLeft.Material.Diffuse = 0.7
-		cubeLeft.Material.Specular = 0.3
+		cubeLeft.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		cubeLeft.Material.Specular = NewColor(0.3, 0.3, 0.3)
 
 		cubeMiddle := NewCube()
 		cubeMiddle.SetTransform(NewTranslation(-0.5, 3, 1))
 		cubeMiddle.Material.Color = Colors["Green"]
-		cubeMiddle.Material.Diffuse = 0.7
-		cubeMiddle.Material.Specular = 0.3
+		cubeMiddle.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		cubeMiddle.Material.Specular = NewColor(0.3, 0.3, 0.3)
 
 		cubeRight := NewCube()
 		cubeRight.Material.Color = Colors["Blue"]
 		cubeRight.SetTransform(NewTranslation(1, 1, 1))
-		cubeRight.Material.Diffuse = 0.7
-		cubeRight.Material.Specular = 0.3
+		cubeRight.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		cubeRight.Material.Specular = NewColor(0.3, 0.3, 0.3)
 
 		world.Objects = []*Shape{
 			floor,

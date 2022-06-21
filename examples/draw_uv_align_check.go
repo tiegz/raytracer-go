@@ -19,8 +19,8 @@ func RunDrawUVAlignCheck(printProgress bool, jobs int) {
 		))
 
 		floor := NewPlane()
-		floor.Material.Ambient = 0.1
-		floor.Material.Diffuse = 0.8
+		floor.Material.Ambient = NewColor(0.1, 0.1, 0.1)
+		floor.Material.Diffuse = NewColor(0.8, 0.8, 0.8)
 		floor.Material.Pattern = NewTextureMapPattern(
 			NewUVAlignCheckPattern(
 				NewColor(1, 1, 1), // white

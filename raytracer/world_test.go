@@ -21,9 +21,9 @@ func TestDefaultWorld(t *testing.T) {
 	s1 := NewSphere()
 	s1.Material = &Material{
 		Color:           NewColor(0.8, 1.0, 0.6),
-		Ambient:         0.1,
-		Diffuse:         0.7,
-		Specular:        0.2,
+		Ambient:         NewColor(0.1, 0.1, 0.1),
+		Diffuse:         NewColor(0.7, 0.7, 0.7),
+		Specular:        NewColor(0.2, 0.2, 0.2),
 		Shininess:       200,
 		Reflective:      0.0,
 		Transparency:    0.0,
@@ -125,8 +125,8 @@ func TestColorAtWhenRayHitsOuterSphere(t *testing.T) {
 // Ray is inside outer sphere, pointed at inner sphere.
 func TestColorAtWithAnIntersectionBehindRay(t *testing.T) {
 	w := DefaultWorld()
-	w.Objects[0].Material.Ambient = 1 // outer
-	w.Objects[1].Material.Ambient = 1 // inner
+	w.Objects[0].Material.Ambient = NewColor(1, 1, 1) // outer
+	w.Objects[1].Material.Ambient = NewColor(1, 1, 1) // inner
 	r := NewRay(NewPoint(0, 0, 0.75), NewVector(0, 0, -1))
 	actual := w.ColorAt(r, DefaultMaximumReflections)
 	expected := w.Objects[1].Material.Color
@@ -173,7 +173,7 @@ func TestTheRefractedColorUnderTotalInternalReflection(t *testing.T) {
 
 func TestTheRefractedColorWithARefractedRay(t *testing.T) {
 	w := DefaultWorld()
-	w.Objects[0].Material.Ambient = 1.0
+	w.Objects[0].Material.Ambient = NewColor(1.0, 1.0, 1.0)
 	w.Objects[0].Material.Pattern = NewTestPattern()
 	w.Objects[1].Material.Transparency = 1.0
 	w.Objects[1].Material.RefractiveIndex = 1.5
@@ -200,7 +200,7 @@ func TestShadeHitWithATransparentMaterial(t *testing.T) {
 	ball := NewSphere()
 	ball.SetTransform(NewTranslation(0, -3.5, -0.5))
 	ball.Material.Color = NewColor(1, 0, 0)
-	ball.Material.Ambient = 0.5
+	ball.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 	w.Objects = append(w.Objects, floor, ball)
 	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
 	xs := Intersections{NewIntersection(math.Sqrt(2), floor)}
@@ -221,7 +221,7 @@ func TestShadeHitWithAReflectiveTransparentMaterial(t *testing.T) {
 	ball := NewSphere()
 	ball.SetTransform(NewTranslation(0, -3.5, -0.5))
 	ball.Material.Color = NewColor(1, 0, 0)
-	ball.Material.Ambient = 0.5
+	ball.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 	w.Objects = append(w.Objects, floor, ball)
 	r := NewRay(NewPoint(0, 0, -3), NewVector(0, -math.Sqrt(2)/2, math.Sqrt(2)/2))
 	xs := Intersections{NewIntersection(math.Sqrt(2), floor)}
@@ -289,7 +289,7 @@ func BenchmarkWorldMethodColorAt(b *testing.B) {
 func BenchmarkWorldMethodRefractedColor(b *testing.B) {
 	// Taken from TestTheRefractedColorWithARefractedRay, so this does return a color.
 	w := DefaultWorld()
-	w.Objects[0].Material.Ambient = 1.0
+	w.Objects[0].Material.Ambient = NewColor(1.0, 1.0, 1.0)
 	w.Objects[0].Material.Pattern = NewTestPattern()
 	w.Objects[1].Material.Transparency = 1.0
 	w.Objects[1].Material.RefractiveIndex = 1.5

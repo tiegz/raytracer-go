@@ -34,8 +34,8 @@ func RunDrawWorldWithUVPattern(printProgress bool, jobs int) {
 		sphere := NewSphere()
 		sphere.SetTransform(NewTranslation(3, 1, 0))
 		sphere.Material.Color = NewColor(0.1, 1, 0.5)
-		sphere.Material.Diffuse = 0.7
-		sphere.Material.Specular = 0.3
+		sphere.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		sphere.Material.Specular = NewColor(0.3, 0.3, 0.3)
 		sphere.Material.Pattern = NewTextureMapPattern(
 			NewUVCheckerPattern(16, 16, Colors["Green"], Colors["Purple"]),
 			SphericalMap,
@@ -43,8 +43,8 @@ func RunDrawWorldWithUVPattern(printProgress bool, jobs int) {
 
 		cube := NewCube()
 		cube.SetTransform(NewTranslation(0, 1, 0))
-		cube.Material.Diffuse = 0.7
-		cube.Material.Specular = 0.3
+		cube.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		cube.Material.Specular = NewColor(0.3, 0.3, 0.3)
 		cube.Material.Pattern = NewTextureMapPattern(
 			NewUVCheckerPattern(16, 16, Colors["Green"], Colors["Purple"]),
 			SphericalMap,
@@ -59,8 +59,8 @@ func RunDrawWorldWithUVPattern(printProgress bool, jobs int) {
 			NewTranslation(5, 1, 0),
 			NewScale(1, 2, 1),
 		))
-		cone.Material.Diffuse = 0.7
-		cone.Material.Specular = 0.3
+		cone.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		cone.Material.Specular = NewColor(0.3, 0.3, 0.3)
 		cone.Material.Pattern = NewTextureMapPattern(
 			NewUVCheckerPattern(16, 16, Colors["Green"], Colors["Purple"]),
 			SphericalMap,
@@ -70,8 +70,8 @@ func RunDrawWorldWithUVPattern(printProgress bool, jobs int) {
 		cyl.LocalShape.(*Cylinder).Closed = true
 		cyl.LocalShape.(*Cylinder).Minimum = 0
 		cyl.LocalShape.(*Cylinder).Maximum = 1
-		cyl.Material.Diffuse = 0.7
-		cyl.Material.Specular = 0.3
+		cyl.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		cyl.Material.Specular = NewColor(0.3, 0.3, 0.3)
 		cyl.Material.Pattern = NewTextureMapPattern(
 			NewUVCheckerPattern(16, 16, Colors["Green"], Colors["Purple"]),
 			CylindricalMap,

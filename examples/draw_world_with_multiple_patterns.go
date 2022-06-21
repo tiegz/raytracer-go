@@ -20,22 +20,22 @@ func RunDrawWorldWithMultiplePatterns(printProgress bool, jobs int) {
 
 		floor := NewPlane()
 		// floor.Material.Color = NewColor(1, 0.9, 0.9)
-		// floor.Material.Specular = 0
+		// floor.Material.Specular = NewColor(0, 0, 0)
 		floor.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Red"])
 
 		midSphere := NewSphere()
 		midSphere.SetTransform(NewTranslation(-0.5, 1, 0.5))
 		// midSphere.Material.Color = NewColor(0.1, 1, 0.5)
-		// midSphere.Material.Diffuse = 0.7
-		// midSphere.Material.Specular = 0.3
+		// midSphere.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		// midSphere.Material.Specular = NewColor(0.3, 0,3 0.3)
 		midSphere.Material.Pattern = NewStripePattern(Colors["Green"], Colors["Purple"])
 
 		rightSphere := NewSphere()
 		rightSphere.SetTransform(NewTranslation(1.5, 0.5, -0.5))
 		rightSphere.SetTransform(rightSphere.Transform.Multiply(NewScale(0.5, 0.5, 0.5)))
 		// rightSphere.Material.Color = NewColor(0.5, 1, 0.1)
-		// rightSphere.Material.Diffuse = 0.7
-		// rightSphere.Material.Specular = 0.3
+		// rightSphere.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		// rightSphere.Material.Specular = NewColor(0.3, 0.3, 0.3)
 		rightSphere.Material.Pattern = NewRingPattern(Colors["Red"], Colors["White"])
 		rightSphere.Material.Pattern.SetTransform(NewScale(0.23, 0.23, 0.23))
 
@@ -45,8 +45,8 @@ func RunDrawWorldWithMultiplePatterns(printProgress bool, jobs int) {
 		leftSphere.Material.Pattern = NewCheckerPattern(Colors["White"], Colors["Black"])
 		// leftSphere.Material.Pattern.SetTransform(NewScale(0.01, 0.01, 0.01))
 		leftSphere.Material.Color = NewColor(1, 0.8, 0.1)
-		leftSphere.Material.Diffuse = 0.7
-		leftSphere.Material.Specular = 0.3
+		leftSphere.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		leftSphere.Material.Specular = NewColor(0.3, 0.3, 0.3)
 
 		world.Objects = []*Shape{
 			floor,

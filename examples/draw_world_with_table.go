@@ -30,9 +30,9 @@ func RunDrawWorldWithTable(printProgress bool, jobs int) {
 			NewColor(0.25, 0.25, 0.25),
 		)
 		floorCeiling.Material.Pattern.SetTransform(floorCeiling.Material.Pattern.Transform.Multiply(NewUScale(0.07)))
-		floorCeiling.Material.Ambient = 0.25
-		floorCeiling.Material.Diffuse = 0.7
-		floorCeiling.Material.Specular = 0.9
+		floorCeiling.Material.Ambient = NewColor(0.25, 0.25, 0.25)
+		floorCeiling.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		floorCeiling.Material.Specular = NewColor(0.9, 0.9, 0.9)
 		floorCeiling.Material.Shininess = 300
 		floorCeiling.Material.Reflective = 0.1
 
@@ -43,9 +43,9 @@ func RunDrawWorldWithTable(printProgress bool, jobs int) {
 			NewColor(0.3725, 0.2902, 0.2275),
 		)
 		walls.Material.Pattern.SetTransform(walls.Material.Pattern.Transform.Multiply(NewScale(0.05, 20, 0.05)))
-		walls.Material.Ambient = 0.1
-		walls.Material.Diffuse = 0.7
-		walls.Material.Specular = 0.9
+		walls.Material.Ambient = NewColor(0.1, 0.1, 0.1)
+		walls.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		walls.Material.Specular = NewColor(0.9, 0.9, 0.9)
 		walls.Material.Shininess = 300
 		walls.Material.Reflective = 0.1
 		walls.Material.Pattern.SetTransform(NewScale(0.05, 20, 0.05))
@@ -54,16 +54,16 @@ func RunDrawWorldWithTable(printProgress bool, jobs int) {
 		tabletop.SetTransform(tabletop.Transform.Compose(NewScale(3, 0.1, 2), NewTranslation(0, 3.1, 0)))
 		tabletop.Material.Pattern = NewStripePattern(NewColor(0.5529, 0.4235, 0.3255), NewColor(0.6588, 0.5098, 0.4000))
 		tabletop.Material.Pattern.SetTransform(tabletop.Material.Pattern.Transform.Compose(NewRotateY(0.1), NewScale(0.05, 0.05, 0.05)))
-		tabletop.Material.Ambient = 0.1
-		tabletop.Material.Diffuse = 0.7
-		tabletop.Material.Specular = 0.9
+		tabletop.Material.Ambient = NewColor(0.1, 0.1, 0.1)
+		tabletop.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		tabletop.Material.Specular = NewColor(0.9, 0.9, 0.9)
 		tabletop.Material.Shininess = 300
 		tabletop.Material.Reflective = 0.2
 
 		legMaterial := DefaultMaterial()
 		legMaterial.Color = NewColor(0.5529, 0.4235, 0.3255)
-		legMaterial.Ambient = 0.2
-		legMaterial.Diffuse = 0.7
+		legMaterial.Ambient = NewColor(0.2, 0.2, 0.2)
+		legMaterial.Diffuse = NewColor(0.7, 0.7, 0.7)
 
 		leg1 := NewCube()
 		leg1.SetTransform(leg1.Transform.Compose(NewScale(0.1, 1.5, 0.1), NewTranslation(2.7, 1.5, -1.7)))
@@ -84,9 +84,9 @@ func RunDrawWorldWithTable(printProgress bool, jobs int) {
 		glassCube := NewCube()
 		glassCube.SetTransform(glassCube.Transform.Compose(NewUScale(0.25), NewRotateY(0.2), NewTranslation(0, 3.450001, 0)))
 		glassCube.Material.Color = NewColor(1, 1, 0.8)
-		glassCube.Material.Diffuse = 0.3
-		glassCube.Material.Ambient = 0
-		glassCube.Material.Specular = 0.9
+		glassCube.Material.Diffuse = NewColor(0.3, 0.3, 0.3)
+		glassCube.Material.Ambient = NewColor(0, 0, 0)
+		glassCube.Material.Specular = NewColor(0.9, 0.9, 0.9)
 		glassCube.Material.Shininess = 300
 		glassCube.Material.Reflective = 0.7
 		glassCube.Material.Transparency = 0.7
@@ -95,7 +95,7 @@ func RunDrawWorldWithTable(printProgress bool, jobs int) {
 		littleCube1 := NewCube()
 		littleCube1.SetTransform(littleCube1.Transform.Compose(NewUScale(0.15), NewRotateY(-0.4), NewTranslation(1, 3.35, -0.9)))
 		littleCube1.Material.Color = NewColor(1, 0.5, 0.5)
-		littleCube1.Material.Diffuse = 0.4
+		littleCube1.Material.Diffuse = NewColor(0.4, 0.4, 0.4)
 		littleCube1.Material.Reflective = 0.6
 
 		littleCube2 := NewCube()
@@ -117,29 +117,29 @@ func RunDrawWorldWithTable(printProgress bool, jobs int) {
 		frame1 := NewCube()
 		frame1.SetTransform(frame1.Transform.Compose(NewScale(0.05, 1, 1), NewTranslation(-10, 4, 1)))
 		frame1.Material.Color = NewColor(0.7098, 0.2471, 0.2196)
-		frame1.Material.Diffuse = 0.6
+		frame1.Material.Diffuse = NewColor(0.6, 0.6, 0.6)
 
 		frame2 := NewCube()
 		frame2.SetTransform(frame2.Transform.Compose(NewScale(0.05, 0.4, 0.4), NewTranslation(-10, 3.4, 2.7)))
 		frame2.Material.Color = NewColor(0.2667, 0.2706, 0.6902)
-		frame2.Material.Diffuse = 0.6
+		frame2.Material.Diffuse = NewColor(0.6, 0.6, 0.6)
 
 		frame3 := NewCube()
 		frame3.SetTransform(frame3.Transform.Compose(NewScale(0.05, 0.4, 0.4), NewTranslation(-10, 4.6, 2.7)))
 		frame3.Material.Color = NewColor(0.3098, 0.5961, 0.3098)
-		frame3.Material.Diffuse = 0.6
+		frame3.Material.Diffuse = NewColor(0.6, 0.6, 0.6)
 
 		mirrorFrame := NewCube()
 		mirrorFrame.SetTransform(mirrorFrame.Transform.Compose(NewScale(5, 1.5, 0.05), NewTranslation(-2, 3.5, 9.95)))
 		mirrorFrame.Material.Color = NewColor(0.3882, 0.2627, 0.1882)
-		mirrorFrame.Material.Diffuse = 0.7
+		mirrorFrame.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
 
 		mirror := NewCube()
 		mirror.SetTransform(mirror.Transform.Compose(NewScale(4.8, 1.4, 0.06), NewTranslation(-2, 3.5, 9.95)))
 		mirror.Material.Color = Colors["Black"]
-		mirror.Material.Ambient = 0
-		mirror.Material.Diffuse = 0
-		mirror.Material.Specular = 1
+		mirror.Material.Ambient = NewColor(0, 0, 0)
+		mirror.Material.Diffuse = NewColor(0, 0, 0)
+		mirror.Material.Specular = NewColor(1, 1, 1)
 		mirror.Material.Shininess = 300
 		mirror.Material.Reflective = 1
 

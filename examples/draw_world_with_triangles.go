@@ -22,22 +22,22 @@ func RunDrawWorldWithTriangles(printProgress bool, jobs int) {
 			bottom := NewTriangle(NewPoint(-1, 0, 0), NewPoint(0, 0, 1), NewPoint(1, 0, 0))
 			bottom.Material.Color = Colors["White"]
 			bottom.Material.Reflective = 0.8
-			bottom.Material.Ambient = 0.5
+			bottom.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 			bottom.Material.Transparency = 0.9
 			side1 := NewTriangle(NewPoint(-1, 0, 0), NewPoint(0, 0, 1), NewPoint(0, 1, 0))
 			side1.Material.Color = Colors["Green"]
 			side1.Material.Reflective = 0.8
-			side1.Material.Ambient = 0.5
+			side1.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 			side1.Material.Transparency = 0.9
 			side2 := NewTriangle(NewPoint(0, 1, 0), NewPoint(0, 0, 1), NewPoint(1, 0, 0))
 			side2.Material.Color = Colors["Blue"]
 			side2.Material.Reflective = 0.8
-			side2.Material.Ambient = 0.5
+			side2.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 			side2.Material.Transparency = 0.9
 			side3 := NewTriangle(NewPoint(-1, 0, 0), NewPoint(0, 1, 0), NewPoint(1, 0, 0))
 			side3.Material.Color = Colors["Red"]
 			side3.Material.Reflective = 0.8
-			side3.Material.Ambient = 0.5
+			side3.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 			side3.Material.Transparency = 0.9
 			g := NewGroup()
 			g.AddChildren(side1, side2, side3, bottom)
