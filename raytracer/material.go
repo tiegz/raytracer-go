@@ -8,9 +8,9 @@ import (
 type Material struct {
 	Label           string
 	Color           Color
-	Ambient         float64
-	Diffuse         float64
-	Specular        float64
+	Ambient         Color
+	Diffuse         Color
+	Specular        Color
 	Shininess       float64
 	Pattern         *Pattern
 	Reflective      float64
@@ -23,9 +23,9 @@ func DefaultMaterial() *Material {
 	return &Material{
 		Label:           "default-material",
 		Color:           Colors["White"],
-		Ambient:         0.1,
-		Diffuse:         0.9,
-		Specular:        0.9,
+		Ambient:         NewColor(0.1, 0.1, 0.1),
+		Diffuse:         NewColor(0.9, 0.9, 0.9),
+		Specular:        NewColor(0.9, 0.9, 0.9),
 		Shininess:       200,
 		Reflective:      0.0,
 		Transparency:    0.0,
@@ -37,11 +37,11 @@ func (m *Material) IsEqualTo(m2 *Material) bool {
 	// TODO add check for Pattern equality too
 	if !m.Color.IsEqualTo(m2.Color) {
 		return false
-	} else if m.Ambient != m2.Ambient {
+	} else if !m.Ambient.IsEqualTo(m2.Ambient) {
 		return false
-	} else if m.Diffuse != m2.Diffuse {
+	} else if !m.Diffuse.IsEqualTo(m2.Diffuse) {
 		return false
-	} else if m.Specular != m2.Specular {
+	} else if !m.Specular.IsEqualTo(m2.Specular) {
 		return false
 	} else if m.Shininess != m2.Shininess {
 		return false
@@ -88,7 +88,7 @@ func (m *Material) Lighting(obj *Shape, light *AreaLight, point Tuple, eyeVector
 	}
 
 	effectiveColor := baseColor.MultiplyColor(light.GetIntensity()) // Combine the surface color with the light's color/intensity
-	ambient = effectiveColor.Multiply(m.Ambient)                    // Compute the ambient contribution
+	ambient = effectiveColor.MultiplyColor(m.Ambient)               // Compute the ambient contribution
 
 	samples := []Tuple{}
 	// TODO: can we memoize and abstract this out, with the shared code in IntensityAt()?
@@ -112,7 +112,7 @@ func (m *Material) Lighting(obj *Shape, light *AreaLight, point Tuple, eyeVector
 		}
 
 		// Compute the diffuse contribution
-		diffuse = effectiveColor.Multiply(m.Diffuse).Multiply(lightDotNormal)
+		diffuse = effectiveColor.MultiplyColor(m.Diffuse).Multiply(lightDotNormal)
 		sum = sum.Add(diffuse)
 
 		// Compute the specular contribution
@@ -120,7 +120,7 @@ func (m *Material) Lighting(obj *Shape, light *AreaLight, point Tuple, eyeVector
 		reflectDotEye := reflectVector.Dot(eyeVector) // The cosine of angle between reflection vector + eye vector (nenative means light reflects away from eye)
 		if reflectDotEye > 0 {
 			factor := math.Pow(reflectDotEye, m.Shininess)
-			specular = light.GetIntensity().Multiply(m.Specular).Multiply(factor)
+			specular = light.GetIntensity().MultiplyColor(m.Specular).Multiply(factor)
 			sum = sum.Add(specular)
 		}
 	}

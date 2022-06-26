@@ -218,13 +218,13 @@ func decodeMaterial(defs map[string]Material, m Material, n yaml.Node) (Material
 			m.Color = NewColor(r, g, b)
 		}
 		if v.Diffuse != nil {
-			m.Diffuse = *v.Diffuse
+			m.Diffuse = NewColor(*v.Diffuse, *v.Diffuse, *v.Diffuse)
 		}
 		if v.Ambient != nil {
-			m.Ambient = *v.Ambient
+			m.Ambient = NewColor(*v.Ambient, *v.Ambient, *v.Ambient)
 		}
 		if v.Specular != nil {
-			m.Specular = *v.Specular
+			m.Specular = NewColor(*v.Specular, *v.Specular, *v.Specular)
 		}
 		if v.Reflective != nil {
 			m.Reflective = *v.Reflective

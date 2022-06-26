@@ -20,7 +20,7 @@ func RunDrawWorldWithCylinderAndCone(printProgress bool, jobs int) {
 
 		floor := NewPlane()
 		floor.Material.Color = NewColor(1, 0.9, 0.9)
-		floor.Material.Specular = 0
+		floor.Material.Specular = NewColor(0, 0, 0)
 
 		cylinder := NewCylinder()
 		cylinder.LocalShape.(*Cylinder).Closed = true
@@ -28,8 +28,8 @@ func RunDrawWorldWithCylinderAndCone(printProgress bool, jobs int) {
 		cylinder.LocalShape.(*Cylinder).Maximum = 1
 		cylinder.SetTransform(cylinder.Transform.Multiply(NewScale(0.5, 3, 0.5)))
 		cylinder.Material.Color = Colors["Blue"]
-		cylinder.Material.Diffuse = 0.7
-		cylinder.Material.Specular = 0.3
+		cylinder.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		cylinder.Material.Specular = NewColor(0.3, 0.3, 0.3)
 
 		cone := NewCone()
 		cone.LocalShape.(*Cone).Closed = true
@@ -39,8 +39,8 @@ func RunDrawWorldWithCylinderAndCone(printProgress bool, jobs int) {
 		cone.SetTransform(cone.Transform.Multiply(NewScale(0.5, 1, 0.5)))
 		cone.SetTransform(cone.Transform.Multiply(NewRotateX(math.Pi)))
 		cone.Material.Color = Colors["Green"]
-		cone.Material.Diffuse = 0.7
-		cone.Material.Specular = 0.3
+		cone.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		cone.Material.Specular = NewColor(0.3, 0.3, 0.3)
 
 		iceCreamCone := NewCone()
 		iceCreamCone.LocalShape.(*Cone).Closed = true
@@ -49,8 +49,8 @@ func RunDrawWorldWithCylinderAndCone(printProgress bool, jobs int) {
 		iceCreamCone.SetTransform(iceCreamCone.Transform.Multiply(NewTranslation(-1, 0, -3)))
 		iceCreamCone.SetTransform(iceCreamCone.Transform.Multiply(NewScale(0.5, 2, 0.5)))
 		iceCreamCone.Material.Color = NewColor(0.95, 0.95, 0.85)
-		// iceCreamCone.Material.Diffuse = 0.7
-		// iceCreamCone.Material.Specular = 0.3
+		// iceCreamCone.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+		// iceCreamCone.Material.Specular = NewColor(0.3, 0.3, 0.3)
 
 		iceCreamScoopOne := NewSphere()
 		iceCreamScoopOne.SetTransform(iceCreamScoopOne.Transform.Multiply(NewTranslation(-1, 2.1, -3)))

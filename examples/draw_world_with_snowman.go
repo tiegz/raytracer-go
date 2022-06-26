@@ -19,9 +19,9 @@ func RunDrawWorldWithSnowman(printProgress bool, jobs int) {
 		))
 
 		snowMaterial := DefaultMaterial()
-		snowMaterial.Specular = 0.1
-		snowMaterial.Diffuse = 0.8
-		snowMaterial.Ambient = 0.4
+		snowMaterial.Specular = NewColor(0.1, 0.1, 0.1)
+		snowMaterial.Diffuse = NewColor(0.8, 0.8, 0.8)
+		snowMaterial.Ambient = NewColor(0.4, 0.4, 0.4)
 
 		floor := NewPlane()
 		floor.Material = snowMaterial
@@ -55,9 +55,9 @@ func RunDrawWorldWithSnowman(printProgress bool, jobs int) {
 
 			hatMaterial := DefaultMaterial()
 			hatMaterial.Color = NewColor(0.1, 0.1, 0.3)
-			hatMaterial.Ambient = 0.4
-			hatMaterial.Specular = 0.3
-			hatMaterial.Diffuse = 0.3
+			hatMaterial.Ambient = NewColor(0.4, 0.4, 0.4)
+			hatMaterial.Specular = NewColor(0.3, 0.3, 0.3)
+			hatMaterial.Diffuse = NewColor(0.3, 0.3, 0.3)
 
 			topOne := NewCone()
 			topOne.Material = hatMaterial
@@ -80,8 +80,8 @@ func RunDrawWorldWithSnowman(printProgress bool, jobs int) {
 
 			band := NewCylinder()
 			band.Material.Color = NewColor(0.7, 0, 0)
-			band.Material.Specular = 0.75
-			band.Material.Ambient = 0.50
+			band.Material.Specular = NewColor(0.75, 0.75, 0.75)
+			band.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 			band.Material.RefractiveIndex = 0.5
 			band.Material.Reflective = 0.5
 			band.SetTransform(band.Transform.Compose(
@@ -135,7 +135,7 @@ func RunDrawWorldWithSnowman(printProgress bool, jobs int) {
 		createDot := func() *Shape {
 			sphere := NewSphere()
 			sphere.Shadows = false
-			sphere.Material.Specular = 0.2
+			sphere.Material.Specular = NewColor(0.2, 0.2, 0.2)
 			sphere.Material.Color = NewColor(0.1, 0.1, 0.1)
 			sphere.SetTransform(sphere.Transform.Compose(
 				NewScale(0.05, 0.05, 0.05),

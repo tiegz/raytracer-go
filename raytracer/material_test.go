@@ -10,9 +10,9 @@ func TestDefaultMaterial(t *testing.T) {
 	m := DefaultMaterial()
 
 	assertEqualColor(t, Colors["White"], m.Color)
-	assertEqualFloat64(t, 0.1, m.Ambient)
-	assertEqualFloat64(t, 0.9, m.Diffuse)
-	assertEqualFloat64(t, 0.9, m.Specular)
+	assertEqualColor(t, NewColor(0.1, 0.1, 0.1), m.Ambient)
+	assertEqualColor(t, NewColor(0.9, 0.9, 0.9), m.Diffuse)
+	assertEqualColor(t, NewColor(0.9, 0.9, 0.9), m.Specular)
 	assertEqualFloat64(t, 200, m.Shininess)
 }
 
@@ -153,9 +153,9 @@ func TestLightingWithAPatternApplied(t *testing.T) {
 	obj := NewSphere()
 	mat := DefaultMaterial()
 	mat.Pattern = NewStripePattern(Colors["White"], Colors["Black"])
-	mat.Ambient = 1
-	mat.Diffuse = 0
-	mat.Specular = 0
+	mat.Ambient = NewColor(1, 1, 1)
+	mat.Diffuse = NewColor(0, 0, 0)
+	mat.Specular = NewColor(0, 0, 0)
 	eyeV := NewVector(0, 0, -1)
 	normalV := NewVector(0, 0, -1)
 	light := NewPointLight(NewPoint(0, 0, -10), Colors["White"])
@@ -184,9 +184,9 @@ func TestLightingUsesLightIntensityToAttentuateColor(t *testing.T) {
 	w := DefaultWorld()
 	w.Lights[0] = NewPointLight(NewPoint(0, 0, -10), NewColor(1, 1, 1))
 	s := w.Objects[0]
-	s.Material.Ambient = 0.1
-	s.Material.Diffuse = 0.9
-	s.Material.Specular = 0
+	s.Material.Ambient = NewColor(0.1, 0.1, 0.1)
+	s.Material.Diffuse = NewColor(0.9, 0.9, 0.9)
+	s.Material.Specular = NewColor(0, 0, 0)
 	s.Material.Color = NewColor(1, 1, 1)
 	pt := NewPoint(0, 0, -1)
 	eyeV := NewVector(0, 0, -1)
@@ -211,9 +211,9 @@ func TestLightingUsesLightIntensityToAttentuateColor(t *testing.T) {
 func TestLightingSamplesTheAreaLight(t *testing.T) {
 	light := NewAreaLight(NewPoint(-0.5, -0.5, -5), NewVector(1, 0, 0), 2, NewVector(0, 1, 0), 2, NewColor(1, 1, 1))
 	shape := NewSphere()
-	shape.Material.Ambient = 0.1
-	shape.Material.Diffuse = 0.9
-	shape.Material.Specular = 0
+	shape.Material.Ambient = NewColor(0.1, 0.1, 0.1)
+	shape.Material.Diffuse = NewColor(0.9, 0.9, 0.9)
+	shape.Material.Specular = NewColor(0, 0, 0)
 	shape.Material.Color = NewColor(1, 1, 1)
 	eye := NewPoint(0, 0, -5)
 	testCases := []struct {

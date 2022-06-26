@@ -46,20 +46,20 @@ func RunDrawSkybox(printProgress bool, jobs int) {
 			getCubeSide("tmp/LancellotiChapel/posy.ppm"), // u
 			getCubeSide("tmp/LancellotiChapel/negy.ppm"), // d
 		)
-		cube.Material.Ambient = 1.0
-		cube.Material.Specular = 0
-		cube.Material.Diffuse = 0
+		cube.Material.Ambient = NewColor(1.0, 1.0, 1.0)
+		cube.Material.Specular = NewColor(0, 0, 0)
+		cube.Material.Diffuse = NewColor(0, 0, 0)
 
 		sphere := NewSphere()
 		sphere.SetTransform(sphere.Transform.Compose(
 			NewUScale(0.75),
 			NewTranslation(0, 0, 5),
 		))
-		sphere.Material.Diffuse = 0.4
-		sphere.Material.Specular = 0.6
+		sphere.Material.Diffuse = NewColor(0.4, 0.4, 0.4)
+		sphere.Material.Specular = NewColor(0.6, 0.6, 0.6)
 		sphere.Material.Shininess = 20
 		sphere.Material.Reflective = .6
-		sphere.Material.Ambient = 0
+		sphere.Material.Ambient = NewColor(0, 0, 0)
 
 		world.Objects = []*Shape{
 			cube,

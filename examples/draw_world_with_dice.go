@@ -25,8 +25,8 @@ func RunDrawWorldWithDice(printProgress bool, jobs int) {
 		))
 		room.Material.Pattern = NewCheckerPattern(NewColor(1, 1, 1), NewColor(0.9, 0.9, 0.9))
 		room.Material.Pattern.SetTransform(NewUScale(0.05))
-		room.Material.Ambient = 0.1
-		room.Material.Diffuse = 0.7
+		room.Material.Ambient = NewColor(0.1, 0.1, 0.1)
+		room.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
 		room.Material.Reflective = 0.5
 
 		createDice := func(c Color) *Shape {
@@ -36,9 +36,9 @@ func RunDrawWorldWithDice(printProgress bool, jobs int) {
 				NewUScale(1),
 			))
 			cube.Material.Color = c
-			cube.Material.Diffuse = 0.7
-			// cube.Material.Ambient = 0
-			cube.Material.Specular = 0.3
+			cube.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+			// cube.Material.Ambient = NewColor(0, 0, 0)
+			cube.Material.Specular = NewColor(0.3, 0.3, 0.3)
 			cube.Material.Shininess = 100
 			cube.Material.Reflective = 0.3
 

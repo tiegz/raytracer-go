@@ -12,7 +12,7 @@ func RunAnimation(printProgress bool, jobs int) {
 	midSphere := NewSphere()
 	midSphere.SetTransform(NewTranslation(-0.5, 1, 0.5))
 	midSphere.Material.Reflective = 1.0
-	midSphere.Material.Diffuse = 0.1
+	midSphere.Material.Diffuse = NewColor(0.1, 0.1, 0.1)
 	midSphere.Material.Color = NewColor(0.75, 0.75, 0.75)
 
 	rightSphere := NewSphere()
@@ -57,7 +57,7 @@ func RunAnimation(printProgress bool, jobs int) {
 			floor.Material.Pattern = NewCheckerPattern(Colors["Black"], Colors["White"])
 
 			rightWall := NewPlane()
-			rightWall.Material.Ambient = 0.5
+			rightWall.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 			rightWall.Material.Reflective = 0.5
 			rightWall.SetTransform(rightWall.Transform.Multiply(NewTranslation(0, 0, 5)))
 			rightWall.SetTransform(rightWall.Transform.Multiply(NewRotateY(math.Pi / 4)))
@@ -65,7 +65,7 @@ func RunAnimation(printProgress bool, jobs int) {
 			rightWall.Material.Pattern = NewCheckerPattern(Colors["Blue"], Colors["Green"])
 
 			leftWall := NewPlane()
-			leftWall.Material.Ambient = 0.5
+			leftWall.Material.Ambient = NewColor(0.5, 0.5, 0.5)
 			leftWall.Material.Reflective = 0.2
 			leftWall.SetTransform(leftWall.Transform.Multiply(NewTranslation(0, 0, 5)))
 			leftWall.SetTransform(leftWall.Transform.Multiply(NewRotateY(-math.Pi / 4)))
