@@ -27,9 +27,9 @@ func RunDrawUVAlignCheckCubes(printProgress bool, jobs int) {
 		NewUVAlignCheckPattern(Colors["Brown"], Colors["Cyan"], Colors["Purple"], Colors["Red"], Colors["Yellow"]),
 		NewUVAlignCheckPattern(Colors["Purple"], Colors["Brown"], Colors["Green"], Colors["Blue"], Colors["White"]),
 	)
-	material.Ambient = 0.2
-	material.Specular = 0
-	material.Diffuse = 0.8
+	material.Ambient = NewColor(0.2, 0.2, 0.2)
+	material.Specular = NewColor(0, 0, 0)
+	material.Diffuse = NewColor(0.8, 0.8, 0.8)
 
 	cube1 := NewCube()
 	cube1.Material = material

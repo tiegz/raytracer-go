@@ -28,7 +28,7 @@ func TestDefaultMatrial(t *testing.T) {
 func TestAssigningAMaterial(t *testing.T) {
 	s := NewTestShape()
 	m := DefaultMaterial()
-	m.Ambient = 1
+	m.Ambient = NewColor(1, 1, 1)
 	s.Material = m
 
 	assertEqualMaterial(t, *s.Material, *m)

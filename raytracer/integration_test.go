@@ -36,7 +36,7 @@ func renderIntegrationTestScene(jobs int) {
 
 	floor := NewPlane()
 	floor.Material.Color = NewColor(1, 0.9, 0.9)
-	floor.Material.Specular = 0
+	floor.Material.Specular = NewColor(0, 0, 0)
 
 	sphere := NewSphere()
 	sphere.Material.Color = Colors["Red"]

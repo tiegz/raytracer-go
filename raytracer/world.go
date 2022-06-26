@@ -29,8 +29,8 @@ func DefaultWorld() *World {
 	defaultPointLight := NewPointLight(NewPoint(-10, 10, -10), Colors["White"])
 	defaultObj1 := NewSphere()
 	defaultObj1.Material.Color = NewColor(0.8, 1.0, 0.6)
-	defaultObj1.Material.Diffuse = 0.7
-	defaultObj1.Material.Specular = 0.2
+	defaultObj1.Material.Diffuse = NewColor(0.7, 0.7, 0.7)
+	defaultObj1.Material.Specular = NewColor(0.2, 0.2, 0.2)
 
 	defaultObj2 := NewSphere()
 	defaultObj2.SetTransform(NewScale(0.5, 0.5, 0.5))
