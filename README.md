@@ -2,7 +2,10 @@
 
 A raytracer in Go.
 
-This is an implementation of ["The Ray Tracer Challenge" by Jamis Buck](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge), which teaches you how to write a raytracer using language-agnostic BDD/[Cucumber](https://cucumber.io/) tests.
+Sources:
+
+- The raytracer is an implementation of ["The Ray Tracer Challenge" by Jamis Buck](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge).
+- The MTL parser is based on ["MTL material format"](http://paulbourke.net/dataformats/mtl/), an excerpt from Advanced Visualizer Manual (Alias/Wavefront).
 
 ### Installation
 
@@ -10,9 +13,9 @@ To install using go: `go get https://github.com/tiegz/raytracer-go`
 
 ### Usage
 
-* `raytracer-go example`: render an example
-* `raytracer-go version`: print version
-* `raytracer-go help`: print instructions
+- `raytracer-go example`: render an example
+- `raytracer-go version`: print version
+- `raytracer-go help`: print instructions
 
 ### Introduction to the Types
 
