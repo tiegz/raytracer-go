@@ -11,11 +11,22 @@ type Material struct {
 	Ambient         Color
 	Diffuse         Color
 	Specular        Color
-	Shininess       float64
+	Shininess       float64 // aka the "specular exponent"
 	Pattern         *Pattern
 	Reflective      float64
-	Transparency    float64
-	RefractiveIndex float64 // Vacuum=1, Water=1.333, Glass=1.52, Diamond=2.42
+	Transparency    float64 // 0.0-1.0: 0.0=opaque, 1.0=transparent
+	RefractiveIndex float64 // 0.001-10: Vacuum=1, Water=1.333, Glass=1.52, Diamond=2.42
+
+	// TODO: these are stubbed out for texture maps. Implement them
+	// probably by creating a new pattern that supports these.
+	AmbientMapFilename           string
+	DiffuseMapFilename           string
+	SpecularMapFilename          string
+	SpecularHighlightMapFilename string
+	AlphaTextureMapFilename      string
+	BumpMapFilename              string
+	DisplacementMapFilename      string
+	StencilDecalMapFilename      string
 }
 
 // Beware: use this instead of Material{}, for Material{} without all the args will throw errors when rendering.

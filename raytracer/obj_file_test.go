@@ -170,3 +170,42 @@ f 1/0/3 2/102/1 3/14/2`
 	assertEqualTuple(t, parser.Normals[2], t1.N3)
 	assertEqualShape(t, *shape1, *shape2)
 }
+
+func TestMtlFileRecords(t *testing.T) {
+	file :=
+		`mtllib files/colors.mtl`
+
+	parser := ParseObjFile(file)
+
+	m := parser.Materials["clearblue"]
+	assertEqualColor(t, NewColor(0.0394, 0.0394, 0.33), m.Ambient)
+	assertEqualColor(t, NewColor(0.142, 0.142, 0.95), m.Diffuse)
+	assertEqualFloat64(t, 0.43, m.Transparency)
+}
+
+func TestUsemtlRecords(t *testing.T) {
+	file :=
+		`mtllib files/colors.mtl
+
+v -1 1 0
+v -1.0000 0 0
+v 1 0 0
+v 1 1 0
+
+usemtl shinyred
+f 1 2 3
+
+usemtl clearblue
+f 1 3 4
+`
+
+	parser := ParseObjFile(file)
+
+	group := parser.DefaultGroup
+	g := group.LocalShape.(Group)
+
+	shape1 := g.Children[0]
+	assertEqualMaterial(t, *parser.Materials["shinyred"], *shape1.Material)
+	shape2 := g.Children[1]
+	assertEqualMaterial(t, *parser.Materials["clearblue"], *shape2.Material)
+}

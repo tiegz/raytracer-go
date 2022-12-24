@@ -23,6 +23,18 @@ func assert(t *testing.T, result bool) {
 	}
 }
 
+func assertEqualSliceOfStrings(t *testing.T, expected, actual []string) {
+	if len(expected) != len(actual) {
+		expectationFailure(t, len(expected), len(actual))
+	} else {
+		for i, v := range expected {
+			if v != actual[i] {
+				expectationFailure(t, expected, actual)
+			}
+		}
+	}
+}
+
 func assertEqualBool(t *testing.T, expected, actual bool) {
 	if expected != actual {
 		expectationFailure(t, expected, actual)

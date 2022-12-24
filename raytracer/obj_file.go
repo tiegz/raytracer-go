@@ -3,6 +3,7 @@ package raytracer
 import (
 	"bufio"
 	"fmt"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -12,9 +13,11 @@ type ObjFile struct {
 	IgnoredLineCount int
 	Vertices         []Tuple
 	Normals          []Tuple
+	Materials        map[string]*Material
 	DefaultGroup     *Shape
 	Groups           map[string]*Shape
 	CurrentGroupName string
+	CurrentMaterial  *Material
 }
 
 func (of *ObjFile) ToGroup() *Shape {
@@ -40,6 +43,7 @@ func ParseObjFile(s string) ObjFile {
 	of := ObjFile{}
 	of.Vertices = []Tuple{NewPoint(0, 0, 0)} // first element is dummy, this is a 1-indexed array
 	of.Normals = []Tuple{NewVector(0, 0, 0)} // first element is dummy, this is a 1-indexed array
+	of.Materials = map[string]*Material{}    // note that we're storing Materials, not MtlFiles
 	defaultGroup := NewGroup()
 	of.Groups = map[string]*Shape{
 		"": defaultGroup,
@@ -51,7 +55,7 @@ func ParseObjFile(s string) ObjFile {
 	var fExtendedRegex = regexp.MustCompile(`(\d+)?/(\d+)?/(\d+)?`)
 	var va, vb, vc float64
 	var vna, vnb, vnc float64
-	var g string
+	var g, f, m string
 	for scanner.Scan() {
 		line := scanner.Text()
 
@@ -74,8 +78,10 @@ func ParseObjFile(s string) ObjFile {
 
 			tokens := strings.Split(line, " ")
 			for _, token := range tokens {
-				if foo := fExtendedRegex.FindSubmatch([]byte(token)); len(foo) > 0 {
-					vertexIdx, _, normalIdx := foo[1], foo[2], foo[3] // TODO: 2 is the texture index
+				if tokenVals := fExtendedRegex.FindSubmatch([]byte(token)); len(tokenVals) > 0 {
+					// TODO: support negative indices, which are relative offsets from which index you're at now
+					// TODO: 2 is the texture index (vt) ... not sure what to do with this per vertex?
+					vertexIdx, _, normalIdx := tokenVals[1], tokenVals[2], tokenVals[3]
 
 					if vi, err := strconv.Atoi(string(vertexIdx)); err == nil {
 						faceVertices = append(faceVertices, of.Vertices[vi])
@@ -92,7 +98,7 @@ func ParseObjFile(s string) ObjFile {
 			}
 
 			for _, tri := range fanTriangulation(faceVertices, faceNormals) {
-				tri.Material.Color = Colors["Red"]
+				tri.Material = of.CurrentMaterial
 				g := of.Groups[of.CurrentGroupName]
 				g.AddChildren(tri)
 			}
@@ -107,6 +113,24 @@ func ParseObjFile(s string) ObjFile {
 				of.Groups[g] = group
 			}
 			continue
+		}
+
+		// Scan for mtl files
+		if _, err := fmt.Sscanf(line, "mtllib %s", &f); err == nil {
+			if file, err := os.ReadFile(f); err == nil {
+				parser := ParseMtlFile(string(file))
+				for name, mtl := range parser.Materials {
+					// Note that this will overwrite existing ones in the same or previously parsed mtl files.
+					of.Materials[name] = &mtl
+				}
+			}
+		}
+
+		// Scan for mtl directives
+		if _, err := fmt.Sscanf(line, "usemtl %s", &m); err == nil {
+			if m, ok := of.Materials[m]; ok {
+				of.CurrentMaterial = m
+			}
 		}
 
 		of.IgnoredLineCount += 1
