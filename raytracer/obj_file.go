@@ -20,6 +20,7 @@ type ObjFile struct {
 	CurrentMaterial  *Material
 }
 
+// Helper method to return a Group that contains all Groups in the file.
 func (of *ObjFile) ToGroup() *Shape {
 	g := NewGroup()
 	for _, v := range of.Groups {
@@ -50,6 +51,7 @@ func ParseObjFile(s string) ObjFile {
 	}
 	of.CurrentGroupName = ""
 	of.DefaultGroup = of.Groups[""]
+	of.CurrentMaterial = DefaultMaterial()
 
 	scanner := bufio.NewScanner(strings.NewReader(s))
 	var fExtendedRegex = regexp.MustCompile(`(\d+)?/(\d+)?/(\d+)?`)

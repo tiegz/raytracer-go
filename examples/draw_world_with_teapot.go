@@ -41,10 +41,6 @@ func RunDrawWorldWithTeapot(printProgress bool, jobs int) {
 			NewUScale(0.75),
 		))
 
-		m := DefaultMaterial()
-		m.Color = Colors["Purple"]
-		group.SetMaterialRecursively(m)
-
 		world.Objects = []*Shape{
 			floor,
 			backWall,
